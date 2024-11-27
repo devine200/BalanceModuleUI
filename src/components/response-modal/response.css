@@ -1,0 +1,100 @@
+.response-modal {
+  width: 370px;
+  height: 250px;
+  background-color: #12172d;
+  border-radius: 6px;
+  padding: 50px 40px;
+  color: #cfd3e5;
+  font-family: inter, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.response-modal h3 {
+    color: #fff;
+}
+
+.response-modal img {
+    width: 200px;
+    height: 100px;
+}
+
+.response-modal p {
+    color: #CFD3E5;
+    font-size: 12px;
+    width: 80%;
+    margin: 0px;
+}
+
+.response-modal button {
+    border: none;
+    box-sizing: border-box;
+    font-size: 16px;
+    font-weight: 700;
+    color: #0F1427;
+    width: 100%;
+    background-color: #40e080;
+    padding: 12px;
+    border-radius: 6px;
+    margin-top: 40px;
+}
+
+.confirmation-modal {
+    justify-content: space-around;
+}
+
+.response-modal .loading-section {
+    display: flex;
+    align-items: center;
+}
+
+.response-modal .loading-section h3{
+    font-size: 20px;
+}
+
+.response-modal .loading-section img {
+    width: 70px;
+    height: 70px;
+}
+
+.response-modal .loading-section p {
+    color: #CFD3E5;
+}
+
+.glint-box {
+    position: relative;
+    display: inline-block; /* You can also use block if it's a full-width element */
+    padding: 3.5px;
+    max-height: 5px;
+    min-width: 200px;
+    font-size: 24px;
+    color: #fff;
+    background-color: #D9D9D9; /* Background color for the element */
+    overflow: hidden; /* Make sure the animation doesn’t overflow out of the div */
+    /* border-radius: 10px; Optional: makes the div rounded */
+}
+
+/* Create the glint effect using pseudo-elements */
+.glint-box::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -150%; /* Starts off the screen */
+    width: 150%;
+    height: 100%;
+    background: linear-gradient(120deg, #c6f1d7 0%,  #40E080 50%, #c6f1d7 100%);
+    /* transform: skewX(-30deg); Tilts the glint for the streak effect */
+    animation: glint 2.5s infinite; /* Adjust duration of the animation */
+}
+
+/* Define the keyframes for the glint animation */
+@keyframes glint {
+    0% {
+        left: -150%;
+    }
+    100% {
+        left: 150%;
+    }
+}

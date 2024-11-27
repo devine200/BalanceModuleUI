@@ -1,0 +1,2839 @@
+{
+  "tradableSettings": {
+    "address": "0x38dFEeC768aEB751B0291754c9A22Cb12c5E2fc4",
+    "abi": [
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "_protocolRewardVault",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+      },
+      {
+        "inputs": [
+          { "internalType": "address", "name": "owner", "type": "address" }
+        ],
+        "name": "OwnableInvalidOwner",
+        "type": "error"
+      },
+      {
+        "inputs": [
+          { "internalType": "address", "name": "account", "type": "address" }
+        ],
+        "name": "OwnableUnauthorizedAccount",
+        "type": "error"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "previousOwner",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "newOwner",
+            "type": "address"
+          }
+        ],
+        "name": "OwnershipTransferStarted",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "previousOwner",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "newOwner",
+            "type": "address"
+          }
+        ],
+        "name": "OwnershipTransferred",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "token",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint8",
+            "name": "decimals",
+            "type": "uint8"
+          },
+          {
+            "indexed": false,
+            "internalType": "bool",
+            "name": "isActive",
+            "type": "bool"
+          }
+        ],
+        "name": "TokenAdded",
+        "type": "event"
+      },
+      {
+        "inputs": [],
+        "name": "acceptOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          { "internalType": "address", "name": "token", "type": "address" },
+          { "internalType": "address", "name": "vault", "type": "address" }
+        ],
+        "name": "activateAcceptedToken",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          { "internalType": "address", "name": "_token", "type": "address" },
+          { "internalType": "uint8", "name": "_decimals", "type": "uint8" },
+          { "internalType": "bool", "name": "_isActive", "type": "bool" },
+          { "internalType": "address", "name": "vault", "type": "address" }
+        ],
+        "name": "addAcceptedToken",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          { "internalType": "address", "name": "caller", "type": "address" }
+        ],
+        "name": "addMessageAdapterCaller",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          { "internalType": "address", "name": "vault", "type": "address" },
+          { "internalType": "uint16", "name": "chainId", "type": "uint16" }
+        ],
+        "name": "addSideVault",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          { "internalType": "address", "name": "token", "type": "address" },
+          { "internalType": "address", "name": "vault", "type": "address" }
+        ],
+        "name": "deactivateAcceptedToken",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          { "internalType": "address", "name": "token", "type": "address" },
+          { "internalType": "address", "name": "vault", "type": "address" }
+        ],
+        "name": "deleteAcceptedToken",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          { "internalType": "address", "name": "vault", "type": "address" }
+        ],
+        "name": "deleteSideVault",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          { "internalType": "address", "name": "vault", "type": "address" }
+        ],
+        "name": "disableSideVault",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          { "internalType": "address", "name": "vault", "type": "address" }
+        ],
+        "name": "enableSideVault",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          { "internalType": "address", "name": "token", "type": "address" }
+        ],
+        "name": "getAcceptedTokenInfo",
+        "outputs": [
+          {
+            "components": [
+              { "internalType": "address", "name": "token", "type": "address" },
+              { "internalType": "uint8", "name": "decimals", "type": "uint8" },
+              { "internalType": "bool", "name": "isActive", "type": "bool" }
+            ],
+            "internalType": "struct TradableSettings.AcceptedToken",
+            "name": "",
+            "type": "tuple"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "getAcceptedTokensList",
+        "outputs": [
+          { "internalType": "address[]", "name": "", "type": "address[]" }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "getAdminUser",
+        "outputs": [
+          { "internalType": "address", "name": "", "type": "address" }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "getDefaultDecimal",
+        "outputs": [{ "internalType": "uint8", "name": "", "type": "uint8" }],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "getMessageAdapter",
+        "outputs": [
+          { "internalType": "address", "name": "", "type": "address" }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "getModuleRouter",
+        "outputs": [
+          { "internalType": "address", "name": "", "type": "address" }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "getProtocolFees",
+        "outputs": [
+          {
+            "components": [
+              {
+                "internalType": "uint16",
+                "name": "withdrawalFee",
+                "type": "uint16"
+              },
+              {
+                "internalType": "uint16",
+                "name": "depositFee",
+                "type": "uint16"
+              },
+              {
+                "internalType": "uint16",
+                "name": "balanceAllocationFee",
+                "type": "uint16"
+              },
+              {
+                "internalType": "uint8",
+                "name": "percentageDenom",
+                "type": "uint8"
+              }
+            ],
+            "internalType": "struct TradableSettings.FeeSettings",
+            "name": "",
+            "type": "tuple"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "getProtocolRewardVault",
+        "outputs": [
+          { "internalType": "address", "name": "", "type": "address" }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          { "internalType": "address", "name": "vault", "type": "address" }
+        ],
+        "name": "getSideVault",
+        "outputs": [
+          {
+            "components": [
+              { "internalType": "address", "name": "vault", "type": "address" },
+              { "internalType": "uint16", "name": "chainId", "type": "uint16" },
+              { "internalType": "bool", "name": "isApproved", "type": "bool" }
+            ],
+            "internalType": "struct TradableSettings.SideVault",
+            "name": "",
+            "type": "tuple"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "getUserMarginSettings",
+        "outputs": [
+          {
+            "components": [
+              {
+                "internalType": "uint64",
+                "name": "minMarginDeposit",
+                "type": "uint64"
+              },
+              {
+                "internalType": "uint64",
+                "name": "minMarginWithdrawal",
+                "type": "uint64"
+              }
+            ],
+            "internalType": "struct TradableSettings.UserMarginSettings",
+            "name": "",
+            "type": "tuple"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          { "internalType": "address", "name": "vault", "type": "address" }
+        ],
+        "name": "isSideVaultApproved",
+        "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          { "internalType": "address", "name": "token", "type": "address" }
+        ],
+        "name": "isTokenActive",
+        "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "owner",
+        "outputs": [
+          { "internalType": "address", "name": "", "type": "address" }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "pendingOwner",
+        "outputs": [
+          { "internalType": "address", "name": "", "type": "address" }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          { "internalType": "address", "name": "caller", "type": "address" }
+        ],
+        "name": "removeMessageAdapterCaller",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "renounceOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          { "internalType": "uint8", "name": "amount", "type": "uint8" }
+        ],
+        "name": "setDefaultDecimal",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "newMessageAdapter",
+            "type": "address"
+          }
+        ],
+        "name": "setMessageAdapter",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "newModuleRouter",
+            "type": "address"
+          }
+        ],
+        "name": "setModuleRouter",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "components": [
+              {
+                "internalType": "uint16",
+                "name": "withdrawalFee",
+                "type": "uint16"
+              },
+              {
+                "internalType": "uint16",
+                "name": "depositFee",
+                "type": "uint16"
+              },
+              {
+                "internalType": "uint16",
+                "name": "balanceAllocationFee",
+                "type": "uint16"
+              },
+              {
+                "internalType": "uint8",
+                "name": "percentageDenom",
+                "type": "uint8"
+              }
+            ],
+            "internalType": "struct TradableSettings.FeeSettings",
+            "name": "newProtocolFees",
+            "type": "tuple"
+          }
+        ],
+        "name": "setProtocolFees",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "newProtocolRewardVault",
+            "type": "address"
+          }
+        ],
+        "name": "setProtocolRewardVault",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          { "internalType": "address", "name": "vault", "type": "address" },
+          {
+            "internalType": "address",
+            "name": "newDstBaseMarginVault",
+            "type": "address"
+          },
+          {
+            "internalType": "uint16",
+            "name": "newDstChainId",
+            "type": "uint16"
+          }
+        ],
+        "name": "setSideVaultDestinationConfiguration",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint64",
+            "name": "minMarginDeposit",
+            "type": "uint64"
+          },
+          {
+            "internalType": "uint64",
+            "name": "minMarginWithdrawal",
+            "type": "uint64"
+          }
+        ],
+        "name": "setUserMarginSettings",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          { "internalType": "address", "name": "dstVault", "type": "address" }
+        ],
+        "name": "setVaultDefaultDecimal",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          { "internalType": "address", "name": "dstVault", "type": "address" }
+        ],
+        "name": "setVaultUserMarginSettings",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          { "internalType": "address", "name": "token", "type": "address" }
+        ],
+        "name": "tokenExists",
+        "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          { "internalType": "address", "name": "newOwner", "type": "address" }
+        ],
+        "name": "transferOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          { "internalType": "address", "name": "vault", "type": "address" }
+        ],
+        "name": "vaultExists",
+        "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+        "stateMutability": "view",
+        "type": "function"
+      }
+    ]
+  },
+  "tradableBalanceVault": {
+    "address": "0x4386A33DC688350568e8c367A492046542b18fFA",
+    "abi": [
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "_settingsProvider",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "user",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "bytes",
+            "name": "funcId",
+            "type": "bytes"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "token",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "dstVault",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "nonce",
+            "type": "uint256"
+          }
+        ],
+        "name": "BalanceDeductionApproved",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "sender",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "receiver",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "BalanceDeductionReceiptClaimed",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "bytes",
+            "name": "receiptId",
+            "type": "bytes"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "dstVault",
+            "type": "address"
+          }
+        ],
+        "name": "BalanceDeductionRetry",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "user",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "BaseChainDepositProcessed",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "user",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "BaseChainWithdrawalProcessed",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "module",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "user",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "token",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "UserModuleBalanceWithdrawn",
+        "type": "event"
+      },
+      {
+        "inputs": [
+          { "internalType": "bytes", "name": "funcId", "type": "bytes" },
+          { "internalType": "address", "name": "token", "type": "address" },
+          { "internalType": "uint256", "name": "amount", "type": "uint256" },
+          { "internalType": "uint256", "name": "nonce", "type": "uint256" }
+        ],
+        "name": "balanceDeductionApproval",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          { "internalType": "bytes", "name": "receiptId", "type": "bytes" }
+        ],
+        "name": "cancelBalanceApproval",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          { "internalType": "bytes", "name": "receiptId", "type": "bytes" }
+        ],
+        "name": "claimBalanceApprovedReceipt",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          { "internalType": "address", "name": "user", "type": "address" }
+        ],
+        "name": "getUserTokenBalance",
+        "outputs": [
+          { "internalType": "uint256", "name": "", "type": "uint256" }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          { "internalType": "address", "name": "user", "type": "address" },
+          {
+            "components": [
+              { "internalType": "address", "name": "token", "type": "address" },
+              { "internalType": "uint8", "name": "decimals", "type": "uint8" },
+              { "internalType": "bool", "name": "isActive", "type": "bool" }
+            ],
+            "internalType": "struct ITradableSettings.AcceptedToken",
+            "name": "selectedToken",
+            "type": "tuple"
+          },
+          { "internalType": "uint256", "name": "amount", "type": "uint256" }
+        ],
+        "name": "marginAccountDeposit",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          { "internalType": "address", "name": "user", "type": "address" },
+          {
+            "components": [
+              { "internalType": "address", "name": "token", "type": "address" },
+              { "internalType": "uint8", "name": "decimals", "type": "uint8" },
+              { "internalType": "bool", "name": "isActive", "type": "bool" }
+            ],
+            "internalType": "struct ITradableSettings.AcceptedToken",
+            "name": "selectedToken",
+            "type": "tuple"
+          },
+          { "internalType": "uint256", "name": "amount", "type": "uint256" },
+          { "internalType": "address", "name": "dstVault", "type": "address" }
+        ],
+        "name": "marginAccountWithdrawal",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          { "internalType": "bytes", "name": "receiptId", "type": "bytes" }
+        ],
+        "name": "retryDeductionApproval",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "newSettingsProvider",
+            "type": "address"
+          }
+        ],
+        "name": "setSettingsProvider",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "settingsProvider",
+        "outputs": [
+          { "internalType": "address", "name": "", "type": "address" }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          { "internalType": "bytes", "name": "moduleId", "type": "bytes" },
+          { "internalType": "address", "name": "user", "type": "address" },
+          { "internalType": "address", "name": "token", "type": "address" },
+          { "internalType": "uint256", "name": "amount", "type": "uint256" }
+        ],
+        "name": "userModuleBalanceWithdrawal",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      }
+    ]
+  },
+  "tradableModuleRouter": {
+    "address": "0x4B661fcB5c784d0ba020f3F8C2C59cCb73016606",
+    "abi": [
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "_settingsProvider",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "module",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "dstVault",
+            "type": "address"
+          }
+        ],
+        "name": "ModuleActivated",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "authUser",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "module",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "dstVault",
+            "type": "address"
+          }
+        ],
+        "name": "ModuleConfigured",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "module",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "dstVault",
+            "type": "address"
+          }
+        ],
+        "name": "ModuleDeactivated",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "bytes",
+            "name": "funcId",
+            "type": "bytes"
+          }
+        ],
+        "name": "ModuleFuncActivated",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "module",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "bytes",
+            "name": "funcSig",
+            "type": "bytes"
+          }
+        ],
+        "name": "ModuleFuncAdded",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "bytes",
+            "name": "funcId",
+            "type": "bytes"
+          }
+        ],
+        "name": "ModuleFuncDeactivated",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "bytes",
+            "name": "funcId",
+            "type": "bytes"
+          }
+        ],
+        "name": "ModuleFuncRemoved",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "module",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "dstVault",
+            "type": "address"
+          }
+        ],
+        "name": "ModuleRemoved",
+        "type": "event"
+      },
+      {
+        "inputs": [
+          { "internalType": "bytes", "name": "moduleId", "type": "bytes" }
+        ],
+        "name": "activateModule",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          { "internalType": "bytes", "name": "funcId", "type": "bytes" }
+        ],
+        "name": "activateModuleFunc",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          { "internalType": "bytes", "name": "moduleId", "type": "bytes" },
+          { "internalType": "bytes", "name": "funcSig", "type": "bytes" }
+        ],
+        "name": "addModuleFunc",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          { "internalType": "address", "name": "authUser", "type": "address" },
+          { "internalType": "address", "name": "module", "type": "address" },
+          { "internalType": "address", "name": "dstVault", "type": "address" },
+          { "internalType": "bytes[]", "name": "funcSigs", "type": "bytes[]" }
+        ],
+        "name": "configureModule",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          { "internalType": "bytes", "name": "moduleId", "type": "bytes" }
+        ],
+        "name": "deactivateModule",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          { "internalType": "bytes", "name": "funcId", "type": "bytes" }
+        ],
+        "name": "deactivateModuleFunc",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          { "internalType": "bytes", "name": "moduleId", "type": "bytes" }
+        ],
+        "name": "isModuleActive",
+        "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          { "internalType": "bytes", "name": "funcId", "type": "bytes" }
+        ],
+        "name": "isModuleFuncActive",
+        "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [{ "internalType": "bytes", "name": "", "type": "bytes" }],
+        "name": "moduleFuncMap",
+        "outputs": [
+          { "internalType": "bytes", "name": "funcSig", "type": "bytes" },
+          { "internalType": "bool", "name": "isActive", "type": "bool" },
+          { "internalType": "bool", "name": "isInstantiated", "type": "bool" }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [{ "internalType": "bytes", "name": "", "type": "bytes" }],
+        "name": "modulesMap",
+        "outputs": [
+          { "internalType": "address", "name": "authUser", "type": "address" },
+          {
+            "internalType": "address",
+            "name": "identifier",
+            "type": "address"
+          },
+          { "internalType": "address", "name": "dstVault", "type": "address" },
+          { "internalType": "bool", "name": "isActive", "type": "bool" },
+          { "internalType": "bool", "name": "isInstantiated", "type": "bool" }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          { "internalType": "bytes", "name": "moduleId", "type": "bytes" }
+        ],
+        "name": "removeModule",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          { "internalType": "bytes", "name": "funcId", "type": "bytes" }
+        ],
+        "name": "removeModuleFunc",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "settingsProvider",
+        "outputs": [
+          { "internalType": "address", "name": "", "type": "address" }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      }
+    ]
+  },
+  "tradableMessageAdapter": {
+    "address": "0x218cACf157882B68629eadd894597eA36E740902",
+    "endpoint": "0x93f54D755A063cE7bB9e6Ac47Eccc8e33411d706",
+    "chainId": 10106,
+    "abi": [
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "_settingsProvider",
+            "type": "address"
+          },
+          { "internalType": "address", "name": "_endpoint", "type": "address" }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+      },
+      {
+        "inputs": [
+          { "internalType": "address", "name": "owner", "type": "address" }
+        ],
+        "name": "OwnableInvalidOwner",
+        "type": "error"
+      },
+      {
+        "inputs": [
+          { "internalType": "address", "name": "account", "type": "address" }
+        ],
+        "name": "OwnableUnauthorizedAccount",
+        "type": "error"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "uint16",
+            "name": "_srcChainId",
+            "type": "uint16"
+          },
+          {
+            "indexed": false,
+            "internalType": "bytes",
+            "name": "_srcAddress",
+            "type": "bytes"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint64",
+            "name": "_nonce",
+            "type": "uint64"
+          },
+          {
+            "indexed": false,
+            "internalType": "bytes",
+            "name": "_payload",
+            "type": "bytes"
+          }
+        ],
+        "name": "MessageFailed",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "previousOwner",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "newOwner",
+            "type": "address"
+          }
+        ],
+        "name": "OwnershipTransferStarted",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "previousOwner",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "newOwner",
+            "type": "address"
+          }
+        ],
+        "name": "OwnershipTransferred",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "uint16",
+            "name": "_srcChainId",
+            "type": "uint16"
+          },
+          {
+            "indexed": false,
+            "internalType": "bytes",
+            "name": "_srcAddress",
+            "type": "bytes"
+          }
+        ],
+        "name": "SetTrustedRemote",
+        "type": "event"
+      },
+      {
+        "inputs": [],
+        "name": "acceptOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          { "internalType": "address", "name": "", "type": "address" }
+        ],
+        "name": "acceptedCallersMap",
+        "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          { "internalType": "address", "name": "caller", "type": "address" }
+        ],
+        "name": "addAcceptedCaller",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "endpoint",
+        "outputs": [
+          { "internalType": "address", "name": "", "type": "address" }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          { "internalType": "uint16", "name": "", "type": "uint16" },
+          { "internalType": "bytes", "name": "", "type": "bytes" },
+          { "internalType": "uint64", "name": "", "type": "uint64" }
+        ],
+        "name": "failedMessages",
+        "outputs": [
+          { "internalType": "bytes32", "name": "", "type": "bytes32" }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          { "internalType": "uint16", "name": "_srcChainId", "type": "uint16" },
+          { "internalType": "bytes", "name": "_srcAddress", "type": "bytes" }
+        ],
+        "name": "forceResumeReceive",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          { "internalType": "uint16", "name": "_version", "type": "uint16" },
+          { "internalType": "uint16", "name": "_chainId", "type": "uint16" },
+          { "internalType": "address", "name": "", "type": "address" },
+          {
+            "internalType": "uint256",
+            "name": "_configType",
+            "type": "uint256"
+          }
+        ],
+        "name": "getConfig",
+        "outputs": [{ "internalType": "bytes", "name": "", "type": "bytes" }],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          { "internalType": "uint16", "name": "_srcChainId", "type": "uint16" },
+          { "internalType": "bytes", "name": "_srcAddress", "type": "bytes" }
+        ],
+        "name": "isTrustedRemote",
+        "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "lzEndpoint",
+        "outputs": [
+          {
+            "internalType": "contract ILayerZeroEndpoint",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          { "internalType": "uint16", "name": "_srcChainId", "type": "uint16" },
+          { "internalType": "bytes", "name": "_srcAddress", "type": "bytes" },
+          { "internalType": "uint64", "name": "_nonce", "type": "uint64" },
+          { "internalType": "bytes", "name": "_payload", "type": "bytes" }
+        ],
+        "name": "lzReceive",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          { "internalType": "uint16", "name": "_srcChainId", "type": "uint16" },
+          { "internalType": "bytes", "name": "_srcAddress", "type": "bytes" },
+          { "internalType": "uint64", "name": "_nonce", "type": "uint64" },
+          { "internalType": "bytes", "name": "_payload", "type": "bytes" }
+        ],
+        "name": "nonblockingLzReceive",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "owner",
+        "outputs": [
+          { "internalType": "address", "name": "", "type": "address" }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "pendingOwner",
+        "outputs": [
+          { "internalType": "address", "name": "", "type": "address" }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          { "internalType": "address", "name": "caller", "type": "address" }
+        ],
+        "name": "removeAcceptedCaller",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "renounceOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          { "internalType": "uint16", "name": "_srcChainId", "type": "uint16" },
+          { "internalType": "bytes", "name": "_srcAddress", "type": "bytes" },
+          { "internalType": "uint64", "name": "_nonce", "type": "uint64" },
+          { "internalType": "bytes", "name": "_payload", "type": "bytes" }
+        ],
+        "name": "retryMessage",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "destinationVault",
+            "type": "address"
+          },
+          { "internalType": "bytes", "name": "payload", "type": "bytes" }
+        ],
+        "name": "sendMessage",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          { "internalType": "uint16", "name": "_version", "type": "uint16" },
+          { "internalType": "uint16", "name": "_chainId", "type": "uint16" },
+          {
+            "internalType": "uint256",
+            "name": "_configType",
+            "type": "uint256"
+          },
+          { "internalType": "bytes", "name": "_config", "type": "bytes" }
+        ],
+        "name": "setConfig",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          { "internalType": "uint16", "name": "_version", "type": "uint16" }
+        ],
+        "name": "setReceiveVersion",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          { "internalType": "uint16", "name": "_version", "type": "uint16" }
+        ],
+        "name": "setSendVersion",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "newSettingsProvider",
+            "type": "address"
+          }
+        ],
+        "name": "setSettingsProvider",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          { "internalType": "uint16", "name": "_srcChainId", "type": "uint16" },
+          { "internalType": "bytes", "name": "_srcAddress", "type": "bytes" }
+        ],
+        "name": "setTrustedRemote",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "settingsProvider",
+        "outputs": [
+          { "internalType": "address", "name": "", "type": "address" }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          { "internalType": "address", "name": "newOwner", "type": "address" }
+        ],
+        "name": "transferOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [{ "internalType": "uint16", "name": "", "type": "uint16" }],
+        "name": "trustedRemoteLookup",
+        "outputs": [{ "internalType": "bytes", "name": "", "type": "bytes" }],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          { "internalType": "address", "name": "to", "type": "address" }
+        ],
+        "name": "withdrawGas",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      { "stateMutability": "payable", "type": "receive" }
+    ]
+  },
+  "tradableSideVault": {
+    "abi": [
+      {
+        "inputs": [
+          { "internalType": "address", "name": "_endpoint", "type": "address" },
+          { "internalType": "uint16", "name": "_dstChainId", "type": "uint16" },
+          {
+            "internalType": "address",
+            "name": "_dstMessageAdapter",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "_dstBaseMarginVault",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "_dstSettingsProvider",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+      },
+      {
+        "inputs": [
+          { "internalType": "address", "name": "owner", "type": "address" }
+        ],
+        "name": "OwnableInvalidOwner",
+        "type": "error"
+      },
+      {
+        "inputs": [
+          { "internalType": "address", "name": "account", "type": "address" }
+        ],
+        "name": "OwnableUnauthorizedAccount",
+        "type": "error"
+      },
+      {
+        "inputs": [
+          { "internalType": "address", "name": "token", "type": "address" }
+        ],
+        "name": "SafeERC20FailedOperation",
+        "type": "error"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "_token",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint8",
+            "name": "_decimals",
+            "type": "uint8"
+          },
+          {
+            "indexed": false,
+            "internalType": "bool",
+            "name": "_isActive",
+            "type": "bool"
+          }
+        ],
+        "name": "AcceptedTokenActivated",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "_token",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint8",
+            "name": "_decimals",
+            "type": "uint8"
+          },
+          {
+            "indexed": false,
+            "internalType": "bool",
+            "name": "_isActive",
+            "type": "bool"
+          }
+        ],
+        "name": "AcceptedTokenAdded",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "_token",
+            "type": "address"
+          }
+        ],
+        "name": "AcceptedTokenDeactivated",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "_token",
+            "type": "address"
+          }
+        ],
+        "name": "AcceptedTokenRemoved",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "user",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "bytes",
+            "name": "receiptId",
+            "type": "bytes"
+          }
+        ],
+        "name": "BalanceApprovalCancelled",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "bytes",
+            "name": "receiptId",
+            "type": "bytes"
+          }
+        ],
+        "name": "ClaimedReceiptRetried",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "receiver",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "GasTransferred",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "receiver",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint16",
+            "name": "dstChainId",
+            "type": "uint16"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "LiquiditySwapped",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "uint16",
+            "name": "_srcChainId",
+            "type": "uint16"
+          },
+          {
+            "indexed": false,
+            "internalType": "bytes",
+            "name": "_srcAddress",
+            "type": "bytes"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint64",
+            "name": "_nonce",
+            "type": "uint64"
+          },
+          {
+            "indexed": false,
+            "internalType": "bytes",
+            "name": "_payload",
+            "type": "bytes"
+          }
+        ],
+        "name": "MessageFailed",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "module",
+            "type": "address"
+          }
+        ],
+        "name": "ModuleActivated",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "module",
+            "type": "address"
+          }
+        ],
+        "name": "ModuleDeactivated",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "previousOwner",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "newOwner",
+            "type": "address"
+          }
+        ],
+        "name": "OwnershipTransferStarted",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "previousOwner",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "newOwner",
+            "type": "address"
+          }
+        ],
+        "name": "OwnershipTransferred",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "user",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "bytes",
+            "name": "receiptId",
+            "type": "bytes"
+          }
+        ],
+        "name": "PendingFunctonReceiptAdded",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "bytes",
+            "name": "receiptId",
+            "type": "bytes"
+          },
+          {
+            "indexed": false,
+            "internalType": "bytes",
+            "name": "payload",
+            "type": "bytes"
+          }
+        ],
+        "name": "ReceiptFunctionExecuted",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "uint16",
+            "name": "_srcChainId",
+            "type": "uint16"
+          },
+          {
+            "indexed": false,
+            "internalType": "bytes",
+            "name": "_srcAddress",
+            "type": "bytes"
+          }
+        ],
+        "name": "SetTrustedRemote",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "user",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "token",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "SideChainMarginDepositInitiated",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "user",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "token",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "SideChainWithdrawalInitiated",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "user",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "token",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "SideChainWithdrawalProcessed",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "user",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "token",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "UserModuleBalanceWithdrawalRequested",
+        "type": "event"
+      },
+      {
+        "inputs": [],
+        "name": "acceptOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          { "internalType": "bytes", "name": "receiptId", "type": "bytes" }
+        ],
+        "name": "cancelBalanceApproval",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "defaultDecimal",
+        "outputs": [{ "internalType": "uint8", "name": "", "type": "uint8" }],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "dstBaseMarginVault",
+        "outputs": [
+          { "internalType": "address", "name": "", "type": "address" }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "dstChainId",
+        "outputs": [{ "internalType": "uint16", "name": "", "type": "uint16" }],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "dstMessageAdapter",
+        "outputs": [
+          { "internalType": "address", "name": "", "type": "address" }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "dstSettingsProvider",
+        "outputs": [
+          { "internalType": "address", "name": "", "type": "address" }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "endpoint",
+        "outputs": [
+          { "internalType": "address", "name": "", "type": "address" }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          { "internalType": "bytes", "name": "receiptId", "type": "bytes" },
+          { "internalType": "bytes", "name": "payload", "type": "bytes" }
+        ],
+        "name": "executeReceiptFunction",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          { "internalType": "uint16", "name": "", "type": "uint16" },
+          { "internalType": "bytes", "name": "", "type": "bytes" },
+          { "internalType": "uint64", "name": "", "type": "uint64" }
+        ],
+        "name": "failedMessages",
+        "outputs": [
+          { "internalType": "bytes32", "name": "", "type": "bytes32" }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          { "internalType": "uint16", "name": "_srcChainId", "type": "uint16" },
+          { "internalType": "bytes", "name": "_srcAddress", "type": "bytes" }
+        ],
+        "name": "forceResumeReceive",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          { "internalType": "address", "name": "token", "type": "address" }
+        ],
+        "name": "getAcceptedTokenInfo",
+        "outputs": [
+          {
+            "components": [
+              { "internalType": "address", "name": "token", "type": "address" },
+              { "internalType": "uint8", "name": "decimals", "type": "uint8" },
+              { "internalType": "bool", "name": "isActive", "type": "bool" }
+            ],
+            "internalType": "struct TradableSideVault.AcceptedToken",
+            "name": "",
+            "type": "tuple"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "getAdminUser",
+        "outputs": [
+          { "internalType": "address", "name": "", "type": "address" }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          { "internalType": "uint16", "name": "_version", "type": "uint16" },
+          { "internalType": "uint16", "name": "_chainId", "type": "uint16" },
+          { "internalType": "address", "name": "", "type": "address" },
+          {
+            "internalType": "uint256",
+            "name": "_configType",
+            "type": "uint256"
+          }
+        ],
+        "name": "getConfig",
+        "outputs": [{ "internalType": "bytes", "name": "", "type": "bytes" }],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          { "internalType": "address", "name": "user", "type": "address" }
+        ],
+        "name": "getPendingWithdrawal",
+        "outputs": [
+          {
+            "components": [
+              { "internalType": "address", "name": "user", "type": "address" },
+              { "internalType": "address", "name": "token", "type": "address" },
+              {
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "initiatedAt",
+                "type": "uint256"
+              }
+            ],
+            "internalType": "struct TradableSideVault.PendingWithdrawalRequest",
+            "name": "",
+            "type": "tuple"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          { "internalType": "address", "name": "user", "type": "address" }
+        ],
+        "name": "hasPendingWithdrawal",
+        "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          { "internalType": "uint16", "name": "_srcChainId", "type": "uint16" },
+          { "internalType": "bytes", "name": "_srcAddress", "type": "bytes" }
+        ],
+        "name": "isTrustedRemote",
+        "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "lzEndpoint",
+        "outputs": [
+          {
+            "internalType": "contract ILayerZeroEndpoint",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          { "internalType": "uint16", "name": "_srcChainId", "type": "uint16" },
+          { "internalType": "bytes", "name": "_srcAddress", "type": "bytes" },
+          { "internalType": "uint64", "name": "_nonce", "type": "uint64" },
+          { "internalType": "bytes", "name": "_payload", "type": "bytes" }
+        ],
+        "name": "lzReceive",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          { "internalType": "address", "name": "token", "type": "address" },
+          { "internalType": "uint256", "name": "amount", "type": "uint256" }
+        ],
+        "name": "marginAccountDeposit",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          { "internalType": "uint16", "name": "_srcChainId", "type": "uint16" },
+          { "internalType": "bytes", "name": "_srcAddress", "type": "bytes" },
+          { "internalType": "uint64", "name": "_nonce", "type": "uint64" },
+          { "internalType": "bytes", "name": "_payload", "type": "bytes" }
+        ],
+        "name": "nonblockingLzReceive",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "owner",
+        "outputs": [
+          { "internalType": "address", "name": "", "type": "address" }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "pendingOwner",
+        "outputs": [
+          { "internalType": "address", "name": "", "type": "address" }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          { "internalType": "address", "name": "", "type": "address" }
+        ],
+        "name": "pendingWithdrawalMap",
+        "outputs": [
+          { "internalType": "address", "name": "user", "type": "address" },
+          { "internalType": "address", "name": "token", "type": "address" },
+          { "internalType": "uint256", "name": "amount", "type": "uint256" },
+          {
+            "internalType": "uint256",
+            "name": "initiatedAt",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "renounceOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          { "internalType": "bytes", "name": "receiptId", "type": "bytes" }
+        ],
+        "name": "retryClaimedReceipt",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          { "internalType": "uint16", "name": "_srcChainId", "type": "uint16" },
+          { "internalType": "bytes", "name": "_srcAddress", "type": "bytes" },
+          { "internalType": "uint64", "name": "_nonce", "type": "uint64" },
+          { "internalType": "bytes", "name": "_payload", "type": "bytes" }
+        ],
+        "name": "retryMessage",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          { "internalType": "uint16", "name": "_version", "type": "uint16" },
+          { "internalType": "uint16", "name": "_chainId", "type": "uint16" },
+          {
+            "internalType": "uint256",
+            "name": "_configType",
+            "type": "uint256"
+          },
+          { "internalType": "bytes", "name": "_config", "type": "bytes" }
+        ],
+        "name": "setConfig",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          { "internalType": "uint16", "name": "_version", "type": "uint16" }
+        ],
+        "name": "setReceiveVersion",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          { "internalType": "uint16", "name": "_version", "type": "uint16" }
+        ],
+        "name": "setSendVersion",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          { "internalType": "uint16", "name": "_srcChainId", "type": "uint16" },
+          { "internalType": "bytes", "name": "_srcAddress", "type": "bytes" }
+        ],
+        "name": "setTrustedRemote",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "swapRouter",
+            "type": "address"
+          },
+          { "internalType": "uint256", "name": "dstPoolId", "type": "uint256" },
+          { "internalType": "uint256", "name": "srcPoolId", "type": "uint256" },
+          { "internalType": "uint16", "name": "chainId", "type": "uint16" },
+          { "internalType": "uint256", "name": "amount", "type": "uint256" },
+          { "internalType": "uint256", "name": "spread", "type": "uint256" },
+          { "internalType": "address", "name": "reciever", "type": "address" },
+          { "internalType": "address", "name": "token", "type": "address" }
+        ],
+        "name": "swapLiquidity",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          { "internalType": "address", "name": "token", "type": "address" }
+        ],
+        "name": "tokenExists",
+        "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address payable",
+            "name": "receiver",
+            "type": "address"
+          },
+          { "internalType": "uint256", "name": "amount", "type": "uint256" }
+        ],
+        "name": "transferGas",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          { "internalType": "address", "name": "newOwner", "type": "address" }
+        ],
+        "name": "transferOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [{ "internalType": "uint16", "name": "", "type": "uint16" }],
+        "name": "trustedRemoteLookup",
+        "outputs": [{ "internalType": "bytes", "name": "", "type": "bytes" }],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          { "internalType": "uint256", "name": "newPeriod", "type": "uint256" }
+        ],
+        "name": "updateWithdrawalPeriod",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "userMarginSettings",
+        "outputs": [
+          {
+            "internalType": "uint64",
+            "name": "minMarginDeposit",
+            "type": "uint64"
+          },
+          {
+            "internalType": "uint64",
+            "name": "minMarginWithdrawal",
+            "type": "uint64"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          { "internalType": "bytes", "name": "moduleId", "type": "bytes" },
+          { "internalType": "address", "name": "token", "type": "address" },
+          { "internalType": "uint256", "name": "amount", "type": "uint256" }
+        ],
+        "name": "userModuleBalanceWithdrawalRequest",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          { "internalType": "address", "name": "token", "type": "address" },
+          { "internalType": "uint256", "name": "amount", "type": "uint256" }
+        ],
+        "name": "withdrawalRequest",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "withdrawalWaitPeriod",
+        "outputs": [
+          { "internalType": "uint256", "name": "", "type": "uint256" }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      { "stateMutability": "payable", "type": "receive" }
+    ],
+    "stableToken": {
+      "abi": [
+        {
+          "inputs": [
+            { "internalType": "string", "name": "name", "type": "string" },
+            { "internalType": "string", "name": "symbol", "type": "string" }
+          ],
+          "stateMutability": "nonpayable",
+          "type": "constructor"
+        },
+        {
+          "inputs": [
+            { "internalType": "address", "name": "spender", "type": "address" },
+            {
+              "internalType": "uint256",
+              "name": "allowance",
+              "type": "uint256"
+            },
+            { "internalType": "uint256", "name": "needed", "type": "uint256" }
+          ],
+          "name": "ERC20InsufficientAllowance",
+          "type": "error"
+        },
+        {
+          "inputs": [
+            { "internalType": "address", "name": "sender", "type": "address" },
+            { "internalType": "uint256", "name": "balance", "type": "uint256" },
+            { "internalType": "uint256", "name": "needed", "type": "uint256" }
+          ],
+          "name": "ERC20InsufficientBalance",
+          "type": "error"
+        },
+        {
+          "inputs": [
+            { "internalType": "address", "name": "approver", "type": "address" }
+          ],
+          "name": "ERC20InvalidApprover",
+          "type": "error"
+        },
+        {
+          "inputs": [
+            { "internalType": "address", "name": "receiver", "type": "address" }
+          ],
+          "name": "ERC20InvalidReceiver",
+          "type": "error"
+        },
+        {
+          "inputs": [
+            { "internalType": "address", "name": "sender", "type": "address" }
+          ],
+          "name": "ERC20InvalidSender",
+          "type": "error"
+        },
+        {
+          "inputs": [
+            { "internalType": "address", "name": "spender", "type": "address" }
+          ],
+          "name": "ERC20InvalidSpender",
+          "type": "error"
+        },
+        {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "owner",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "spender",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "value",
+              "type": "uint256"
+            }
+          ],
+          "name": "Approval",
+          "type": "event"
+        },
+        {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "from",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "value",
+              "type": "uint256"
+            }
+          ],
+          "name": "Transfer",
+          "type": "event"
+        },
+        {
+          "inputs": [
+            { "internalType": "address", "name": "owner", "type": "address" },
+            { "internalType": "address", "name": "spender", "type": "address" }
+          ],
+          "name": "allowance",
+          "outputs": [
+            { "internalType": "uint256", "name": "", "type": "uint256" }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            { "internalType": "address", "name": "spender", "type": "address" },
+            { "internalType": "uint256", "name": "value", "type": "uint256" }
+          ],
+          "name": "approve",
+          "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+          "stateMutability": "nonpayable",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            { "internalType": "address", "name": "account", "type": "address" }
+          ],
+          "name": "balanceOf",
+          "outputs": [
+            { "internalType": "uint256", "name": "", "type": "uint256" }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "decimals",
+          "outputs": [{ "internalType": "uint8", "name": "", "type": "uint8" }],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            { "internalType": "address", "name": "account", "type": "address" },
+            { "internalType": "uint256", "name": "amount", "type": "uint256" }
+          ],
+          "name": "mintTo",
+          "outputs": [],
+          "stateMutability": "nonpayable",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "name",
+          "outputs": [
+            { "internalType": "string", "name": "", "type": "string" }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "owner",
+          "outputs": [
+            { "internalType": "address", "name": "", "type": "address" }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "symbol",
+          "outputs": [
+            { "internalType": "string", "name": "", "type": "string" }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "totalSupply",
+          "outputs": [
+            { "internalType": "uint256", "name": "", "type": "uint256" }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            { "internalType": "address", "name": "to", "type": "address" },
+            { "internalType": "uint256", "name": "value", "type": "uint256" }
+          ],
+          "name": "transfer",
+          "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+          "stateMutability": "nonpayable",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            { "internalType": "address", "name": "from", "type": "address" },
+            { "internalType": "address", "name": "to", "type": "address" },
+            { "internalType": "uint256", "name": "value", "type": "uint256" }
+          ],
+          "name": "transferFrom",
+          "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+          "stateMutability": "nonpayable",
+          "type": "function"
+        }
+      ]
+    },
+    "vault": {
+      "avalanche": {
+        "tradableSideVault": "0xABD9cA667bc2C737996929C2C9c5FC94af947Fd2",
+        "stableTokens": [
+          "0x85b97CB8828E237605Bc19Fc0fa622c6d8D6815B",
+          "0x4648A8719b53b365cCfa12C22BF5F9DEaE52272b",
+          "0x17E48D49475574AE927E47dCFC2D1747B75FFfDc"
+        ],
+        "endpoint": "0x93f54D755A063cE7bB9e6Ac47Eccc8e33411d706",
+        "chainId": 10106,
+        "networkId": 43113,
+        "tradableModule": {
+          "address": "0xf31467c0CA100aBEF512002183DE7DCbEb9d2fc0",
+          "abi": [
+            {
+              "inputs": [
+                {
+                  "internalType": "address",
+                  "name": "_sideVault",
+                  "type": "address"
+                },
+                {
+                  "internalType": "bytes[]",
+                  "name": "_funcSigList",
+                  "type": "bytes[]"
+                }
+              ],
+              "stateMutability": "nonpayable",
+              "type": "constructor"
+            },
+            {
+              "inputs": [
+                { "internalType": "bytes", "name": "funcSig", "type": "bytes" },
+                { "internalType": "bytes", "name": "payload", "type": "bytes" }
+              ],
+              "name": "executePendingFunction",
+              "outputs": [],
+              "stateMutability": "nonpayable",
+              "type": "function"
+            },
+            {
+              "inputs": [],
+              "name": "getFuncSigList",
+              "outputs": [
+                { "internalType": "bytes[]", "name": "", "type": "bytes[]" }
+              ],
+              "stateMutability": "view",
+              "type": "function"
+            },
+            {
+              "inputs": [],
+              "name": "getModuleId",
+              "outputs": [
+                { "internalType": "bytes", "name": "", "type": "bytes" }
+              ],
+              "stateMutability": "view",
+              "type": "function"
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "address",
+                  "name": "user",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "token",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "amount",
+                  "type": "uint256"
+                }
+              ],
+              "name": "userModuleBalanceWithdrawal",
+              "outputs": [],
+              "stateMutability": "nonpayable",
+              "type": "function"
+            }
+          ]
+        }
+      },
+      "bsc": {
+        "tradableSideVault": "0x11A1CeB02f8e07Ab5109e156620C278AEFc55fbc",
+        "stableTokens": [
+          "0x596310929f05D3cF15a2220decFE8Acf47f59b8A",
+          "0xeD9AEba46507fc92b89527B4E68d4D90ce337B82",
+          "0xa758FDF01D8Ebd20bE6D07dAd2F1aaf02cD5d82c"
+        ],
+        "endpoint": "0x6Fcb97553D41516Cb228ac03FdC8B9a0a9df04A1",
+        "chainId": 10102,
+        "networkId": 97,
+        "tradableModule": {
+          "address": "0x7E55E82a6Cdc65351549096A17482059504fE88e",
+          "abi": [
+            {
+              "inputs": [
+                {
+                  "internalType": "address",
+                  "name": "_sideVault",
+                  "type": "address"
+                },
+                {
+                  "internalType": "bytes[]",
+                  "name": "_funcSigList",
+                  "type": "bytes[]"
+                }
+              ],
+              "stateMutability": "nonpayable",
+              "type": "constructor"
+            },
+            {
+              "inputs": [
+                { "internalType": "bytes", "name": "funcSig", "type": "bytes" },
+                { "internalType": "bytes", "name": "payload", "type": "bytes" }
+              ],
+              "name": "executePendingFunction",
+              "outputs": [],
+              "stateMutability": "nonpayable",
+              "type": "function"
+            },
+            {
+              "inputs": [],
+              "name": "getFuncSigList",
+              "outputs": [
+                { "internalType": "bytes[]", "name": "", "type": "bytes[]" }
+              ],
+              "stateMutability": "view",
+              "type": "function"
+            },
+            {
+              "inputs": [],
+              "name": "getModuleId",
+              "outputs": [
+                { "internalType": "bytes", "name": "", "type": "bytes" }
+              ],
+              "stateMutability": "view",
+              "type": "function"
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "address",
+                  "name": "user",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "token",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "amount",
+                  "type": "uint256"
+                }
+              ],
+              "name": "userModuleBalanceWithdrawal",
+              "outputs": [],
+              "stateMutability": "nonpayable",
+              "type": "function"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

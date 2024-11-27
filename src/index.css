@@ -1,0 +1,96 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+@font-face {
+  font-family: Planc;
+  src: url("./fonts/Planc-Light.woff") format("woff");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Planc;
+  src: url("./fonts/Planc-Regular.woff") format("woff");
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: Planc;
+  src: url("./fonts/Planc-Medium.woff") format("woff");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Planc;
+  src: url("./fonts/Planc-SemiBold.woff") format("woff");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Planc;
+  src: url("./fonts/Planc-Bold.woff") format("woff");
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Planc;
+  src: url("./fonts/Planc-ExtraBold.woff") format("woff");
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+body {
+  margin: 0;
+  font-family: Planc;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.sdk-container {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+}
+
+.sdk-container > .cover {
+  content: "";
+  display: block;
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  background-color: rgba(0,0,0,.6);
+  z-index: -1;
+}
+
+.close-modal-btn {
+  font-size: 18px;
+  position: absolute;
+  top: -25px;
+  right: -20px;
+  color: black;
+}
+
+.close-modal-btn:hover {
+  cursor: pointer;
+}
+
+.app-modal {
+  position: relative;
+  z-index: 100;
+}
+
+button:hover, .hoverable:hover {
+  cursor: pointer;
+}

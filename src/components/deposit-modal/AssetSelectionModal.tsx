@@ -2,9 +2,9 @@
 import "./deposit.css";
 import avalancheSquare from "../../images/avalanche-square.svg";
 import CloseBtn from '../../close-btn.tsx';
-import { AppFeatures } from "../../types.ts";
+import { ModalFeatures } from "../../types.ts";
 
-interface AssetSelectionModalProps extends AppFeatures {}
+interface AssetSelectionModalProps extends ModalFeatures {}
 
 const AssetSelectionModal = ({closeModal}:AssetSelectionModalProps) => {
   return (

@@ -7,7 +7,7 @@ import InteractModal from "./components/Interact-modal/InteractModal";
 import TransactionLoadingModal from "./components/response-modal/TransactionLoadingModal";
 import ResponseModal from "./components/response-modal/ResponseModal";
 import ModalLayout from "./ModalLayout";
-import { ModalState, ModalInfo, AppFeatures } from "./types";
+import { ModalState, ModalInfo, ModalFeatures } from "./types";
 
 import useGetUserTransactions from "./hooks/useGetUserTransaction";
 
@@ -38,7 +38,7 @@ function App({ moduleId }: AppProp) {
     setModalInfo(modalInfo);
   };
 
-  const appFeatures: AppFeatures = {
+  const appFeatures: ModalFeatures = {
     closeModal,
     changeModal,
     moduleId,
@@ -51,7 +51,9 @@ function App({ moduleId }: AppProp) {
       ...appFeatures,
     };
     if (modalInfo.modalState === ModalState.INTERACT) {
+
       setCurrentModal(<InteractModal {...modalProps} />);
+
     } else if (modalInfo.modalState === ModalState.RESPONSE) {
       setCurrentModal(<ResponseModal {...modalProps} />);
     } else if (modalInfo.modalState === ModalState.TRANS_LOADING) {

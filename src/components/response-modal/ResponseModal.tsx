@@ -1,11 +1,11 @@
 
 import "./response.css";
 import successImg from "../../images/successfulmessage.gif";
-import { AppFeatures, ResponseVal } from "../../types.ts";
+import { ModalFeatures, ResponseVal } from "../../types.ts";
 import CloseBtn from "../../close-btn.tsx";
 import { useWatchContractEvent } from "wagmi";
 
-interface ResponseModalProps extends ResponseVal, AppFeatures {};
+interface ResponseModalProps extends ResponseVal, ModalFeatures {};
 
 const ResponseModal = ({
   isSuccessful,

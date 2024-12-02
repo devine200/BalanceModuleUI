@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
-import { AppFeatures, Interaction, ModalState } from "../../types.ts";
+import { ModalFeatures, Interaction, ModalState } from "../../types.ts";
 import "./interact-modal.css";
 import CloseBtn from "../../close-btn.tsx";
 import useContractInteract from "../../hooks/useContractInteract.tsx";
 import tradableLogo from "../../images/tradable-square.svg";
 import avalancheLogo from "../../images/avalanche-square.svg";
 
-interface InteractModalProps extends Interaction, AppFeatures {}
+interface InteractModalProps extends Interaction, ModalFeatures {}
 
 const InteractModal = ({
   website,

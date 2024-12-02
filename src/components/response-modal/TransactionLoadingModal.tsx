@@ -1,10 +1,10 @@
 
 import "./response.css";
-import { TransactionLoading, AppFeatures } from "../../types.ts";
+import { TransactionLoading, ModalFeatures } from "../../types.ts";
 import CloseBtn from '../../close-btn.tsx';
 import { useWatchContractEvent } from "wagmi";
 
-interface TransactionLoadingModalProps extends TransactionLoading, AppFeatures{}
+interface TransactionLoadingModalProps extends TransactionLoading, ModalFeatures{}
 
 const TransactionLoadingModal = ({transType, source, destination, estimatedTime, closeModal, eventOptions}:TransactionLoadingModalProps) => {
   if(eventOptions){

@@ -48,7 +48,7 @@ export interface ModuleDataSet {
   [key: string]: { [key: string]: InteractionHistory };
 }
 
-export interface AppFeatures {
+export interface ModalFeatures {
   changeModal?: (modalState:ModalInfo) => void;
   closeModal?: () => void;
   moduleId?: string;

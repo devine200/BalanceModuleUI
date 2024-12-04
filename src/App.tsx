@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useAccount } from "wagmi";
+import { useAccount, useEnsAddress } from "wagmi";
 import AssetSelectionModal from "./components/deposit-modal/AssetSelectionModal";
 import DepositModal from "./components/deposit-modal/DepositModal";
 import InteractHistoryModal from "./components/Interact-modal/InteractHistoryModal";
@@ -20,6 +20,7 @@ interface AppProp {
 
 function App({ moduleId }: AppProp) {
   const { isConnected } = useAccount();
+  const { address } = useAccount();
   const [modalInfo, setModalInfo] = useState<ModalInfo>({
     modalState: ModalState.USER_INTERFACE,
     optionalData: {}
@@ -33,6 +34,7 @@ function App({ moduleId }: AppProp) {
   };
 
   const changeModal = (modalInfo: ModalInfo) => {
+    setIsModalOpen(true);
     setModalInfo(modalInfo);
   };
 
@@ -40,13 +42,12 @@ function App({ moduleId }: AppProp) {
     closeModal,
     changeModal,
     moduleId,
-    userAddr: "0xb1459DCF16905F7c84F4C22398c9CcAAD7345669"
+    userAddr: address
   };
 
   useEffect(() => {
     if (isConnected || !isModalOpen) return;
-
-    setIsModalOpen(true);
+    
     setModalInfo({
       modalState: ModalState.CONNECT_WALLET,
       optionalData: {

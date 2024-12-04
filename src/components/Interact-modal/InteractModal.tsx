@@ -15,7 +15,6 @@ const InteractModal = ({
   tokenDenom,
   changeModal,
   closeModal,
-  userAddr,
   tokenAddr,
   funcId
 }: InteractModalProps) => {

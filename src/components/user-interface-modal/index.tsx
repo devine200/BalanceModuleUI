@@ -1,13 +1,19 @@
-import { useAccount } from "wagmi";
+import { useAccount, useDisconnect } from "wagmi";
 import { AppFeatures, ModalState } from "../../types";
-import useContractInteract from "../../hooks/useContractInteract";
+import useGetUserTransactions from "../../hooks/useGetUserTransaction";
+import { useEffect } from "react";
 
 interface UserInterfaceModalProps extends AppFeatures {}
 
 
-const UserInterfaceDemo = ({ changeModal }: UserInterfaceModalProps) => {
+const UserInterfaceDemo = ({ changeModal, moduleId, userAddr }: UserInterfaceModalProps) => {
   const { isConnected } = useAccount();
-  const { balance } = useContractInteract();
+  const { disconnect } = useDisconnect();
+  const { pending } = useGetUserTransactions({moduleId, userAddr})
+
+  useEffect(()=>{
+    console.log({pending: pending[0]});
+  }, [])
 
   const handleConnectWallet = () => {
     if (isConnected) {
@@ -21,8 +27,18 @@ const UserInterfaceDemo = ({ changeModal }: UserInterfaceModalProps) => {
       }
     });
   };
+  
+  const handleDisconnectWallet = () => {
+    if (!isConnected) return;
+    disconnect();
+  };
 
-  const handleProtocolTransaction = () => {};
+  const handleProtocolTransaction = () => {
+    changeModal!({
+      modalState: ModalState.INTERACT,
+      optionalData: pending[0]
+    });
+  };
 
   const handleWithdrawal = () => {
     changeModal!({
@@ -52,6 +68,9 @@ const UserInterfaceDemo = ({ changeModal }: UserInterfaceModalProps) => {
         <div className="hoverable">
           <div className="interact-detail" onClick={handleConnectWallet}>
             Connect wallet interaction
+          </div>
+          <div className="interact-detail" onClick={handleDisconnectWallet}>
+            Disconnect wallet
           </div>
           <div className="interact-detail" onClick={handleProtocolTransaction}>
             {" "}

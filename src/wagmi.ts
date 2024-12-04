@@ -1,16 +1,16 @@
-import { http, createConfig } from 'wagmi'
+import { http, createConfig, CreateConnectorFn } from 'wagmi'
 import { bscTestnet, avalancheFuji } from 'wagmi/chains'
 import { injected, walletConnect } from 'wagmi/connectors'
 
 export const config = createConfig({
   chains: [bscTestnet, avalancheFuji],
   connectors: [
-    injected(),
-    walletConnect({ projectId: import.meta.env.VITE_WC_PROJECT_ID }),
+    injected() as CreateConnectorFn,
+    walletConnect({ projectId: import.meta.env.VITE_WC_PROJECT_ID }) as CreateConnectorFn,
   ],
   transports: {
-    [bscTestnet.id]: http(),
     [avalancheFuji.id]: http(),
+    [bscTestnet.id]: http(),
   },
   ssr: true
 })

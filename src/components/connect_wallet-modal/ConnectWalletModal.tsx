@@ -1,16 +1,11 @@
 import "./connect-wallet.css";
 import CloseBtn from "../../close-btn.tsx";
-import {
-  AppFeatures,
-  ConnectWallet,
-  ModalState
-} from "../../types.ts";
+import { AppFeatures, ConnectWallet, ModalState } from "../../types.ts";
 import { useEffect } from "react";
 import metaMaskLogo from "../../images/meta_mask.png";
 import walletConnectLogo from "../../images/Walletconnect-logo.png";
 
 import { useAccount, useConnect } from "wagmi";
-import { injected, walletConnect } from "wagmi/connectors";
 
 interface ConnectWalletModalProps extends ConnectWallet, AppFeatures {
   nextModal: ModalState;
@@ -19,9 +14,9 @@ interface ConnectWalletModalProps extends ConnectWallet, AppFeatures {
 const ConnectWalletModal = ({
   nextModal,
   closeModal,
-  changeModal
+  changeModal,
 }: ConnectWalletModalProps) => {
-  const { connect } = useConnect();
+  const { connect, connectors } = useConnect();
   const { isConnected } = useAccount();
 
   const wallets = [
@@ -29,30 +24,31 @@ const ConnectWalletModal = ({
       name: "MetaMask",
       logo: metaMaskLogo,
       async handleConnect() {
-        connect({ connector: injected() });
-      }
+        connect({ connector: connectors[0] });
+      },
     },
     {
       name: "Wallet Connect",
       logo: walletConnectLogo,
       async handleConnect() {
         connect({
-          connector: walletConnect({
-            projectId: import.meta.env.VITE_WC_PROJECT_ID,
-            relayUrl: "ws://relay.walletconnect.org"
-          })
+          connector: connectors[1]
         });
-      }
-    }
+      },
+    },
   ];
 
+  useEffect(()=>{
+    console.log(connectors[0].name);
+    console.log(connectors[1].name);
+  }, [])
+
   useEffect(() => {
-    if (isConnected) {
-      changeModal!({
-        modalState: nextModal,
-        optionalData: {}
-      });
-    }
+    if (!isConnected) return;
+    changeModal!({
+      modalState: nextModal,
+      optionalData: {},
+    });
   }, [isConnected]);
 
   return (

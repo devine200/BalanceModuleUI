@@ -9,6 +9,7 @@ export enum ModalState {
   TRANS_LOADING,
   RESPONSE,
   INTERACT,
+  CONNECT_WALLET,
 }
 
 export interface Interaction {
@@ -60,6 +61,6 @@ export interface AppFeatures {
 }
 
 export interface ModalInfo {
-  modalState: ModalState;
+  modalState: ModalState | null;
   optionalData?: any;
 }

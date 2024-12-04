@@ -19,7 +19,7 @@ const InteractModal = ({
   tokenAddr,
   funcId,
 }: InteractModalProps) => {
-  const { balance, initiateDepositFromTradable } = useContractInteract();
+  const { balance, initiateProtocolTransaction: initiateDepositFromTradable } = useContractInteract();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleSubmit = async () => {

@@ -14,7 +14,10 @@ import { config } from "../wagmi";
 
 interface ContractInteractionVals {
   balance: number;
-  initiateDepositFromTradable: (
+  getBalance: ()=>Promise<void>;
+  depositIntoTradable: (token: AddressLike, amount: number)=> void;
+  withdrawFromTradable: (token: AddressLike, amount: number)=> void;
+  initiateProtocolTransaction: (
     funcId: BytesLike,
     token: AddressLike,
     amount: number
@@ -54,7 +57,7 @@ const useContractInteract = (): ContractInteractionVals => {
     getBalance();
   }, [ethSigner]);
 
-  const initiateDepositFromTradable = async (
+  const initiateProtocolTransaction = async (
     funcId: BytesLike,
     token: AddressLike,
     amount: number
@@ -84,7 +87,16 @@ const useContractInteract = (): ContractInteractionVals => {
     });
     console.log("completed")
   };
-  return { balance, initiateDepositFromTradable, DEFAULT_TOKEN_DECIMALS };
+
+  const depositIntoTradable = async (token:AddressLike, amount: number) => {
+
+  }
+
+  const withdrawFromTradable = async (token: AddressLike, amount: number) => {
+
+  }
+  
+  return { balance, getBalance, depositIntoTradable, withdrawFromTradable, initiateProtocolTransaction, DEFAULT_TOKEN_DECIMALS };
 };
 
 export default useContractInteract;

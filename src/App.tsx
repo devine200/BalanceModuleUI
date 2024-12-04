@@ -6,6 +6,7 @@ import InteractHistoryModal from "./components/Interact-modal/InteractHistoryMod
 import InteractModal from "./components/Interact-modal/InteractModal";
 import TransactionLoadingModal from "./components/response-modal/TransactionLoadingModal";
 import ResponseModal from "./components/response-modal/ResponseModal";
+import ConnectWallet from "./components/connect_wallet-modal/ConnectWalletModal";
 import ModalLayout from "./ModalLayout";
 import { ModalState, ModalInfo, AppFeatures } from "./types";
 
@@ -17,19 +18,14 @@ interface AppProp {
 }
 
 function App({ moduleId }: AppProp) {
-  const { address } = useAccount();
-  const pendingInteractions = useGetUserTransactions({
-    moduleId,
-    userAddr: address!,
-  });
-
+  const { isConnected } = useAccount();
   const [modalInfo, setModalInfo] = useState<ModalInfo>({
-    modalState: ModalState.INTERACT,
-    optionalData: pendingInteractions.pending[0],
+    modalState: ModalState.DEPOSIT_ASSET_SELECTION,
+    optionalData: {},
   });
 
   const [currentModal, setCurrentModal] = useState<React.ReactElement>();
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(true);
 
   const closeModal = () => {
     setIsModalOpen(false);
@@ -45,6 +41,16 @@ function App({ moduleId }: AppProp) {
     moduleId,
     userAddr: "0xb1459DCF16905F7c84F4C22398c9CcAAD7345669",
   };
+
+  useEffect(()=> {
+    if (isConnected || !isModalOpen) return;
+
+    setIsModalOpen(true);
+    setModalInfo({
+      modalState: ModalState.CONNECT_WALLET,
+      optionalData: {}
+    })
+  }, [isConnected])
 
   useEffect(() => {
     const modalProps = {
@@ -65,6 +71,8 @@ function App({ moduleId }: AppProp) {
       setCurrentModal(<AssetSelectionModal {...modalProps} />);
     } else if (modalInfo.modalState === ModalState.DEPOSIT) {
       setCurrentModal(<DepositModal {...modalProps} />);
+    } else if (modalInfo.modalState === ModalState.CONNECT_WALLET) {
+      setCurrentModal(<ConnectWallet {...modalProps} />);
     } else {
       setCurrentModal(<></>);
     }

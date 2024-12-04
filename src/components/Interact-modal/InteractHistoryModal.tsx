@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from "uuid";
 import {
   Interaction,
-  ModalFeatures,
+  AppFeatures,
   ModalState,
 } from "../../types.ts";
 import "./interact-modal.css";
@@ -9,7 +9,7 @@ import CloseBtn from "../../close-btn";
 import useGetUserTransactions from "../../hooks/useGetUserTransaction.tsx";
 
 export interface InteractionHistoryModalProps
-  extends ModalFeatures {
+  extends AppFeatures {
     moduleId: string;
     userAddr: string;
   }

@@ -23,6 +23,10 @@ export interface Interaction {
   createdAt?: string;
 }
 
+export interface AppSetupParams {
+  moduleId: string;
+}
+
 export interface InteractionHistory {
   pending: Interaction[];
   completed: Interaction[];
@@ -48,7 +52,7 @@ export interface ModuleDataSet {
   [key: string]: { [key: string]: InteractionHistory };
 }
 
-export interface ModalFeatures {
+export interface AppFeatures {
   changeModal?: (modalState:ModalInfo) => void;
   closeModal?: () => void;
   moduleId?: string;

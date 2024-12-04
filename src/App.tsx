@@ -7,9 +7,10 @@ import InteractModal from "./components/Interact-modal/InteractModal";
 import TransactionLoadingModal from "./components/response-modal/TransactionLoadingModal";
 import ResponseModal from "./components/response-modal/ResponseModal";
 import ModalLayout from "./ModalLayout";
-import { ModalState, ModalInfo, ModalFeatures } from "./types";
+import { ModalState, ModalInfo, AppFeatures } from "./types";
 
 import useGetUserTransactions from "./hooks/useGetUserTransaction";
+import UserInterfaceDemo from "./components/user-interface-modal";
 
 interface AppProp {
   moduleId: string;
@@ -17,18 +18,18 @@ interface AppProp {
 
 function App({ moduleId }: AppProp) {
   const { address } = useAccount();
-  const pendingInteraction = useGetUserTransactions({
+  const pendingInteractions = useGetUserTransactions({
     moduleId,
     userAddr: address!,
-  }).pending[0];
+  });
 
   const [modalInfo, setModalInfo] = useState<ModalInfo>({
     modalState: ModalState.INTERACT,
-    optionalData: pendingInteraction,
+    optionalData: pendingInteractions.pending[0],
   });
-  
+
   const [currentModal, setCurrentModal] = useState<React.ReactElement>();
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(true);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   const closeModal = () => {
     setIsModalOpen(false);
@@ -38,7 +39,7 @@ function App({ moduleId }: AppProp) {
     setModalInfo(modalInfo);
   };
 
-  const appFeatures: ModalFeatures = {
+  const appFeatures: AppFeatures = {
     closeModal,
     changeModal,
     moduleId,
@@ -51,9 +52,7 @@ function App({ moduleId }: AppProp) {
       ...appFeatures,
     };
     if (modalInfo.modalState === ModalState.INTERACT) {
-
       setCurrentModal(<InteractModal {...modalProps} />);
-
     } else if (modalInfo.modalState === ModalState.RESPONSE) {
       setCurrentModal(<ResponseModal {...modalProps} />);
     } else if (modalInfo.modalState === ModalState.TRANS_LOADING) {
@@ -71,7 +70,11 @@ function App({ moduleId }: AppProp) {
     }
   }, [modalInfo]);
 
-  return isModalOpen ? <ModalLayout>{currentModal}</ModalLayout> : <></>;
+  return (
+    <ModalLayout>
+      {isModalOpen ? currentModal : <UserInterfaceDemo />}
+    </ModalLayout>
+  );
 }
 
 export default App;

@@ -3,9 +3,9 @@ import "./deposit.css";
 import { FiArrowLeft } from "react-icons/fi";
 import avalancheSquare from "../../images/avalanche-square.svg";
 import CloseBtn from '../../close-btn.tsx';
-import { ModalFeatures } from "../../types.ts";
+import { AppFeatures } from "../../types.ts";
 
-interface DepositModalProps extends ModalFeatures {}
+interface DepositModalProps extends AppFeatures {}
 
 const DepositModal = ({closeModal}:DepositModalProps) => {
   return (

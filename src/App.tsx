@@ -6,6 +6,7 @@ import InteractHistoryModal from "./components/Interact-modal/InteractHistoryMod
 import InteractModal from "./components/Interact-modal/InteractModal";
 import TransactionLoadingModal from "./components/response-modal/TransactionLoadingModal";
 import ResponseModal from "./components/response-modal/ResponseModal";
+import ConnectWallet from "./components/connect_wallet-modal/ConnectWalletModal";
 import ModalLayout from "./ModalLayout";
 import { ModalState, ModalInfo, ModalFeatures } from "./types";
 
@@ -23,7 +24,7 @@ function App({ moduleId }: AppProp) {
   }).pending[0];
 
   const [modalInfo, setModalInfo] = useState<ModalInfo>({
-    modalState: ModalState.INTERACT,
+    modalState: ModalState.CONNECT_WALLET,
     optionalData: pendingInteraction,
   });
   
@@ -66,6 +67,8 @@ function App({ moduleId }: AppProp) {
       setCurrentModal(<AssetSelectionModal {...modalProps} />);
     } else if (modalInfo.modalState === ModalState.DEPOSIT) {
       setCurrentModal(<DepositModal {...modalProps} />);
+    } else if (modalInfo.modalState === ModalState.CONNECT_WALLET) {
+      setCurrentModal(<ConnectWallet {...modalProps} />);
     } else {
       setCurrentModal(<></>);
     }

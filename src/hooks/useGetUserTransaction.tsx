@@ -1,6 +1,4 @@
-import { useMemo } from "react";
-import { useAccount } from "wagmi";
-import { InteractionHistory, ModuleDataSet } from "../types";
+import { InteractionHistory } from "../types";
 
 interface ModuleDetailProps {
   moduleId: string;

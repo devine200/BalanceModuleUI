@@ -11,8 +11,6 @@ import { useSwitchChain, useChainId, useAccount, useWriteContract, useConnect } 
 import { useEffect, useState, useMemo, useCallback } from "react";
 import { useEthersSigner } from "./useEthersSigner";
 import { config } from "../wagmi";
-import { injected } from "wagmi/connectors";
-import { avalancheFuji, sepolia } from "wagmi/chains";
 
 interface ContractInteractionVals {
   balance: number;
@@ -76,7 +74,7 @@ const useContractInteract = (): ContractInteractionVals => {
 
     const tokenContract = new Contract(token, contractConfig.tradableSideVault.stableToken.abi, ethSigner?.provider)
     const tokenDecimals = await tokenContract.decimals();
-
+    
     await writeContractAsync({
       abi: contractConfig.tradableBalanceVault.abi,
       address: contractConfig.tradableBalanceVault.address,

@@ -24,6 +24,10 @@ export interface Interaction {
   createdAt?: string;
 }
 
+export interface AppSetupParams {
+  moduleId: string;
+}
+
 export interface InteractionHistory {
   pending: Interaction[];
   completed: Interaction[];

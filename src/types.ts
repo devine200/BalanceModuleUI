@@ -9,6 +9,7 @@ export enum ModalState {
   TRANS_LOADING,
   RESPONSE,
   INTERACT,
+  CONNECT_WALLET,
 }
 
 export interface Interaction {

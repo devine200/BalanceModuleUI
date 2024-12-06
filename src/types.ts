@@ -10,6 +10,8 @@ export enum ModalState {
   RESPONSE,
   INTERACT,
   CONNECT_WALLET,
+  WITHDRAWAL,
+  USER_INTERFACE,
 }
 
 export interface Interaction {
@@ -63,4 +65,16 @@ export interface AppFeatures {
 export interface ModalInfo {
   modalState: ModalState | null;
   optionalData?: any;
+}
+
+export interface Deposit {
+  asset?: string;
+  chain: string;
+  assetImage?: any;
+  chainImage?: any;
+  transactType?: string
+}
+
+export interface ConnectWallet {
+  nextModal?: ModalState | null;
 }

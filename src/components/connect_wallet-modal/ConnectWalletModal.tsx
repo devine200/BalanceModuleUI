@@ -1,36 +1,59 @@
 import "./connect-wallet.css";
 import CloseBtn from "../../close-btn.tsx";
-import { AppFeatures, ModalInfo } from "../../types.ts";
-import { useState } from "react";
+import {
+  AppFeatures,
+  ConnectWallet,
+  ModalState
+} from "../../types.ts";
+import { useEffect } from "react";
 import metaMaskLogo from "../../images/meta_mask.png";
 import walletConnectLogo from "../../images/Walletconnect-logo.png";
 
-import { useConnect } from "wagmi";
+import { useAccount, useConnect } from "wagmi";
 import { injected, walletConnect } from "wagmi/connectors";
 
-interface ConnectWalletModalProps extends AppFeatures {
-    nextModal: ModalInfo
+interface ConnectWalletModalProps extends ConnectWallet, AppFeatures {
+  nextModal: ModalState;
 }
 
-const ConnectWalletModal = ({ nextModal, closeModal, changeModal }: ConnectWalletModalProps) => {
+const ConnectWalletModal = ({
+  nextModal,
+  closeModal,
+  changeModal
+}: ConnectWalletModalProps) => {
   const { connect } = useConnect();
+  const { isConnected } = useAccount();
 
   const wallets = [
     {
       name: "MetaMask",
       logo: metaMaskLogo,
-      handleConnect() {
-        connect({ connector: injected()});
-      },
+      async handleConnect() {
+        connect({ connector: injected() });
+      }
     },
     {
       name: "Wallet Connect",
       logo: walletConnectLogo,
-      handleConnect() {
-        connect({ connector: walletConnect({ projectId: import.meta.env.VITE_WC_PROJECT_ID, relayUrl: 'ws://relay.walletconnect.org', })});
-      },
-    },
+      async handleConnect() {
+        connect({
+          connector: walletConnect({
+            projectId: import.meta.env.VITE_WC_PROJECT_ID,
+            relayUrl: "ws://relay.walletconnect.org"
+          })
+        });
+      }
+    }
   ];
+
+  useEffect(() => {
+    if (isConnected) {
+      changeModal!({
+        modalState: nextModal,
+        optionalData: {}
+      });
+    }
+  }, [isConnected]);
 
   return (
     <div className="app-modal connect-modal">
@@ -45,9 +68,8 @@ const ConnectWalletModal = ({ nextModal, closeModal, changeModal }: ConnectWalle
           <div
             key={index}
             className="connect-detail hoverable"
-            onClick={()=>{
-                wallet.handleConnect()
-                changeModal!(nextModal)
+            onClick={async () => {
+              await wallet.handleConnect();
             }}
           >
             <span>{wallet?.name}</span>

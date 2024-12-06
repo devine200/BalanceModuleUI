@@ -12,6 +12,7 @@ import { ModalState, ModalInfo, AppFeatures } from "./types";
 
 import useGetUserTransactions from "./hooks/useGetUserTransaction";
 import UserInterfaceDemo from "./components/user-interface-modal";
+import WithdrawalModal from "./components/withdraw-modal/WithdrawalModal";
 
 interface AppProp {
   moduleId: string;
@@ -20,8 +21,8 @@ interface AppProp {
 function App({ moduleId }: AppProp) {
   const { isConnected } = useAccount();
   const [modalInfo, setModalInfo] = useState<ModalInfo>({
-    modalState: ModalState.DEPOSIT_ASSET_SELECTION,
-    optionalData: {},
+    modalState: ModalState.USER_INTERFACE,
+    optionalData: {}
   });
 
   const [currentModal, setCurrentModal] = useState<React.ReactElement>();
@@ -39,23 +40,25 @@ function App({ moduleId }: AppProp) {
     closeModal,
     changeModal,
     moduleId,
-    userAddr: "0xb1459DCF16905F7c84F4C22398c9CcAAD7345669",
+    userAddr: "0xb1459DCF16905F7c84F4C22398c9CcAAD7345669"
   };
 
-  useEffect(()=> {
+  useEffect(() => {
     if (isConnected || !isModalOpen) return;
 
     setIsModalOpen(true);
     setModalInfo({
       modalState: ModalState.CONNECT_WALLET,
-      optionalData: {}
-    })
-  }, [isConnected])
+      optionalData: {
+        nextModal: ModalState.USER_INTERFACE
+      }
+    });
+  }, [isConnected]);
 
   useEffect(() => {
     const modalProps = {
       ...(modalInfo.optionalData ? modalInfo.optionalData : {}),
-      ...appFeatures,
+      ...appFeatures
     };
     if (modalInfo.modalState === ModalState.INTERACT) {
       setCurrentModal(<InteractModal {...modalProps} />);
@@ -73,6 +76,10 @@ function App({ moduleId }: AppProp) {
       setCurrentModal(<DepositModal {...modalProps} />);
     } else if (modalInfo.modalState === ModalState.CONNECT_WALLET) {
       setCurrentModal(<ConnectWallet {...modalProps} />);
+    } else if (modalInfo.modalState === ModalState.WITHDRAWAL) {
+      setCurrentModal(<WithdrawalModal {...modalProps} />);
+    } else if (modalInfo.modalState === ModalState.USER_INTERFACE) {
+      setCurrentModal(<UserInterfaceDemo {...modalProps} />);
     } else {
       setCurrentModal(<></>);
     }

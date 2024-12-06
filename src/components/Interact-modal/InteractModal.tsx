@@ -17,9 +17,10 @@ const InteractModal = ({
   closeModal,
   userAddr,
   tokenAddr,
-  funcId,
+  funcId
 }: InteractModalProps) => {
-  const { balance, initiateProtocolTransaction: initiateDepositFromTradable } = useContractInteract();
+  const { balance, initiateProtocolTransaction: initiateDepositFromTradable } =
+    useContractInteract();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleSubmit = async () => {
@@ -33,8 +34,8 @@ const InteractModal = ({
           source: tradableLogo,
           destination: avalancheLogo,
           estimatedTime: 180,
-          eventOptions: {address: "", abi: {}, eventName: "", },
-        },
+          eventOptions: { address: "", abi: {}, eventName: "" }
+        }
       });
     } catch (e: any) {
       console.log(Object.keys(e));
@@ -45,8 +46,8 @@ const InteractModal = ({
           isSuccessful: false,
           amount: interactAmount,
           interactType,
-          responseMsg: e.shortMessage,
-        },
+          responseMsg: e.shortMessage
+        }
       });
     } finally {
       setIsLoading(false);

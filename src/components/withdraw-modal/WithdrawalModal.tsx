@@ -1,4 +1,4 @@
-import "./deposit.css";
+import "../deposit-modal/deposit.css";
 import { FiArrowLeft } from "react-icons/fi";
 import avalancheSquare from "../../images/avalanche-square.svg";
 import CloseBtn from "../../close-btn.tsx";
@@ -6,16 +6,16 @@ import { AppFeatures, Deposit, ModalState } from "../../types.ts";
 import { useState } from "react";
 import useContractInteract from "../../hooks/useContractInteract.tsx";
 
-interface DepositModalProps extends Deposit, AppFeatures {}
+interface WithdrawalModalProps extends Deposit, AppFeatures {}
 
-const DepositModal = ({
+const WithdrawalModal = ({
   closeModal,
   changeModal,
   asset,
   assetImage,
   chain,
   chainImage
-}: DepositModalProps) => {
+}: WithdrawalModalProps) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { balance } = useContractInteract();
 
@@ -24,7 +24,7 @@ const DepositModal = ({
       changeModal!({
         modalState: ModalState.DEPOSIT_ASSET_SELECTION,
         optionalData: {
-          transactType: "deposit"
+          transactType: "withdraw"
         }
       });
     } catch (error) {
@@ -48,7 +48,7 @@ const DepositModal = ({
         <span>
           <FiArrowLeft />
         </span>{" "}
-        <h3>Deposit Funds</h3>
+        <h3>Withdraw Funds</h3>
       </div>
 
       <div
@@ -83,10 +83,10 @@ const DepositModal = ({
         disabled={!asset || isLoading}
         className={`${!asset || isLoading ? "disabled" : ""}`}
       >
-        Deposit
+        Withdraw
       </button>
     </div>
   );
 };
 
-export default DepositModal;
+export default WithdrawalModal;

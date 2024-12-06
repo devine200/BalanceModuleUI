@@ -83,6 +83,14 @@
     font-family: inherit;
 }
 
+.deposit-modal button.disabled {
+    background-color: #32975a;
+}
+
+.deposit-modal button.disabled:hover {
+    cursor: auto;
+}
+
 .display-amount {
     font-family: Inter, sans-serif;
     background: inherit;

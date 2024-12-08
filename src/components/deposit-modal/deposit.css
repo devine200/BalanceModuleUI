@@ -135,6 +135,10 @@
     border-radius: 6px;
 }
 
+.asset-item.selected {
+    border: 1px solid #32975a;
+}
+
 .asset-selection .search-bar {
     background-color: #31354B;
     font-size: 16px;

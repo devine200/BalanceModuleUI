@@ -16,18 +16,42 @@ const AssetSelectionModal = ({
       name: "bsc",
       logo: avalancheSquare,
       tokens: [
-        { name: "USDC", address: "", logo: avalancheSquare },
-        { name: "USDT", address: "", logo: avalancheSquare },
-        { name: "USDF", address: "", logo: avalancheSquare }
+        {
+          name: "USDC",
+          address: "0x38dFEeC768aEB751B0291754c9A22Cb12c5E2fc4",
+          logo: avalancheSquare
+        },
+        {
+          name: "USDT",
+          address: "0x38dFEeC768aEB751B0291754c9A22Cb12c5E2fc4",
+          logo: avalancheSquare
+        },
+        {
+          name: "USDF",
+          address: "0x38dFEeC768aEB751B0291754c9A22Cb12c5E2fc4",
+          logo: avalancheSquare
+        }
       ]
     },
     {
       name: "avax",
       logo: avalancheSquare,
       tokens: [
-        { name: "USDC_avax", address: "", logo: avalancheSquare },
-        { name: "USDT_avax", address: "", logo: avalancheSquare },
-        { name: "USDF_avax", address: "", logo: avalancheSquare }
+        {
+          name: "USDC_avax",
+          address: "0x38dFEeC768aEB751B0291754c9A22Cb12c5E2fc4",
+          logo: avalancheSquare
+        },
+        {
+          name: "USDT_avax",
+          address: "0x38dFEeC768aEB751B0291754c9A22Cb12c5E2fc4",
+          logo: avalancheSquare
+        },
+        {
+          name: "USDF_avax",
+          address: "0x38dFEeC768aEB751B0291754c9A22Cb12c5E2fc4",
+          logo: avalancheSquare
+        }
       ]
     }
   ];
@@ -38,6 +62,7 @@ const AssetSelectionModal = ({
 
   useEffect(() => {
     // setAsset()
+    setSelectedAsset(data[0]);
   }, []);
 
   const handleAssetSelection = (token: any) => {
@@ -48,7 +73,8 @@ const AssetSelectionModal = ({
         asset: selectedAsset?.name,
         assetImage: selectedAsset?.logo,
         chain: token?.name,
-        chainImage: token?.logo
+        chainImage: token?.logo,
+        address: token?.address
       }
     });
   };
@@ -66,7 +92,7 @@ const AssetSelectionModal = ({
         {assets.map((asset: any, index: number) => (
           <span
             key={index}
-            className="asset-item hoverable"
+            className={`asset-item hoverable ${selectedAsset?.name === asset?.name ? " selected" : ""}`}
             onClick={() => setSelectedAsset(asset)}
           >
             <img src={asset?.logo} alt={asset?.name} />

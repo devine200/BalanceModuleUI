@@ -5,18 +5,24 @@ import {
   BytesLike,
   AddressLike,
   toBigInt,
-  parseUnits,
+  parseUnits
 } from "ethers";
-import { useSwitchChain, useChainId, useAccount, useWriteContract, useConnect } from "wagmi";
+import {
+  useSwitchChain,
+  useChainId,
+  useAccount,
+  useWriteContract,
+  useConnect
+} from "wagmi";
 import { useEffect, useState, useMemo, useCallback } from "react";
 import { useEthersSigner } from "./useEthersSigner";
 import { config } from "../wagmi";
 
 interface ContractInteractionVals {
   balance: number;
-  getBalance: ()=>Promise<void>;
-  depositIntoTradable: (token: AddressLike, amount: number)=> void;
-  withdrawFromTradable: (token: AddressLike, amount: number)=> void;
+  getBalance: () => Promise<void>;
+  depositIntoTradable: (token: AddressLike, amount: number) => void;
+  withdrawFromTradable: (token: AddressLike, amount: number) => void;
   initiateProtocolTransaction: (
     funcId: BytesLike,
     token: AddressLike,
@@ -31,8 +37,8 @@ const useContractInteract = (): ContractInteractionVals => {
   const [balance, setBalance] = useState<number>(0);
   const { chains, switchChain } = useSwitchChain();
   const ethSigner = useEthersSigner({ chainId });
-  const {connectAsync} = useConnect()
-  const { writeContractAsync } = useWriteContract({config});
+  const { connectAsync } = useConnect();
+  const { writeContractAsync } = useWriteContract({ config });
 
   const DEFAULT_TOKEN_DECIMALS = 8;
 
@@ -48,12 +54,13 @@ const useContractInteract = (): ContractInteractionVals => {
   );
 
   const getBalance = useCallback(async () => {
-    const userBalance = await balanceVaultReadContract.getUserTokenBalance(address);
+    const userBalance =
+      await balanceVaultReadContract.getUserTokenBalance(address);
     setBalance(parseFloat(formatUnits(userBalance, DEFAULT_TOKEN_DECIMALS)));
   }, [ethSigner]);
 
   useEffect(() => {
-    if(!ethSigner) return;
+    if (!ethSigner) return;
     getBalance();
   }, [ethSigner]);
 
@@ -66,7 +73,7 @@ const useContractInteract = (): ContractInteractionVals => {
     // check what  chain system is connected to
     if (chainId && baseChainID !== chainId.toString()) {
       const baseChain = chains.filter(
-        (chain) => chain.id.toString() === baseChainID
+        chain => chain.id.toString() === baseChainID
       )[0];
       switchChain({ chainId: baseChain.id });
     }
@@ -75,28 +82,47 @@ const useContractInteract = (): ContractInteractionVals => {
     const salt = Math.floor(Math.random() * 100000000);
     const nonce = toBigInt(Date.now() + salt);
 
-    const tokenContract = new Contract(token, contractConfig.tradableSideVault.stableToken.abi, ethSigner?.provider)
+    const tokenContract = new Contract(
+      token,
+      contractConfig.tradableSideVault.stableToken.abi,
+      ethSigner?.provider
+    );
     const tokenDecimals = await tokenContract.decimals();
-    
+
     await writeContractAsync({
       abi: contractConfig.tradableBalanceVault.abi,
       address: contractConfig.tradableBalanceVault.address,
       functionName: "balanceDeductionApproval",
-      args: [funcId, token, parseUnits(amount.toString(), tokenDecimals), nonce],
+      args: [
+        funcId,
+        token,
+        parseUnits(amount.toString(), tokenDecimals),
+        nonce
+      ],
       chainId
     });
-    console.log("completed")
+    console.log("completed");
   };
 
-  const depositIntoTradable = async (token:AddressLike, amount: number) => {
+  const depositIntoTradable = async (
+    token: AddressLike | any,
+    amount: number
+  ) => {
+    return true;
+  };
 
-  }
+  const withdrawFromTradable = async (token: AddressLike | any, amount: number) => {
+    return true;
+  };
 
-  const withdrawFromTradable = async (token: AddressLike, amount: number) => {
-
-  }
-  
-  return { balance, getBalance, depositIntoTradable, withdrawFromTradable, initiateProtocolTransaction, DEFAULT_TOKEN_DECIMALS };
+  return {
+    balance,
+    getBalance,
+    depositIntoTradable,
+    withdrawFromTradable,
+    initiateProtocolTransaction,
+    DEFAULT_TOKEN_DECIMALS
+  };
 };
 
 export default useContractInteract;

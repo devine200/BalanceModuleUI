@@ -42,6 +42,9 @@ export interface TransactionLoading {
   transType: string;
   eventOptions?: any;
   callback?: ()=>void;
+  address: AddressLike;
+  tradableAddress: AddressLike;
+  amount: number;
 }
 
 export interface ResponseVal {
@@ -72,7 +75,9 @@ export interface Deposit {
   chain: string;
   assetImage?: any;
   chainImage?: any;
-  transactType?: string
+  transactType?: string,
+  address?: AddressLike | any
+  tradableAddress?: AddressLike | any
 }
 
 export interface ConnectWallet {

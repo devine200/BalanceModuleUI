@@ -14,10 +14,13 @@ const WithdrawalModal = ({
   asset,
   assetImage,
   chain,
-  chainImage
+  chainImage,
+  address,
+  tradableAddress
 }: WithdrawalModalProps) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { balance } = useContractInteract();
+  const [amount, setAmount] = useState<number>(0);
 
   const handleAssetSelect = () => {
     try {
@@ -35,7 +38,19 @@ const WithdrawalModal = ({
   const handleSubmit = async () => {
     try {
       if (isLoading || !asset) return;
+      if (!amount) alert("Amount field can not be empty!");
       setIsLoading(true);
+
+      changeModal!({
+        modalState: ModalState.DEPOSIT_LOADING,
+        optionalData: {
+          tradableAddress,
+          amount,
+          transType: "Withdrawal"
+        }
+      });
+
+      setIsLoading(false);
     } catch (error) {
       console.log(error);
     }
@@ -65,7 +80,7 @@ const WithdrawalModal = ({
         </div>
         <div className="input-holder">
           <span className="asset-chain">
-            {asset ? `${asset}, ${chain}` : "Select asset and chain"}
+            {asset ? `${chain}` : "Select asset and chain"}
           </span>
         </div>
       </div>
@@ -74,14 +89,19 @@ const WithdrawalModal = ({
           <img src={avalancheSquare} alt="avalanche" />
         </div>
         <div className="input-holder">
-          <input className="display-amount" type="text" placeholder="0" />
+          <input
+            onChange={e => setAmount(Number(e.target.value))}
+            className="display-amount"
+            type="text"
+            placeholder="0"
+          />
           <span className="display-amount display-value">${balance}</span>
         </div>
       </div>
       <button
         onClick={() => handleSubmit()}
-        disabled={!asset || isLoading}
-        className={`${!asset || isLoading ? "disabled" : ""}`}
+        disabled={!asset || isLoading || !amount}
+        className={`${!asset || isLoading || !amount ? "disabled" : ""}`}
       >
         Withdraw
       </button>

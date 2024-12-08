@@ -1,11 +1,13 @@
 import { useAccount } from "wagmi";
 import { AppFeatures, ModalState } from "../../types";
+import useContractInteract from "../../hooks/useContractInteract";
 
 interface UserInterfaceModalProps extends AppFeatures {}
 
 
 const UserInterfaceDemo = ({ changeModal }: UserInterfaceModalProps) => {
   const { isConnected } = useAccount();
+  const { balance } = useContractInteract();
 
   const handleConnectWallet = () => {
     if (isConnected) {

@@ -14,10 +14,12 @@ const DepositModal = ({
   asset,
   assetImage,
   chain,
-  chainImage
+  chainImage,
+  address
 }: DepositModalProps) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { balance } = useContractInteract();
+  const [amount, setAmount] = useState<number>(0);
 
   const handleAssetSelect = () => {
     try {
@@ -35,7 +37,18 @@ const DepositModal = ({
   const handleSubmit = async () => {
     try {
       if (isLoading || !asset) return;
+      if (!amount) alert("Amount field can not be empty!");
       setIsLoading(true);
+
+      changeModal!({
+        modalState: ModalState.DEPOSIT_LOADING,
+        optionalData: {
+          address, amount, 
+          transType: 'Deposit'
+        }
+      });
+
+      setIsLoading(false);
     } catch (error) {
       console.log(error);
     }
@@ -65,7 +78,7 @@ const DepositModal = ({
         </div>
         <div className="input-holder">
           <span className="asset-chain">
-            {asset ? `${asset}, ${chain}` : "Select asset and chain"}
+            {asset ? `${chain}` : "Select asset and chain"}
           </span>
         </div>
       </div>
@@ -74,14 +87,19 @@ const DepositModal = ({
           <img src={avalancheSquare} alt="avalanche" />
         </div>
         <div className="input-holder">
-          <input className="display-amount" type="text" placeholder="0" />
+          <input
+            onChange={e => setAmount(Number(e.target.value))}
+            className="display-amount"
+            type="number"
+            placeholder="0"
+          />
           <span className="display-amount display-value">${balance}</span>
         </div>
       </div>
       <button
         onClick={() => handleSubmit()}
-        disabled={!asset || isLoading}
-        className={`${!asset || isLoading ? "disabled" : ""}`}
+        disabled={!asset || isLoading || !amount}
+        className={`${!asset || isLoading || !amount ? "disabled" : ""}`}
       >
         Deposit
       </button>

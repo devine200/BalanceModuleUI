@@ -34,7 +34,6 @@ export interface InteractionHistory {
   pending: Interaction[];
   completed: Interaction[];
 }
-
 export interface TransactionLoading {
   source: string;
   destination: string;
@@ -42,6 +41,7 @@ export interface TransactionLoading {
   transType: string;
   eventOptions?: any;
   callback?: ()=>void;
+  nextModal?: ModalInfo;
   address: AddressLike;
   tradableAddress: AddressLike;
   amount: number;

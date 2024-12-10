@@ -46,7 +46,8 @@ const WithdrawalModal = ({
         optionalData: {
           tradableAddress,
           amount,
-          transType: "Withdrawal"
+          transType: "Withdrawal",
+          eventOptions: { address: "", abi: {}, eventName: "" },
         }
       });
 

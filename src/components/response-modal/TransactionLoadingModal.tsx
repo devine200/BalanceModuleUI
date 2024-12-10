@@ -2,7 +2,7 @@ import "./response.css";
 import { TransactionLoading, AppFeatures, ModalState } from "../../types.ts";
 import CloseBtn from "../../close-btn.tsx";
 import { useWatchContractEvent } from "wagmi";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import useContractInteract from "../../hooks/useContractInteract.tsx";
 
 interface TransactionLoadingModalProps
@@ -19,47 +19,68 @@ const TransactionLoadingModal = ({
   eventOptions,
   address,
   tradableAddress,
-  amount
+  amount,
+  nextModal,
 }: TransactionLoadingModalProps) => {
-  if (eventOptions) {
-    useWatchContractEvent(eventOptions);
+  const [isLoading, setIsLoading] = useState<Boolean>(true);
+  const loadingTimeoutLimit = 30000;
+
+  try{
+    useWatchContractEvent({
+      ...eventOptions,
+      onLogs(logs) {
+        setIsLoading(false);
+        eventOptions.onLogs(logs);
+      },
+    });
+  }catch(e:any){
+    changeModal!({
+      modalState: ModalState.RESPONSE,
+      optionalData: {
+        isSuccessful: false,
+        interactType: transType,
+        amount,
+        responseMsg: `Error: System Error`,
+      },
+    });
+
+    console.log("////// event watcher ///////")
+    console.log(e)
+    console.log("////////////////////////////")
   }
-  const { depositIntoTradable, withdrawFromTradable } = useContractInteract();
+
+  useEffect(()=>{
+    setTimeout(()=>{
+      changeModal!({
+        modalState: ModalState.RESPONSE,
+        optionalData: {
+          isSuccessful: false,
+          interactType: transType,
+          amount,
+          responseMsg: `Error: Request Timeout`,
+        },
+      });
+    }, loadingTimeoutLimit);
+  }, [])
 
   useEffect(() => {
-    try {
-      const handleTransaction = async () => {
-        let response: any, isSuccessful: boolean, responseMsg: string;
-
-        if (transType === "Deposit")
-          response = await depositIntoTradable(address, amount);
-        if (transType === "Withdrawal")
-          response = await withdrawFromTradable(tradableAddress, amount);
-
-        if (response) {
-          isSuccessful = true;
-          responseMsg = `${transType} successful.`;
-        } else {
-          isSuccessful = false;
-          responseMsg = `${transType} failed.`;
-        }
-
-        changeModal!({
-          modalState: ModalState.RESPONSE,
-          optionalData: {
-            isSuccessful,
-            amount,
-            interactType: transType,
-            responseMsg
-          }
-        });
-      };
-
-      handleTransaction();
-    } catch (error) {
-      console.log(error);
+    if (!isLoading && !nextModal) {
+      changeModal!({
+        modalState: ModalState.RESPONSE,
+        optionalData: {
+          isSuccessful: true,
+          interactType: transType,
+          amount,
+          responseMsg: `${transType.toLocaleUpperCase()} Completed Successfully`,
+        },
+      });
     }
-  }, [address]);
+    
+    else if(!isLoading && nextModal) {
+      changeModal!(nextModal);
+    }
+
+  }, [isLoading]);
 
   return (
     <div className="app-modal response-modal confirmation-modal">

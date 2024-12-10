@@ -2,9 +2,11 @@ import { useState, useEffect } from "react";
 import { AppFeatures, Interaction, ModalState } from "../../types.ts";
 import "./interact-modal.css";
 import CloseBtn from "../../close-btn.tsx";
+import contractConfig from "../../utils/test-config.json";
 import useContractInteract from "../../hooks/useContractInteract.tsx";
 import tradableLogo from "../../images/tradable-square.svg";
 import avalancheLogo from "../../images/avalanche-square.svg";
+import { useSwitchChain } from "wagmi";
 
 interface InteractModalProps extends Interaction, AppFeatures {}
 
@@ -16,26 +18,42 @@ const InteractModal = ({
   changeModal,
   closeModal,
   tokenAddr,
-  funcId
+  funcId,
 }: InteractModalProps) => {
   const { balance, initiateProtocolTransaction: initiateDepositFromTradable } =
     useContractInteract();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-
+  const { switchChain } = useSwitchChain();
+  const baseChainId = contractConfig.tradableMessageAdapter.chainId
+  // (bytes memory moduleId, bytes memory funcSig) = abi.decode(funcId, (bytes, bytes));
+  // (address module, ) = abi.decode(moduleId, (address, address));
   const handleSubmit = async () => {
     try {
       setIsLoading(true);
       await initiateDepositFromTradable(funcId, tokenAddr, interactAmount);
-      changeModal!({
-        modalState: ModalState.TRANS_LOADING,
-        optionalData: {
-          transType: "Deposit From Tradable",
-          source: tradableLogo,
-          destination: avalancheLogo,
-          estimatedTime: 180,
-          eventOptions: { address: "", abi: {}, eventName: "" }
-        }
-      });
+      try {
+        changeModal!({
+          modalState: ModalState.TRANS_LOADING,
+          optionalData: {
+            transType: "Deposit From Tradable",
+            source: tradableLogo,
+            destination: avalancheLogo,
+            estimatedTime: 180,
+            eventOptions: {
+              address: "",
+              abi: {},
+              eventName: "",
+              onLogs(logs: any) {
+                switchChain({chainId: baseChainId});
+
+              },
+            },
+            amount: interactAmount,
+          },
+        });
+      } catch (e) {
+        console.log(e);
+      }
     } catch (e: any) {
       console.log(Object.keys(e));
       console.log({ ...e });
@@ -45,8 +63,8 @@ const InteractModal = ({
           isSuccessful: false,
           amount: interactAmount,
           interactType,
-          responseMsg: e.shortMessage
-        }
+          responseMsg: e.shortMessage ? e.shortMessage : e.toString(),
+        },
       });
     } finally {
       setIsLoading(false);
@@ -77,7 +95,7 @@ const InteractModal = ({
       </div>
       <div className="interact-detail">
         <span>Balance on Tradable</span>
-        <span>{balance} USD</span>
+        <span>{balance.toFixed(2)} USD</span>
       </div>
       <div className="interact-detail interact-total">
         <span>Amount to Spend</span>

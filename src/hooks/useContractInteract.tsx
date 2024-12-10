@@ -12,7 +12,6 @@ import {
   useChainId,
   useAccount,
   useWriteContract,
-  useConnect
 } from "wagmi";
 import { useEffect, useState, useMemo, useCallback } from "react";
 import { useEthersSigner } from "./useEthersSigner";
@@ -37,12 +36,11 @@ const useContractInteract = (): ContractInteractionVals => {
   const [balance, setBalance] = useState<number>(0);
   const { chains, switchChain } = useSwitchChain();
   const ethSigner = useEthersSigner({ chainId });
-  const { connectAsync } = useConnect();
   const { writeContractAsync } = useWriteContract({ config });
 
   const DEFAULT_TOKEN_DECIMALS = 8;
 
-  const baseChainID = import.meta.env.VITE_BASE_CHAIN_NETWORK_ID!;
+  const baseChainID = contractConfig.tradableMessageAdapter.chainId;
   const balanceVaultReadContract = useMemo(
     () =>
       new Contract(
@@ -69,11 +67,10 @@ const useContractInteract = (): ContractInteractionVals => {
     token: AddressLike,
     amount: number
   ) => {
-    // await connectAsync({ chainId: avalancheFuji.id, connector: injected()})
     // check what  chain system is connected to
-    if (chainId && baseChainID !== chainId.toString()) {
+    if (chainId && baseChainID !== chainId) {
       const baseChain = chains.filter(
-        chain => chain.id.toString() === baseChainID
+        chain => chain.id === baseChainID
       )[0];
       switchChain({ chainId: baseChain.id });
     }
@@ -101,16 +98,17 @@ const useContractInteract = (): ContractInteractionVals => {
       ],
       chainId
     });
-    console.log("completed");
   };
 
   const depositIntoTradable = async (
     token: AddressLike | any,
     amount: number
   ) => {
+
+    setTimeout(()=>{}, 2000)
     return true;
   };
-
+  
   const withdrawFromTradable = async (token: AddressLike | any, amount: number) => {
     return true;
   };

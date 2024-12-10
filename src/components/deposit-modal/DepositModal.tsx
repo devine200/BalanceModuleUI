@@ -15,7 +15,7 @@ const DepositModal = ({
   assetImage,
   chain,
   chainImage,
-  address
+  address,
 }: DepositModalProps) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { balance } = useContractInteract();
@@ -26,8 +26,8 @@ const DepositModal = ({
       changeModal!({
         modalState: ModalState.DEPOSIT_ASSET_SELECTION,
         optionalData: {
-          transactType: "deposit"
-        }
+          transactType: "deposit",
+        },
       });
     } catch (error) {
       console.log(error);
@@ -43,9 +43,11 @@ const DepositModal = ({
       changeModal!({
         modalState: ModalState.DEPOSIT_LOADING,
         optionalData: {
-          address, amount, 
-          transType: 'Deposit'
-        }
+          address,
+          amount,
+          transType: "Deposit",
+          eventOptions: { address: "", abi: {}, eventName: "" },
+        },
       });
 
       setIsLoading(false);
@@ -88,7 +90,7 @@ const DepositModal = ({
         </div>
         <div className="input-holder">
           <input
-            onChange={e => setAmount(Number(e.target.value))}
+            onChange={(e) => setAmount(Number(e.target.value))}
             className="display-amount"
             type="number"
             placeholder="0"

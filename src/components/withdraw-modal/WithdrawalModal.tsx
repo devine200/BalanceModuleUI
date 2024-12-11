@@ -42,7 +42,7 @@ const WithdrawalModal = ({
       setIsLoading(true);
 
       changeModal!({
-        modalState: ModalState.DEPOSIT_LOADING,
+        modalState: ModalState.TRANS_LOADING,
         optionalData: {
           tradableAddress,
           amount,

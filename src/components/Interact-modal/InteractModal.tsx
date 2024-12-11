@@ -6,54 +6,70 @@ import contractConfig from "../../utils/test-config.json";
 import useContractInteract from "../../hooks/useContractInteract.tsx";
 import tradableLogo from "../../images/tradable-square.svg";
 import avalancheLogo from "../../images/avalanche-square.svg";
-import { useSwitchChain } from "wagmi";
-
+import { useAccount, useSwitchChain } from "wagmi";
+import { AbiCoder } from "ethers";
+import { config } from "../../wagmi.ts";
 interface InteractModalProps extends Interaction, AppFeatures {}
 
-const InteractModal = ({
-  website,
-  interactType,
-  interactAmount,
-  tokenDenom,
-  changeModal,
-  closeModal,
-  tokenAddr,
-  funcId,
-}: InteractModalProps) => {
+const InteractModal = (props: InteractModalProps) => {
+  const {
+    website,
+    interactType,
+    interactAmount,
+    tokenDenom,
+    changeModal,
+    closeModal,
+    tokenAddr,
+    funcId,
+  } = props;
+
   const { balance, initiateProtocolTransaction: initiateDepositFromTradable } =
     useContractInteract();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const { switchChain } = useSwitchChain();
-  const baseChainId = contractConfig.tradableMessageAdapter.chainId
-  // (bytes memory moduleId, bytes memory funcSig) = abi.decode(funcId, (bytes, bytes));
-  // (address module, ) = abi.decode(moduleId, (address, address));
+  // @ts-ignore
+  const { switchChain } = useSwitchChain(config);
+  const { address } = useAccount();
+
+  // getting side vault from func id
+  const abiCoder: AbiCoder = AbiCoder.defaultAbiCoder();
+  const [moduleId] = abiCoder.decode(["bytes", "bytes"], funcId);
+  const [, vaultAddr] = abiCoder.decode(["address", "address"], moduleId);
+
+  // getting side vault network id
+  const sideChainId = Object.values(
+    contractConfig.tradableSideVault.vault
+  ).filter((vault) => vault.tradableSideVault === vaultAddr)[0].networkId;
+
   const handleSubmit = async () => {
     try {
       setIsLoading(true);
       await initiateDepositFromTradable(funcId, tokenAddr, interactAmount);
-      try {
-        changeModal!({
-          modalState: ModalState.TRANS_LOADING,
-          optionalData: {
-            transType: "Deposit From Tradable",
-            source: tradableLogo,
-            destination: avalancheLogo,
-            estimatedTime: 180,
-            eventOptions: {
-              address: "",
-              abi: {},
-              eventName: "",
-              onLogs(logs: any) {
-                switchChain({chainId: baseChainId});
-
-              },
-            },
-            amount: interactAmount,
+      // @ts-ignore
+      switchChain({ chainId: sideChainId });
+      changeModal!({
+        modalState: ModalState.TRANS_LOADING,
+        optionalData: {
+          transType: "Deposit From Tradable",
+          source: tradableLogo,
+          destination: avalancheLogo,
+          eventOptions: {
+            address: vaultAddr,
+            abi: contractConfig.tradableSideVault.abi,
+            eventName: "PendingFunctionReceiptAdded",
+            chainId: sideChainId,
+            onLogs() {},
           },
-        });
-      } catch (e) {
-        console.log(e);
-      }
+          eventQuery: {
+            key: "user",
+            value: address,
+          },
+          nextModal: {
+            modalState: ModalState.INTERACT_CONFIRM,
+            optionalData: props,
+          },
+          amount: interactAmount,
+        },
+      });
     } catch (e: any) {
       console.log(Object.keys(e));
       console.log({ ...e });

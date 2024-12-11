@@ -27,6 +27,8 @@ interface ContractInteractionVals {
     token: AddressLike,
     amount: number
   ) => void;
+  transactionConfirmation: (receiptId:BytesLike) => Promise<void>;
+  transactionRejection: (receiptId:BytesLike) => Promise<void>;
   DEFAULT_TOKEN_DECIMALS: number;
 }
 
@@ -40,7 +42,8 @@ const useContractInteract = (): ContractInteractionVals => {
 
   const DEFAULT_TOKEN_DECIMALS = 8;
 
-  const baseChainID = contractConfig.tradableMessageAdapter.chainId;
+  const baseChainID = import.meta.env.VITE_BASE_CHAIN_NETWORK_ID!;
+  
   const balanceVaultReadContract = useMemo(
     () =>
       new Contract(
@@ -68,9 +71,9 @@ const useContractInteract = (): ContractInteractionVals => {
     amount: number
   ) => {
     // check what  chain system is connected to
-    if (chainId && baseChainID !== chainId) {
+    if (chainId && baseChainID !== chainId.toString()) {
       const baseChain = chains.filter(
-        chain => chain.id === baseChainID
+        chain => chain.id.toString() === baseChainID
       )[0];
       switchChain({ chainId: baseChain.id });
     }
@@ -80,14 +83,16 @@ const useContractInteract = (): ContractInteractionVals => {
     const nonce = toBigInt(Date.now() + salt);
 
     const tokenContract = new Contract(
+      // @ts-ignore
       token,
       contractConfig.tradableSideVault.stableToken.abi,
       ethSigner?.provider
     );
     const tokenDecimals = await tokenContract.decimals();
-
+    
     await writeContractAsync({
       abi: contractConfig.tradableBalanceVault.abi,
+      // @ts-ignore
       address: contractConfig.tradableBalanceVault.address,
       functionName: "balanceDeductionApproval",
       args: [
@@ -98,6 +103,7 @@ const useContractInteract = (): ContractInteractionVals => {
       ],
       chainId
     });
+    console.log("completed");
   };
 
   const depositIntoTradable = async (
@@ -112,12 +118,22 @@ const useContractInteract = (): ContractInteractionVals => {
   const withdrawFromTradable = async (token: AddressLike | any, amount: number) => {
     return true;
   };
+  
+  const transactionConfirmation = async (receiptId:BytesLike) => {
+      
+  };
+  
+  const transactionRejection = async (receiptId:BytesLike) => {
+    
+  };
 
   return {
     balance,
     getBalance,
     depositIntoTradable,
     withdrawFromTradable,
+    transactionConfirmation,
+    transactionRejection,
     initiateProtocolTransaction,
     DEFAULT_TOKEN_DECIMALS
   };

@@ -7,6 +7,10 @@
   color: #cfd3e5;
 }
 
+.interact-confirm-modal {
+  height: 300px;
+}
+
 .modal-heading {
   text-transform: capitalize;
   font-weight: 700;
@@ -63,6 +67,22 @@
   padding: 12px;
   border-radius: 6px;
 }
+
+.interact-btn-holder {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.interact-btn-half {
+  width: 45%;
+}
+
+.reject-btn {
+  background: #F9415A;
+  
+}
+
 .scrollable-div::-webkit-scrollbar {
     width: 7px;
 }

@@ -3,12 +3,12 @@ import { BytesLike } from "ethers";
 
 export enum ModalState {
   DEPOSIT,
-  DEPOSIT_LOADING,
+  TRANS_LOADING,
   DEPOSIT_ASSET_SELECTION,
   HISTORY,
-  TRANS_LOADING,
   RESPONSE,
   INTERACT,
+  INTERACT_CONFIRM,
   CONNECT_WALLET,
   WITHDRAWAL,
   USER_INTERFACE,
@@ -26,6 +26,10 @@ export interface Interaction {
   createdAt?: string;
 }
 
+export interface InteractionConfirm {
+  receiptId: BytesLike;
+}
+
 export interface AppSetupParams {
   moduleId: string;
 }
@@ -37,14 +41,18 @@ export interface InteractionHistory {
 export interface TransactionLoading {
   source: string;
   destination: string;
-  estimatedTime: number;
+  estimatedTime?: number;
   transType: string;
   eventOptions?: any;
-  callback?: ()=>void;
+  eventQuery?: EventQuery;
   nextModal?: ModalInfo;
   address: AddressLike;
-  tradableAddress: AddressLike;
   amount: number;
+}
+
+export interface EventQuery {
+  key: string;
+  value: any;
 }
 
 export interface ResponseVal {

@@ -5,6 +5,8 @@ import CloseBtn from "../../close-btn.tsx";
 import { AppFeatures, Deposit, ModalState } from "../../types.ts";
 import { useState } from "react";
 import useContractInteract from "../../hooks/useContractInteract.tsx";
+import useBytesDecoder from "../../hooks/useBytesDecoder.tsx";
+import { BytesLike } from "ethers";
 
 interface DepositModalProps extends Deposit, AppFeatures {}
 
@@ -16,10 +18,12 @@ const DepositModal = ({
   chain,
   chainImage,
   address,
+  moduleId,
 }: DepositModalProps) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const { balance } = useContractInteract();
+  const { balance, depositIntoTradable } = useContractInteract();
   const [amount, setAmount] = useState<number>(0);
+  const { getVaultAddressFromModuleId } = useBytesDecoder();
 
   const handleAssetSelect = () => {
     try {
@@ -39,7 +43,10 @@ const DepositModal = ({
       if (isLoading || !asset) return;
       if (!amount) alert("Amount field can not be empty!");
       setIsLoading(true);
-
+      const vaultAddr = getVaultAddressFromModuleId(moduleId as BytesLike)
+      const token = "";// needs to be linked to the token gotten from the assets modal
+      await depositIntoTradable(vaultAddr, token, amount);
+      
       changeModal!({
         modalState: ModalState.TRANS_LOADING,
         optionalData: {

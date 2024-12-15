@@ -19,7 +19,7 @@ const WithdrawalModal = ({
   tradableAddress
 }: WithdrawalModalProps) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const { balance } = useContractInteract();
+  const { balance, withdrawFromTradable } = useContractInteract();
   const [amount, setAmount] = useState<number>(0);
 
   const handleAssetSelect = () => {
@@ -40,7 +40,7 @@ const WithdrawalModal = ({
       if (isLoading || !asset) return;
       if (!amount) alert("Amount field can not be empty!");
       setIsLoading(true);
-
+      // withdrawFromTradable();
       changeModal!({
         modalState: ModalState.TRANS_LOADING,
         optionalData: {

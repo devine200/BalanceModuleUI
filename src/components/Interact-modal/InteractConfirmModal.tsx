@@ -9,6 +9,7 @@ import avalancheLogo from "../../images/avalanche-square.svg";
 import { useSwitchChain } from "wagmi";
 import { AbiCoder, BytesLike } from "ethers";
 import { config } from "../../wagmi.ts";
+import useBytesDecoder from "../../hooks/useBytesDecoder.tsx";
 
 interface InteractModalProps extends Interaction, InteractionConfirm, AppFeatures {}
 
@@ -23,24 +24,25 @@ const InteractConfirmModal = ({
   funcId,
 }: InteractModalProps) => {
   const { transactionConfirmation, transactionRejection } = useContractInteract();
+  const { getVaultAddressFromFuncId, getVaultChainId } = useBytesDecoder();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const { switchChain } = useSwitchChain();
+  // @ts-ignore
+  const { switchChain } = useSwitchChain(config);
 
   // getting side vault from func id
-  const abiCoder: AbiCoder = AbiCoder.defaultAbiCoder();
-  const [moduleId] = abiCoder.decode(["bytes", "bytes"], funcId);
-  const [, vaultAddr] = abiCoder.decode(["address", "address"], moduleId);
+  const vaultAddr = getVaultAddressFromFuncId(funcId);
   
   // getting side vault network id
-  const sideChainId = Object.values(contractConfig.tradableSideVault.vault).filter(vault=> vault.tradableSideVault === vaultAddr)[0].networkId
+  const sideChainId = getVaultChainId(vaultAddr)
 
   const handleTransactionConfirmation = async () => {
     try{
       setIsLoading(true);
-      await transactionConfirmation(receiptId);
-
       // @ts-ignore
       switchChain({ chainId: sideChainId });
+      const payload = "";
+      await transactionConfirmation(vaultAddr, receiptId, payload);
+
       changeModal!({
         modalState: ModalState.TRANS_LOADING,
         optionalData: {
@@ -80,7 +82,7 @@ const InteractConfirmModal = ({
   const handleTransactionRejection = async () => {
     try{
       setIsLoading(true);
-      await transactionRejection(receiptId);
+      await transactionRejection(vaultAddr, receiptId);
 
       // @ts-ignore
       switchChain({ chainId: sideChainId });

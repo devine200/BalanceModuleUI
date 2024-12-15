@@ -35,7 +35,7 @@ const UserInterfaceDemo = ({ changeModal, moduleId, userAddr }: UserInterfaceMod
 
   const handleProtocolTransaction = () => {
     changeModal!({
-      modalState: ModalState.INTERACT,
+      modalState: ModalState.INTERACT_CONFIRM,
       optionalData: pending[0]
     });
   };

@@ -9,6 +9,7 @@ import avalancheLogo from "../../images/avalanche-square.svg";
 import { useAccount, useSwitchChain } from "wagmi";
 import { AbiCoder } from "ethers";
 import { config } from "../../wagmi.ts";
+import useBytesDecoder from "../../hooks/useBytesDecoder.tsx";
 interface InteractModalProps extends Interaction, AppFeatures {}
 
 const InteractModal = (props: InteractModalProps) => {
@@ -26,19 +27,16 @@ const InteractModal = (props: InteractModalProps) => {
   const { balance, initiateProtocolTransaction: initiateDepositFromTradable } =
     useContractInteract();
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { getVaultAddressFromFuncId, getVaultChainId } = useBytesDecoder();
   // @ts-ignore
   const { switchChain } = useSwitchChain(config);
   const { address } = useAccount();
 
   // getting side vault from func id
-  const abiCoder: AbiCoder = AbiCoder.defaultAbiCoder();
-  const [moduleId] = abiCoder.decode(["bytes", "bytes"], funcId);
-  const [, vaultAddr] = abiCoder.decode(["address", "address"], moduleId);
+  const vaultAddr = getVaultAddressFromFuncId(funcId);
 
   // getting side vault network id
-  const sideChainId = Object.values(
-    contractConfig.tradableSideVault.vault
-  ).filter((vault) => vault.tradableSideVault === vaultAddr)[0].networkId;
+  const sideChainId = getVaultChainId(vaultAddr)
 
   const handleSubmit = async () => {
     try {

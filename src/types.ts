@@ -67,7 +67,7 @@ export interface ModuleDataSet {
 }
 
 export interface AppFeatures {
-  changeModal?: (modalState:ModalInfo) => void;
+  changeModal?: (modalState: ModalInfo) => void;
   closeModal?: () => void;
   moduleId?: string;
   userAddr?: string;
@@ -83,9 +83,9 @@ export interface Deposit {
   chain: string;
   assetImage?: any;
   chainImage?: any;
-  transactType?: string,
-  address?: AddressLike | any
-  tradableAddress?: AddressLike | any
+  transactType?: string;
+  address?: AddressLike | any;
+  tradableAddress?: AddressLike | any;
 }
 
 export interface ConnectWallet {

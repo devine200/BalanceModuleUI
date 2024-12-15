@@ -5,7 +5,7 @@ import {
   BytesLike,
   AddressLike,
   toBigInt,
-  parseUnits
+  parseUnits,
 } from "ethers";
 import {
   useSwitchChain,
@@ -16,19 +16,31 @@ import {
 import { useEffect, useState, useMemo, useCallback } from "react";
 import { useEthersSigner } from "./useEthersSigner";
 import { config } from "../wagmi";
+import useBytesDecoder from "./useBytesDecoder";
 
 interface ContractInteractionVals {
   balance: number;
   getBalance: () => Promise<void>;
-  depositIntoTradable: (token: AddressLike, amount: number) => void;
+  depositIntoTradable: (
+    vaultAddr: AddressLike,
+    token: AddressLike,
+    amount: number
+  ) => void;
   withdrawFromTradable: (token: AddressLike, amount: number) => void;
   initiateProtocolTransaction: (
     funcId: BytesLike,
     token: AddressLike,
     amount: number
   ) => void;
-  transactionConfirmation: (receiptId:BytesLike) => Promise<void>;
-  transactionRejection: (receiptId:BytesLike) => Promise<void>;
+  transactionConfirmation: (
+    vaultAddr: AddressLike,
+    receiptId: BytesLike,
+    payload: BytesLike
+  ) => Promise<void>;
+  transactionRejection: (
+    vaultAddr: AddressLike,
+    receiptId: BytesLike
+  ) => Promise<void>;
   DEFAULT_TOKEN_DECIMALS: number;
 }
 
@@ -39,11 +51,12 @@ const useContractInteract = (): ContractInteractionVals => {
   const { chains, switchChain } = useSwitchChain();
   const ethSigner = useEthersSigner({ chainId });
   const { writeContractAsync } = useWriteContract({ config });
+  const { getVaultChainId } = useBytesDecoder();
 
   const DEFAULT_TOKEN_DECIMALS = 8;
 
   const baseChainID = import.meta.env.VITE_BASE_CHAIN_NETWORK_ID!;
-  
+
   const balanceVaultReadContract = useMemo(
     () =>
       new Contract(
@@ -73,7 +86,7 @@ const useContractInteract = (): ContractInteractionVals => {
     // check what  chain system is connected to
     if (chainId && baseChainID !== chainId.toString()) {
       const baseChain = chains.filter(
-        chain => chain.id.toString() === baseChainID
+        (chain) => chain.id.toString() === baseChainID
       )[0];
       switchChain({ chainId: baseChain.id });
     }
@@ -89,7 +102,7 @@ const useContractInteract = (): ContractInteractionVals => {
       ethSigner?.provider
     );
     const tokenDecimals = await tokenContract.decimals();
-    
+
     await writeContractAsync({
       abi: contractConfig.tradableBalanceVault.abi,
       // @ts-ignore
@@ -99,32 +112,94 @@ const useContractInteract = (): ContractInteractionVals => {
         funcId,
         token,
         parseUnits(amount.toString(), tokenDecimals),
-        nonce
+        nonce,
       ],
-      chainId
+      chainId,
     });
-    console.log("completed");
   };
 
   const depositIntoTradable = async (
+    vaultAddr: AddressLike,
     token: AddressLike | any,
     amount: number
   ) => {
+    // switch to module network
+    try {
+      const depositChain = getVaultChainId(vaultAddr);
+      // @ts-ignore
+      switchChain({ chainId: depositChain });
+    } catch (e) {
+      throw Error("Vault Does Not Exist");
+    }
 
-    setTimeout(()=>{}, 2000)
+    // get token decimals for amount calculation
+    const tokenContract = new Contract(
+      // @ts-ignore
+      token,
+      contractConfig.tradableSideVault.stableToken.abi,
+      ethSigner?.provider
+    );
+
+    console.log(await ethSigner?.signer.getChainId());
+
+    const tokenDecimals = await tokenContract.decimals();
+    const amountToDecimals = parseUnits(amount.toString(), tokenDecimals);
+
+    // approve token to be allocated
+    await writeContractAsync({
+      abi: contractConfig.tradableSideVault.stableToken.abi,
+      // @ts-ignore
+      address: token,
+      functionName: "approve",
+      args: [, amountToDecimals],
+      chainId,
+    });
+
+    // trigger function to deposit into tradable
+    await writeContractAsync({
+      abi: contractConfig.tradableSideVault.abi,
+      // @ts-ignore
+      address: vaultAddr,
+      functionName: "marginAccountDeposit",
+      args: [token, amountToDecimals],
+      chainId,
+    });
+  };
+
+  const withdrawFromTradable = async (
+    token: AddressLike | any,
+    amount: number
+  ) => {
     return true;
   };
-  
-  const withdrawFromTradable = async (token: AddressLike | any, amount: number) => {
-    return true;
+
+  const transactionConfirmation = async (
+    vaultAddr: AddressLike,
+    receiptId: BytesLike,
+    payload: BytesLike
+  ) => {
+    await writeContractAsync({
+      abi: contractConfig.tradableSideVault.abi,
+      // @ts-ignore
+      address: vaultAddr,
+      functionName: "executeReceiptFunction",
+      args: [receiptId, payload],
+      chainId,
+    });
   };
-  
-  const transactionConfirmation = async (receiptId:BytesLike) => {
-      
-  };
-  
-  const transactionRejection = async (receiptId:BytesLike) => {
-    
+
+  const transactionRejection = async (
+    vaultAddr: AddressLike,
+    receiptId: BytesLike
+  ) => {
+    await writeContractAsync({
+      abi: contractConfig.tradableSideVault.abi,
+      // @ts-ignore
+      address: vaultAddr,
+      functionName: "cancelBalanceApproval",
+      args: [receiptId],
+      chainId,
+    });
   };
 
   return {
@@ -135,7 +210,7 @@ const useContractInteract = (): ContractInteractionVals => {
     transactionConfirmation,
     transactionRejection,
     initiateProtocolTransaction,
-    DEFAULT_TOKEN_DECIMALS
+    DEFAULT_TOKEN_DECIMALS,
   };
 };
 

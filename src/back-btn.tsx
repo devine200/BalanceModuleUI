@@ -6,8 +6,8 @@ interface backBtn {
 }
 interface BackBtnProps extends backBtn, AppFeatures {}
 
-const BackBtn = ({ backModal, backType }: BackBtnProps) => {
-  console.log(backModal,'bdvkdnjijf')
+const BackBtn = () => {
+  // console.log(backModal,'bdvkdnjijf')
   return (
     <div
       onClick={() => {

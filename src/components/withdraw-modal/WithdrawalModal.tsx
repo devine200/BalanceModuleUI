@@ -40,7 +40,8 @@ const WithdrawalModal = ({
       if (isLoading || !asset) return;
       if (!amount) alert("Amount field can not be empty!");
       setIsLoading(true);
-      // withdrawFromTradable();
+      const token = "";// TODO:needs to be linked to the token gotten from the assets modal
+      withdrawFromTradable(token, amount);
       changeModal!({
         modalState: ModalState.TRANS_LOADING,
         optionalData: {

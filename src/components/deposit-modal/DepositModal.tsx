@@ -44,7 +44,7 @@ const DepositModal = ({
       if (!amount) alert("Amount field can not be empty!");
       setIsLoading(true);
       const vaultAddr = getVaultAddressFromModuleId(moduleId as BytesLike)
-      const token = "";// needs to be linked to the token gotten from the assets modal
+      const token = "";// TODO:needs to be linked to the token gotten from the assets modal
       await depositIntoTradable(vaultAddr, token, amount);
       
       changeModal!({

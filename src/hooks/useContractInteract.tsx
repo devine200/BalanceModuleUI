@@ -57,6 +57,7 @@ const useContractInteract = (): ContractInteractionVals => {
 
   const baseChainID = import.meta.env.VITE_BASE_CHAIN_NETWORK_ID!;
 
+  // ensure that this function gets the user's balance from the base chain always
   const balanceVaultReadContract = useMemo(
     () =>
       new Contract(
@@ -69,8 +70,8 @@ const useContractInteract = (): ContractInteractionVals => {
 
   const getBalance = useCallback(async () => {
     const userBalance =
-      await balanceVaultReadContract.getUserTokenBalance(address);
-    setBalance(parseFloat(formatUnits(userBalance, DEFAULT_TOKEN_DECIMALS)));
+        await balanceVaultReadContract.getUserTokenBalance(address);
+        setBalance(parseFloat(formatUnits(userBalance, DEFAULT_TOKEN_DECIMALS)));
   }, [ethSigner]);
 
   useEffect(() => {
@@ -140,7 +141,8 @@ const useContractInteract = (): ContractInteractionVals => {
       ethSigner?.provider
     );
 
-    console.log(await ethSigner?.signer.getChainId());
+    // TODO:check if the chainId changes for the ethSigner instance.
+    // console.log(await ethSigner?.signer.getChainId());
 
     const tokenDecimals = await tokenContract.decimals();
     const amountToDecimals = parseUnits(amount.toString(), tokenDecimals);
@@ -164,12 +166,37 @@ const useContractInteract = (): ContractInteractionVals => {
       args: [token, amountToDecimals],
       chainId,
     });
-  };
+};
 
-  const withdrawFromTradable = async (
+const withdrawFromTradable = async (
     token: AddressLike | any,
     amount: number
-  ) => {
+) => {
+    // get token decimals for amount calculation
+    const tokenContract = new Contract(
+        // @ts-ignore
+        token,
+        contractConfig.tradableSideVault.stableToken.abi,
+        ethSigner?.provider
+    );
+    const tokenDecimals = await tokenContract.decimals();
+    const amountToDecimals = parseUnits(amount.toString(), tokenDecimals);
+
+    // check if user has the balance to withdraw
+    if(balance < amount) {
+        throw Error("insufficient balance");
+    }
+
+    // make withdrawal request
+    await writeContractAsync({
+      abi: contractConfig.tradableSideVault.abi,
+      // @ts-ignore
+      address: vaultAddr,
+      functionName: "withdrawalRequest",
+      args: [token, amountToDecimals],
+      chainId,
+    });
+    
     return true;
   };
 

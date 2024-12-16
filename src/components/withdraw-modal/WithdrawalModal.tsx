@@ -15,9 +15,9 @@ const WithdrawalModal = ({
   assetImage,
   chain,
   chainImage,
-  address,
-  tradableAddress
+  userAddr
 }: WithdrawalModalProps) => {
+  console.log("tradableAddress", userAddr)
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { balance, withdrawFromTradable } = useContractInteract();
   const [amount, setAmount] = useState<number>(0);
@@ -45,7 +45,7 @@ const WithdrawalModal = ({
       changeModal!({
         modalState: ModalState.TRANS_LOADING,
         optionalData: {
-          tradableAddress,
+          tradableAddress: userAddr,
           amount,
           transType: "Withdrawal",
           eventOptions: { address: "", abi: {}, eventName: "" },

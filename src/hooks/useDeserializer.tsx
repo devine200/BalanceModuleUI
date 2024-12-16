@@ -1,13 +1,14 @@
 import { AbiCoder, AddressLike, BytesLike } from "ethers";
 import contractConfig from "../utils/test-config.json";
 
-interface BytesDecoderVals {
+interface DeserializerVals {
   getVaultAddressFromModuleId: (moduleId: BytesLike) => AddressLike;
   getVaultAddressFromFuncId: (funcId: BytesLike) => AddressLike;
   getVaultChainId: (vaultAddr: AddressLike) => Number;
+  getVaultConfig: (vaultAddr: AddressLike) => any;
 }
 
-const useBytesDecoder = (): BytesDecoderVals => {
+const useDeserializer = (): DeserializerVals => {
   const getVaultAddressFromModuleId = (moduleId: BytesLike): AddressLike => {
     const abiCoder: AbiCoder = AbiCoder.defaultAbiCoder();
     const [, vaultAddr] = abiCoder.decode(["address", "address"], moduleId);
@@ -21,10 +22,22 @@ const useBytesDecoder = (): BytesDecoderVals => {
     return vaultAddr;
   };
 
-  const getVaultChainId = (vaultAddr: AddressLike):Number => {
-    return Object.values(contractConfig.tradableSideVault.vault).filter((vault) => vault.tradableSideVault === vaultAddr)[0].networkId;
+  const getVaultConfig = (vaultAddr: AddressLike): any => {
+    return Object.values(contractConfig.tradableSideVault.vault).filter(
+      (vault) => vault.tradableSideVault === vaultAddr
+    )[0];
   };
-  return { getVaultAddressFromModuleId, getVaultAddressFromFuncId, getVaultChainId };
+
+  const getVaultChainId = (vaultAddr: AddressLike): Number => {
+    return getVaultConfig(vaultAddr).networkId;
+  };
+
+  return {
+    getVaultAddressFromModuleId,
+    getVaultAddressFromFuncId,
+    getVaultChainId,
+    getVaultConfig,
+  };
 };
 
-export default useBytesDecoder;
+export default useDeserializer;

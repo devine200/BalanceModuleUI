@@ -11,6 +11,7 @@ const AssetSelectionModal = ({
   changeModal,
   transactType
 }: AssetSelectionModalProps) => {
+  // TODO:create hook to get this data from the configuration files
   const data = [
     {
       name: "bsc",
@@ -56,7 +57,7 @@ const AssetSelectionModal = ({
     }
   ];
 
-  const [searchQuery, setSearchQuery] = useState<any>("");
+  const [searchQuery, setSearchQuery] = useState<string>("");
   const [assets, setAsset] = useState<any>(data);
   const [selectedAsset, setSelectedAsset] = useState<any>({});
 

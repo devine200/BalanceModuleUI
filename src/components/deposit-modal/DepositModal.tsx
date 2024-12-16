@@ -5,7 +5,7 @@ import CloseBtn from "../../close-btn.tsx";
 import { AppFeatures, Deposit, ModalState } from "../../types.ts";
 import { useState } from "react";
 import useContractInteract from "../../hooks/useContractInteract.tsx";
-import useBytesDecoder from "../../hooks/useBytesDecoder.tsx";
+import useDeserializer from "../../hooks/useDeserializer.tsx";
 import { BytesLike } from "ethers";
 
 interface DepositModalProps extends Deposit, AppFeatures {}
@@ -23,7 +23,7 @@ const DepositModal = ({
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { balance, depositIntoTradable } = useContractInteract();
   const [amount, setAmount] = useState<number>(0);
-  const { getVaultAddressFromModuleId } = useBytesDecoder();
+  const { getVaultAddressFromModuleId } = useDeserializer();
 
   const handleAssetSelect = () => {
     try {

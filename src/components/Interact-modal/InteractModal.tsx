@@ -9,7 +9,7 @@ import avalancheLogo from "../../images/avalanche-square.svg";
 import { useAccount, useSwitchChain } from "wagmi";
 import { AbiCoder } from "ethers";
 import { config } from "../../wagmi.ts";
-import useBytesDecoder from "../../hooks/useBytesDecoder.tsx";
+import useDeserializer from "../../hooks/useDeserializer.tsx";
 interface InteractModalProps extends Interaction, AppFeatures {}
 
 const InteractModal = (props: InteractModalProps) => {
@@ -27,7 +27,7 @@ const InteractModal = (props: InteractModalProps) => {
   const { balance, initiateProtocolTransaction: initiateDepositFromTradable } =
     useContractInteract();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const { getVaultAddressFromFuncId, getVaultChainId } = useBytesDecoder();
+  const { getVaultAddressFromFuncId, getVaultChainId } = useDeserializer();
   // @ts-ignore
   const { switchChain } = useSwitchChain(config);
   const { address } = useAccount();

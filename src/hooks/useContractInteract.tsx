@@ -16,7 +16,7 @@ import {
 import { useEffect, useState, useMemo, useCallback } from "react";
 import { useEthersSigner } from "./useEthersSigner";
 import { config } from "../wagmi";
-import useBytesDecoder from "./useBytesDecoder";
+import useDeserializer from "./useDeserializer";
 
 interface ContractInteractionVals {
   balance: number;
@@ -51,7 +51,7 @@ const useContractInteract = (): ContractInteractionVals => {
   const { chains, switchChain } = useSwitchChain();
   const ethSigner = useEthersSigner({ chainId });
   const { writeContractAsync } = useWriteContract({ config });
-  const { getVaultChainId } = useBytesDecoder();
+  const { getVaultChainId } = useDeserializer();
 
   const DEFAULT_TOKEN_DECIMALS = 8;
 

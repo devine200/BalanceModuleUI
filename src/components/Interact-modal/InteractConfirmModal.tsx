@@ -9,7 +9,7 @@ import avalancheLogo from "../../images/avalanche-square.svg";
 import { useSwitchChain } from "wagmi";
 import { AbiCoder, BytesLike } from "ethers";
 import { config } from "../../wagmi.ts";
-import useBytesDecoder from "../../hooks/useBytesDecoder.tsx";
+import useDeserializer from "../../hooks/useDeserializer.tsx";
 
 interface InteractModalProps extends Interaction, InteractionConfirm, AppFeatures {}
 
@@ -24,7 +24,7 @@ const InteractConfirmModal = ({
   funcId,
 }: InteractModalProps) => {
   const { transactionConfirmation, transactionRejection } = useContractInteract();
-  const { getVaultAddressFromFuncId, getVaultChainId } = useBytesDecoder();
+  const { getVaultAddressFromFuncId, getVaultChainId } = useDeserializer();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   // @ts-ignore
   const { switchChain } = useSwitchChain(config);
@@ -40,6 +40,7 @@ const InteractConfirmModal = ({
       setIsLoading(true);
       // @ts-ignore
       switchChain({ chainId: sideChainId });
+      // TODO: figure out how to construct the payload of this function
       const payload = "";
       await transactionConfirmation(vaultAddr, receiptId, payload);
 

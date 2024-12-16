@@ -1,5 +1,8 @@
 import "./deposit.css";
 import avalancheSquare from "../../images/avalanche-square.svg";
+import usdcLogo from "../../images/USDC_logo.png";
+import binanceLogo from "../../images/Bianance_logo.png";
+import usdtLogo from "../../images/USDT_logo.png";
 import CloseBtn from "../../close-btn.tsx";
 import { AppFeatures, Deposit, ModalState } from "../../types.ts";
 import { useEffect, useState } from "react";
@@ -15,17 +18,17 @@ const AssetSelectionModal = ({
   const data = [
     {
       name: "bsc",
-      logo: avalancheSquare,
+      logo: binanceLogo,
       tokens: [
         {
           name: "USDC",
           address: "0x38dFEeC768aEB751B0291754c9A22Cb12c5E2fc4",
-          logo: avalancheSquare
+          logo: usdcLogo
         },
         {
           name: "USDT",
           address: "0x38dFEeC768aEB751B0291754c9A22Cb12c5E2fc4",
-          logo: avalancheSquare
+          logo: usdtLogo
         },
         {
           name: "USDF",
@@ -39,17 +42,17 @@ const AssetSelectionModal = ({
       logo: avalancheSquare,
       tokens: [
         {
-          name: "USDC_avax",
+          name: "USDC",
           address: "0x38dFEeC768aEB751B0291754c9A22Cb12c5E2fc4",
-          logo: avalancheSquare
+          logo: usdcLogo
         },
         {
-          name: "USDT_avax",
+          name: "USDT",
           address: "0x38dFEeC768aEB751B0291754c9A22Cb12c5E2fc4",
-          logo: avalancheSquare
+          logo: usdtLogo
         },
         {
-          name: "USDF_avax",
+          name: "USDF",
           address: "0x38dFEeC768aEB751B0291754c9A22Cb12c5E2fc4",
           logo: avalancheSquare
         }

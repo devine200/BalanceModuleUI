@@ -21,17 +21,17 @@ const TransactionLoadingModal = ({
   eventOptions,
   amount,
   nextModal,
-  eventQuery,
+  eventQuery
 }: TransactionLoadingModalProps) => {
   const { address } = useAccount();
   const [isLoading, setIsLoading] = useState<Boolean>(true);
   const loadingTimeoutLimit = estimatedTime ? estimatedTime : 300000;
-  let unwatch:any;
+  let unwatch: any;
   try {
     unwatch = watchContractEvent(config, {
       ...eventOptions,
       // @ts-ignore
-      onLogs([{args}]) {
+      onLogs([{ args }]) {
         // check if event meets query criteria
         if (args && args[eventQuery?.key] !== eventQuery?.value) return;
 
@@ -43,28 +43,27 @@ const TransactionLoadingModal = ({
               isSuccessful: true,
               interactType: transType,
               amount,
-              responseMsg: `${transType.toLocaleUpperCase()} Completed Successfully`,
-            },
+              responseMsg: `${transType.toLocaleUpperCase()} Completed Successfully`
+            }
           });
         } else if (nextModal) {
           changeModal!(nextModal);
-        }else{
-          throw Error("invalid next screen option")
+        } else {
+          throw Error("invalid next screen option");
         }
-    
       },
-      onError(e:any) {
+      onError(e: any) {
         changeModal!({
           modalState: ModalState.RESPONSE,
           optionalData: {
             isSuccessful: false,
             interactType: transType,
             amount,
-            responseMsg: `Error: ${e.shortMessage ? e.shortMessage : "Event Error"}`,
-          },
+            responseMsg: `Error: ${e.shortMessage ? e.shortMessage : "Event Error"}`
+          }
         });
         console.log({ e });
-      },
+      }
     });
   } catch (e: any) {
     changeModal!({
@@ -73,8 +72,8 @@ const TransactionLoadingModal = ({
         isSuccessful: false,
         interactType: transType,
         amount,
-        responseMsg: `Error: System Error`,
-      },
+        responseMsg: `Error: System Error`
+      }
     });
 
     console.log("////// event watcher ///////");
@@ -94,8 +93,8 @@ const TransactionLoadingModal = ({
           isSuccessful: false,
           interactType: transType,
           amount,
-          responseMsg: `Error: Request Timeout`,
-        },
+          responseMsg: `Error: Request Timeout`
+        }
       });
     }, loadingTimeoutLimit);
 

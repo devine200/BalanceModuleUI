@@ -20,6 +20,7 @@ const DepositModal = ({
   address,
   moduleId,
 }: DepositModalProps) => {
+  console.log(address, 'address')
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { balance, depositIntoTradable } = useContractInteract();
   const [amount, setAmount] = useState<number>(0);
@@ -93,7 +94,7 @@ const DepositModal = ({
       </div>
       <div className="form-holder">
         <div className="asset-icon">
-          <img src={avalancheSquare} alt="avalanche" />
+          <img src={chainImage} alt="avalanche" />
         </div>
         <div className="input-holder">
           <input

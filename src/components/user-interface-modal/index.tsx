@@ -9,7 +9,7 @@ interface UserInterfaceModalProps extends AppFeatures {}
 const UserInterfaceDemo = ({ changeModal, moduleId, userAddr }: UserInterfaceModalProps) => {
   const { isConnected } = useAccount();
   const { disconnect } = useDisconnect();
-  const { pending } = useGetUserTransactions({moduleId, userAddr})
+  const { pending } = useGetUserTransactions({moduleId:moduleId as string, userAddr:userAddr as string})
 
   useEffect(()=>{
     console.log({pending: pending[0]});
@@ -36,7 +36,7 @@ const UserInterfaceDemo = ({ changeModal, moduleId, userAddr }: UserInterfaceMod
   const handleProtocolTransaction = () => {
     changeModal!({
       modalState: ModalState.INTERACT_CONFIRM,
-      optionalData: pending[0]
+      optionalData: {...pending[1], receiptId: pending[1].payload}
     });
   };
 

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { AppFeatures, Interaction, InteractionConfirm, ModalState } from "../../types.ts";
+import { AppFeatures, Interaction, ModalState } from "../../types.ts";
 import "./interact-modal.css";
 import CloseBtn from "../../close-btn.tsx";
 import contractConfig from "../../utils/test-config.json";
@@ -7,11 +7,11 @@ import useContractInteract from "../../hooks/useContractInteract.tsx";
 import tradableLogo from "../../images/tradable-square.svg";
 import avalancheLogo from "../../images/avalanche-square.svg";
 import { useSwitchChain } from "wagmi";
-import { AbiCoder, BytesLike } from "ethers";
+import { BytesLike } from "ethers";
 import { config } from "../../wagmi.ts";
 import useDeserializer from "../../hooks/useDeserializer.tsx";
 
-interface InteractModalProps extends Interaction, InteractionConfirm, AppFeatures {}
+interface InteractModalProps extends Interaction, AppFeatures {}
 
 const InteractConfirmModal = ({
   website,
@@ -20,16 +20,17 @@ const InteractConfirmModal = ({
   tokenDenom,
   changeModal,
   closeModal,
-  receiptId,
-  funcId,
+  receiptId,//TODO: remove funcId from all types and then derive it from the receiptId
+  payload,
 }: InteractModalProps) => {
   const { transactionConfirmation, transactionRejection } = useContractInteract();
-  const { getVaultAddressFromFuncId, getVaultChainId } = useDeserializer();
+  const { getVaultAddressFromFuncId, getVaultChainId, destructureReceiptId } = useDeserializer();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   // @ts-ignore
   const { switchChain } = useSwitchChain(config);
 
   // getting side vault from func id
+  const { funcId } = destructureReceiptId(receiptId);
   const vaultAddr = getVaultAddressFromFuncId(funcId);
   
   // getting side vault network id
@@ -40,8 +41,7 @@ const InteractConfirmModal = ({
       setIsLoading(true);
       // @ts-ignore
       switchChain({ chainId: sideChainId });
-      // TODO: figure out how to construct the payload of this function
-      const payload = "";
+      // console.log({receiptId})
       await transactionConfirmation(vaultAddr, receiptId, payload);
 
       changeModal!({

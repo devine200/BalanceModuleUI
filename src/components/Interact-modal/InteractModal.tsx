@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { AppFeatures, Interaction, ModalState } from "../../types.ts";
 import "./interact-modal.css";
 import CloseBtn from "../../close-btn.tsx";
@@ -7,7 +7,6 @@ import useContractInteract from "../../hooks/useContractInteract.tsx";
 import tradableLogo from "../../images/tradable-square.svg";
 import avalancheLogo from "../../images/avalanche-square.svg";
 import { useAccount, useSwitchChain } from "wagmi";
-import { AbiCoder } from "ethers";
 import { config } from "../../wagmi.ts";
 import useDeserializer from "../../hooks/useDeserializer.tsx";
 interface InteractModalProps extends Interaction, AppFeatures {}
@@ -21,18 +20,19 @@ const InteractModal = (props: InteractModalProps) => {
     changeModal,
     closeModal,
     tokenAddr,
-    funcId,
+    receiptId,
   } = props;
 
   const { balance, initiateProtocolTransaction: initiateDepositFromTradable } =
     useContractInteract();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const { getVaultAddressFromFuncId, getVaultChainId } = useDeserializer();
+  const { getVaultAddressFromFuncId, getVaultChainId, destructureReceiptId } = useDeserializer();
   // @ts-ignore
   const { switchChain } = useSwitchChain(config);
   const { address } = useAccount();
 
   // getting side vault from func id
+  const { funcId } = destructureReceiptId(receiptId);
   const vaultAddr = getVaultAddressFromFuncId(funcId);
 
   // getting side vault network id

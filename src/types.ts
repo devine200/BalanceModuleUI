@@ -21,13 +21,10 @@ export interface Interaction {
   balance?: number;
   interactAmount: number;
   tokenDenom: string;
-  funcId: BytesLike;
+  receiptId: BytesLike;
+  payload: BytesLike;
   tokenAddr: AddressLike;
   createdAt?: string;
-}
-
-export interface InteractionConfirm {
-  receiptId: BytesLike;
 }
 
 export interface AppSetupParams {

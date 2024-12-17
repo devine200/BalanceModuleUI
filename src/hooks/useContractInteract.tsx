@@ -46,7 +46,6 @@ interface ContractInteractionVals {
   getTokenBalance: (tokenAddr: AddressLike) => Promise<Number>;
 }
 
-// TODO:Make sure that all chain data is being pulled from the correct chains
 const useContractInteract = (): ContractInteractionVals => {
   const chainId = useChainId();
   const { address } = useAccount();
@@ -59,6 +58,7 @@ const useContractInteract = (): ContractInteractionVals => {
   const DEFAULT_TOKEN_DECIMALS = 8;
 
   const baseChainID = import.meta.env.VITE_BASE_CHAIN_NETWORK_ID!;
+  const baseProvider = useEthersProvider({chainId:parseInt(baseChainID)})
 
   // ensure that this function gets the user's balance from the base chain always
   const balanceVaultReadContract = useMemo(
@@ -66,7 +66,7 @@ const useContractInteract = (): ContractInteractionVals => {
       new Contract(
         contractConfig.tradableBalanceVault.address,
         contractConfig.tradableBalanceVault.abi,
-        provider
+        baseProvider
       ),
     [provider]
   );
@@ -138,14 +138,10 @@ const useContractInteract = (): ContractInteractionVals => {
 
     // get token decimals for amount calculation
     const tokenContract = new Contract(
-      // @ts-ignore
       token,
       contractConfig.tradableSideVault.stableToken.abi,
       provider
     );
-
-    // TODO:check if the chainId changes for the ethSigner instance.
-    // console.log(await ethSigner?.signer.getChainId());
 
     const tokenDecimals = await tokenContract.decimals();
     const amountToDecimals = parseUnits(amount.toString(), tokenDecimals);
@@ -210,8 +206,7 @@ const useContractInteract = (): ContractInteractionVals => {
   ) => {
     await writeContractAsync({
       abi: contractConfig.tradableSideVault.abi,
-      // @ts-ignore
-      address: vaultAddr,
+      address: vaultAddr as `0x${string}`,
       functionName: "executeReceiptFunction",
       args: [receiptId, payload],
       chainId,
@@ -239,14 +234,14 @@ const useContractInteract = (): ContractInteractionVals => {
       contractConfig.tradableSideVault.stableToken.abi,
       provider
     );
-    const decimals = tokenContract;
-    // const userBalance = await tokenContract.balanceOf(address);
+    // @ts-ignore
+    const decimals = await tokenContract.decimals();
+    // @ts-ignore
+    const userBalance = await tokenContract.balanceOf(address);
 
-    console.log({decimals})
-    return 0;
-    // return parseFloat(
-    //   parseFloat(formatUnits(userBalance, decimals)).toFixed(2)
-    // );
+    return parseFloat(
+      parseFloat(formatUnits(userBalance, decimals)).toFixed(2)
+    );
   };
 
   return {

@@ -79,13 +79,12 @@ export interface ModalInfo {
 }
 
 export interface Deposit {
-  asset?: string;
-  chain: string;
-  assetImage?: any;
-  chainImage?: any;
+  tokenName: string;
+  assetImage?: string;
+  chainImage?: string;
   transactType?: string;
-  address?: AddressLike | any;
-  tradableAddress?: AddressLike | any;
+  tokenAddr?: AddressLike;
+  tradableAddress?: AddressLike;
 }
 
 export interface ConnectWallet {

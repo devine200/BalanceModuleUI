@@ -1,11 +1,11 @@
 import "./deposit.css";
-import avalancheSquare from "../../images/avalanche-square.svg";
-import usdcLogo from "../../images/USDC_logo.png";
-import binanceLogo from "../../images/Bianance_logo.png";
-import usdtLogo from "../../images/USDT_logo.png";
+import contractConfig from "../../utils/test-config.json";
 import CloseBtn from "../../close-btn.tsx";
 import { AppFeatures, Deposit, ModalState } from "../../types.ts";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useSwitchChain } from "wagmi";
+import { config } from "../../wagmi.ts";
+import useGetAssets, { ChainData } from "../../hooks/useGetAssets.tsx";
 
 interface AssetSelectionModalProps extends Deposit, AppFeatures {}
 
@@ -14,78 +14,32 @@ const AssetSelectionModal = ({
   changeModal,
   transactType
 }: AssetSelectionModalProps) => {
-  // TODO:create hook to get this data from the configuration files
-  const data = [
-    {
-      name: "bsc",
-      logo: binanceLogo,
-      tokens: [
-        {
-          name: "USDC",
-          address: "0x38dFEeC768aEB751B0291754c9A22Cb12c5E2fc4",
-          logo: usdcLogo
-        },
-        {
-          name: "USDT",
-          address: "0x38dFEeC768aEB751B0291754c9A22Cb12c5E2fc4",
-          logo: usdtLogo
-        },
-        {
-          name: "USDF",
-          address: "0x38dFEeC768aEB751B0291754c9A22Cb12c5E2fc4",
-          logo: avalancheSquare
-        }
-      ]
-    },
-    {
-      name: "avax",
-      logo: avalancheSquare,
-      tokens: [
-        {
-          name: "USDC",
-          address: "0x38dFEeC768aEB751B0291754c9A22Cb12c5E2fc4",
-          logo: usdcLogo
-        },
-        {
-          name: "USDT",
-          address: "0x38dFEeC768aEB751B0291754c9A22Cb12c5E2fc4",
-          logo: usdtLogo
-        },
-        {
-          name: "USDF",
-          address: "0x38dFEeC768aEB751B0291754c9A22Cb12c5E2fc4",
-          logo: avalancheSquare
-        }
-      ]
-    }
-  ];
+  const data:ChainData[] = useGetAssets();
 
   const [searchQuery, setSearchQuery] = useState<string>("");
-  const [assets, setAsset] = useState<any>(data);
-  const [selectedAsset, setSelectedAsset] = useState<any>({});
-
-  useEffect(() => {
-    // setAsset()
-    setSelectedAsset(data[0]);
-  }, []);
-
+  const [selectedChain, setSelectedChain] = useState<ChainData>(data[0]);
+  //@ts-ignore
+  const { switchChain } = useSwitchChain(config)
+  
   const handleAssetSelection = (token: any) => {
+    //@ts-ignore
+    switchChain({chainId: contractConfig.tradableSideVault.vault[selectedChain.name].networkId})
     changeModal!({
       modalState:
         transactType === "deposit" ? ModalState.DEPOSIT : ModalState.WITHDRAWAL,
       optionalData: {
-        asset: selectedAsset?.name,
-        assetImage: selectedAsset?.logo,
-        chain: token?.name,
-        chainImage: token?.logo,
-        address: token?.address
+        asset: selectedChain,
+        chainImage: selectedChain?.logo,
+        tokenName: token?.name,
+        assetImage: token?.logo,
+        tokenAddr: token?.address
       }
     });
   };
 
-  const filteredTokens = !selectedAsset?.tokens
+  const filteredTokens = !selectedChain?.tokens
     ? []
-    : selectedAsset?.tokens.filter((token: any) =>
+    : selectedChain?.tokens.filter((token: any) =>
         token.name.toLowerCase().includes(searchQuery.toLowerCase())
       );
 
@@ -93,11 +47,11 @@ const AssetSelectionModal = ({
     <div className="app-modal deposit-modal asset-selection">
       <CloseBtn closeModal={closeModal!} />
       <div className="chain-holder">
-        {assets.map((asset: any, index: number) => (
+        {data.map((asset: any, index: number) => (
           <span
             key={index}
-            className={`asset-item hoverable ${selectedAsset?.name === asset?.name ? " selected" : ""}`}
-            onClick={() => setSelectedAsset(asset)}
+            className={`asset-item hoverable ${selectedChain?.name === asset?.name ? " selected" : ""}`}
+            onClick={() => setSelectedChain(asset)}
           >
             <img src={asset?.logo} alt={asset?.name} />
           </span>
@@ -108,7 +62,7 @@ const AssetSelectionModal = ({
           onChange={e => setSearchQuery(e.target.value)}
           value={searchQuery}
           type="text"
-          placeholder={`${!selectedAsset?.tokens ? "Select a chain from the above" : "Search for desired asset"}`}
+          placeholder={`${!selectedChain?.tokens ? "Select a chain from the above" : "Search for desired asset"}`}
         />
       </div>
 

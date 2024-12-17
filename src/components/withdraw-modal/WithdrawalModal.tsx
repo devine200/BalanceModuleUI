@@ -3,7 +3,7 @@ import { FiArrowLeft } from "react-icons/fi";
 import avalancheSquare from "../../images/avalanche-square.svg";
 import CloseBtn from "../../close-btn.tsx";
 import { AppFeatures, Deposit, ModalState } from "../../types.ts";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useContractInteract from "../../hooks/useContractInteract.tsx";
 
 interface WithdrawalModalProps extends Deposit, AppFeatures {}
@@ -11,16 +11,27 @@ interface WithdrawalModalProps extends Deposit, AppFeatures {}
 const WithdrawalModal = ({
   closeModal,
   changeModal,
-  asset,
   assetImage,
-  chain,
+  tokenName,
   chainImage,
-  userAddr
+  userAddr, 
+  tokenAddr,
 }: WithdrawalModalProps) => {
-  console.log("tradableAddress", userAddr)
+  // console.log("tradableAddress", userAddr)
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const { balance, withdrawFromTradable } = useContractInteract();
+  const { getTokenBalance, withdrawFromTradable } = useContractInteract();
   const [amount, setAmount] = useState<number>(0);
+  const [balance, setBalance] = useState<number>(0);
+
+
+  useEffect(()=>{
+    if(!tokenAddr) return;
+    (async () => {
+      const tokenBalance = await getTokenBalance(tokenAddr);
+      //@ts-ignore
+      setBalance(tokenBalance);
+    })()
+  },[])
 
   const handleAssetSelect = () => {
     try {
@@ -37,11 +48,10 @@ const WithdrawalModal = ({
 
   const handleSubmit = async () => {
     try {
-      if (isLoading || !asset) return;
+      if (isLoading || !tokenName) return;
       if (!amount) alert("Amount field can not be empty!");
       setIsLoading(true);
-      const token = "";// TODO:needs to be linked to the token gotten from the assets modal
-      withdrawFromTradable(token, amount);
+      await withdrawFromTradable(tokenAddr!, amount);
       changeModal!({
         modalState: ModalState.TRANS_LOADING,
         optionalData: {
@@ -55,6 +65,15 @@ const WithdrawalModal = ({
       setIsLoading(false);
     } catch (error) {
       console.log(error);
+      changeModal!({
+        modalState: ModalState.RESPONSE,
+        optionalData: {
+          isSuccessful: false,
+          interactType: "Withdrawal",
+          amount: amount,
+          responseMsg: error?.toString()
+        },
+      });
     }
   };
 
@@ -82,13 +101,13 @@ const WithdrawalModal = ({
         </div>
         <div className="input-holder">
           <span className="asset-chain">
-            {asset ? `${chain}` : "Select asset and chain"}
+            {tokenName ? `${tokenName}` : "Select asset and chain"}
           </span>
         </div>
       </div>
       <div className="form-holder">
         <div className="asset-icon">
-          <img src={avalancheSquare} alt="avalanche" />
+          {assetImage ? <img src={assetImage} alt="avalanche" /> : ""}
         </div>
         <div className="input-holder">
           <input
@@ -102,8 +121,8 @@ const WithdrawalModal = ({
       </div>
       <button
         onClick={() => handleSubmit()}
-        disabled={!asset || isLoading || !amount}
-        className={`${!asset || isLoading || !amount ? "disabled" : ""}`}
+        disabled={!tokenName || isLoading || !amount}
+        className={`${!tokenName || isLoading || !amount ? "disabled" : ""}`}
       >
         Withdraw
       </button>

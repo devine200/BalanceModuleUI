@@ -6,6 +6,7 @@ import {
   AddressLike,
   toBigInt,
   parseUnits,
+  Addressable,
 } from "ethers";
 import {
   useSwitchChain,
@@ -14,7 +15,7 @@ import {
   useWriteContract,
 } from "wagmi";
 import { useEffect, useState, useMemo, useCallback } from "react";
-import { useEthersSigner } from "./useEthersSigner";
+import { useEthersProvider } from "./useEthersSigner";
 import { config } from "../wagmi";
 import useDeserializer from "./useDeserializer";
 
@@ -42,14 +43,16 @@ interface ContractInteractionVals {
     receiptId: BytesLike
   ) => Promise<void>;
   DEFAULT_TOKEN_DECIMALS: number;
+  getTokenBalance: (tokenAddr: AddressLike) => Promise<Number>;
 }
 
+// TODO:Make sure that all chain data is being pulled from the correct chains
 const useContractInteract = (): ContractInteractionVals => {
   const chainId = useChainId();
   const { address } = useAccount();
   const [balance, setBalance] = useState<number>(0);
   const { chains, switchChain } = useSwitchChain();
-  const ethSigner = useEthersSigner({ chainId });
+  const provider = useEthersProvider({ chainId });
   const { writeContractAsync } = useWriteContract({ config });
   const { getVaultChainId } = useDeserializer();
 
@@ -63,21 +66,21 @@ const useContractInteract = (): ContractInteractionVals => {
       new Contract(
         contractConfig.tradableBalanceVault.address,
         contractConfig.tradableBalanceVault.abi,
-        ethSigner?.provider
+        provider
       ),
-    [ethSigner?.provider]
+    [provider]
   );
 
   const getBalance = useCallback(async () => {
     const userBalance =
-        await balanceVaultReadContract.getUserTokenBalance(address);
-        setBalance(parseFloat(formatUnits(userBalance, DEFAULT_TOKEN_DECIMALS)));
-  }, [ethSigner]);
+      await balanceVaultReadContract.getUserTokenBalance(address);
+    setBalance(parseFloat(formatUnits(userBalance, DEFAULT_TOKEN_DECIMALS)));
+  }, [provider]);
 
   useEffect(() => {
-    if (!ethSigner) return;
+    if (!provider) return;
     getBalance();
-  }, [ethSigner]);
+  }, [provider]);
 
   const initiateProtocolTransaction = async (
     funcId: BytesLike,
@@ -100,7 +103,7 @@ const useContractInteract = (): ContractInteractionVals => {
       // @ts-ignore
       token,
       contractConfig.tradableSideVault.stableToken.abi,
-      ethSigner?.provider
+      provider
     );
     const tokenDecimals = await tokenContract.decimals();
 
@@ -138,7 +141,7 @@ const useContractInteract = (): ContractInteractionVals => {
       // @ts-ignore
       token,
       contractConfig.tradableSideVault.stableToken.abi,
-      ethSigner?.provider
+      provider
     );
 
     // TODO:check if the chainId changes for the ethSigner instance.
@@ -166,25 +169,25 @@ const useContractInteract = (): ContractInteractionVals => {
       args: [token, amountToDecimals],
       chainId,
     });
-};
+  };
 
-const withdrawFromTradable = async (
+  const withdrawFromTradable = async (
     token: AddressLike | any,
     amount: number
-) => {
+  ) => {
     // get token decimals for amount calculation
     const tokenContract = new Contract(
-        // @ts-ignore
-        token,
-        contractConfig.tradableSideVault.stableToken.abi,
-        ethSigner?.provider
+      // @ts-ignore
+      token,
+      contractConfig.tradableSideVault.stableToken.abi,
+      provider
     );
     const tokenDecimals = await tokenContract.decimals();
     const amountToDecimals = parseUnits(amount.toString(), tokenDecimals);
 
     // check if user has the balance to withdraw
-    if(balance < amount) {
-        throw Error("insufficient balance");
+    if (balance < amount) {
+      throw Error("insufficient balance");
     }
 
     // make withdrawal request
@@ -196,7 +199,7 @@ const withdrawFromTradable = async (
       args: [token, amountToDecimals],
       chainId,
     });
-    
+
     return true;
   };
 
@@ -229,9 +232,27 @@ const withdrawFromTradable = async (
     });
   };
 
+  const getTokenBalance = async (tokenAddr: AddressLike): Promise<Number> => {
+      console.log({provider});
+    const tokenContract = new Contract(
+      tokenAddr as Addressable,
+      contractConfig.tradableSideVault.stableToken.abi,
+      provider
+    );
+    const decimals = tokenContract;
+    // const userBalance = await tokenContract.balanceOf(address);
+
+    console.log({decimals})
+    return 0;
+    // return parseFloat(
+    //   parseFloat(formatUnits(userBalance, decimals)).toFixed(2)
+    // );
+  };
+
   return {
     balance,
     getBalance,
+    getTokenBalance,
     depositIntoTradable,
     withdrawFromTradable,
     transactionConfirmation,

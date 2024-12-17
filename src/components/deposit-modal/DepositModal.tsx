@@ -1,6 +1,5 @@
 import "./deposit.css";
 import { FiArrowLeft } from "react-icons/fi";
-import avalancheSquare from "../../images/avalanche-square.svg";
 import CloseBtn from "../../close-btn.tsx";
 import { AppFeatures, Deposit, ModalState } from "../../types.ts";
 import { useState } from "react";
@@ -13,14 +12,13 @@ interface DepositModalProps extends Deposit, AppFeatures {}
 const DepositModal = ({
   closeModal,
   changeModal,
-  asset,
   assetImage,
-  chain,
+  tokenName,
   chainImage,
-  address,
+  tokenAddr,
   moduleId,
 }: DepositModalProps) => {
-  console.log(address, 'address')
+  console.log(tokenAddr, 'address')
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { balance, depositIntoTradable } = useContractInteract();
   const [amount, setAmount] = useState<number>(0);
@@ -41,17 +39,16 @@ const DepositModal = ({
 
   const handleSubmit = async () => {
     try {
-      if (isLoading || !asset) return;
+      if (isLoading || !tokenName) return;
       if (!amount) alert("Amount field can not be empty!");
       setIsLoading(true);
       const vaultAddr = getVaultAddressFromModuleId(moduleId as BytesLike)
-      const token = "";// TODO:needs to be linked to the token gotten from the assets modal
-      await depositIntoTradable(vaultAddr, token, amount);
+      await depositIntoTradable(vaultAddr, tokenAddr, amount);
       
       changeModal!({
         modalState: ModalState.TRANS_LOADING,
         optionalData: {
-          address,
+          address: tokenAddr,
           amount,
           transType: "Deposit",
           eventOptions: { address: "", abi: {}, eventName: "" },
@@ -61,6 +58,15 @@ const DepositModal = ({
       setIsLoading(false);
     } catch (error) {
       console.log(error);
+      changeModal!({
+        modalState: ModalState.RESPONSE,
+        optionalData: {
+          isSuccessful: false,
+          interactType: "Deposit",
+          amount: amount,
+          responseMsg: error?.toString()
+        },
+      });
     }
   };
 
@@ -88,13 +94,13 @@ const DepositModal = ({
         </div>
         <div className="input-holder">
           <span className="asset-chain">
-            {asset ? `${chain}` : "Select asset and chain"}
+            {tokenName ? `${tokenName}` : "Select asset and chain"}
           </span>
         </div>
       </div>
       <div className="form-holder">
         <div className="asset-icon">
-          <img src={chainImage} alt="avalanche" />
+          {assetImage ? <img src={assetImage} alt="avalanche" /> : ""}
         </div>
         <div className="input-holder">
           <input
@@ -108,8 +114,8 @@ const DepositModal = ({
       </div>
       <button
         onClick={() => handleSubmit()}
-        disabled={!asset || isLoading || !amount}
-        className={`${!asset || isLoading || !amount ? "disabled" : ""}`}
+        disabled={!tokenName || isLoading || !amount}
+        className={`${!tokenName || isLoading || !amount ? "disabled" : ""}`}
       >
         Deposit
       </button>

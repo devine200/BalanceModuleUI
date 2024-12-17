@@ -1,9 +1,7 @@
 import "./response.css";
 import { TransactionLoading, AppFeatures, ModalState } from "../../types.ts";
 import CloseBtn from "../../close-btn.tsx";
-import { useAccount } from "wagmi";
 import { useEffect, useState } from "react";
-import useContractInteract from "../../hooks/useContractInteract.tsx";
 import { watchContractEvent } from "@wagmi/core";
 import { config } from "../../wagmi.ts";
 
@@ -23,10 +21,21 @@ const TransactionLoadingModal = ({
   nextModal,
   eventQuery
 }: TransactionLoadingModalProps) => {
-  const { address } = useAccount();
-  const [isLoading, setIsLoading] = useState<Boolean>(true);
   const loadingTimeoutLimit = estimatedTime ? estimatedTime : 300000;
+  const [interval, setInterval] = useState<Node.Timeout>(setTimeout(() => {
+    unwatch();
+    changeModal!({
+      modalState: ModalState.RESPONSE,
+      optionalData: {
+        isSuccessful: false,
+        interactType: transType,
+        amount,
+        responseMsg: `Error: Request Timeout`
+      }
+    });
+  }, loadingTimeoutLimit));
   let unwatch: any;
+
   try {
     unwatch = watchContractEvent(config, {
       ...eventOptions,
@@ -35,7 +44,6 @@ const TransactionLoadingModal = ({
         // check if event meets query criteria
         if (args && args[eventQuery?.key] !== eventQuery?.value) return;
 
-        setIsLoading(false);
         if (!nextModal) {
           changeModal!({
             modalState: ModalState.RESPONSE,
@@ -51,6 +59,8 @@ const TransactionLoadingModal = ({
         } else {
           throw Error("invalid next screen option");
         }
+        unwatch();
+        clearInterval(interval);
       },
       onError(e: any) {
         changeModal!({
@@ -63,6 +73,8 @@ const TransactionLoadingModal = ({
           }
         });
         console.log({ e });
+        unwatch();
+        clearInterval(interval);
       }
     });
   } catch (e: any) {
@@ -79,6 +91,7 @@ const TransactionLoadingModal = ({
     console.log("////// event watcher ///////");
     console.log(e);
     console.log("////////////////////////////");
+    unwatch();
   } finally {
     setTimeout(() => {
       unwatch();
@@ -86,17 +99,6 @@ const TransactionLoadingModal = ({
   }
 
   useEffect(() => {
-    const interval = setTimeout(() => {
-      changeModal!({
-        modalState: ModalState.RESPONSE,
-        optionalData: {
-          isSuccessful: false,
-          interactType: transType,
-          amount,
-          responseMsg: `Error: Request Timeout`
-        }
-      });
-    }, loadingTimeoutLimit);
 
     return () => {
       clearInterval(interval);

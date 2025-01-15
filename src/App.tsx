@@ -62,6 +62,12 @@ function App({ moduleId }: AppProp) {
       ...(modalInfo.optionalData ? modalInfo.optionalData : {}),
       ...appFeatures,
     };
+
+    if (!isModalOpen) {
+      setCurrentModal(<UserInterfaceDemo {...modalProps} />);
+      return;
+    }
+
     if (modalInfo.modalState === ModalState.INTERACT) {
       setCurrentModal(<InteractModal {...modalProps} />);
     } else if (modalInfo.modalState === ModalState.INTERACT_CONFIRM) {
@@ -85,13 +91,9 @@ function App({ moduleId }: AppProp) {
     } else {
       setCurrentModal(<></>);
     }
-  }, [modalInfo]);
+  }, [modalInfo, isModalOpen]);
 
-  return (
-    <ModalLayout>
-      {isModalOpen ? currentModal : <UserInterfaceDemo />}
-    </ModalLayout>
-  );
+  return <ModalLayout>{currentModal}</ModalLayout>;
 }
 
 export default App;

@@ -21,7 +21,7 @@ export interface Interaction {
   balance?: number;
   interactAmount: number;
   tokenDenom: string;
-  receiptId: BytesLike;
+  funcId: BytesLike;
   payload: BytesLike;
   tokenAddr: AddressLike;
   createdAt?: string;
@@ -66,8 +66,8 @@ export interface ModuleDataSet {
 export interface AppFeatures {
   changeModal?: (modalState: ModalInfo) => void;
   closeModal?: () => void;
-  moduleId?: string;
-  userAddr?: string;
+  moduleId?: BytesLike;
+  userAddr?: string;//TODO:depricate this value
 }
 
 export interface ModalInfo {

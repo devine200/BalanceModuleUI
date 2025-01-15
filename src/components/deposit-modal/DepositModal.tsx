@@ -5,7 +5,9 @@ import { AppFeatures, Deposit, ModalState } from "../../types.ts";
 import { useState } from "react";
 import useContractInteract from "../../hooks/useContractInteract.tsx";
 import useDeserializer from "../../hooks/useDeserializer.tsx";
-import { BytesLike } from "ethers";
+import { AddressLike, BytesLike } from "ethers";
+import ContractConfig from "../../utils/test-config.json";
+import { useAccount } from "wagmi";
 
 interface DepositModalProps extends Deposit, AppFeatures {}
 
@@ -18,11 +20,11 @@ const DepositModal = ({
   tokenAddr,
   moduleId,
 }: DepositModalProps) => {
-  console.log(tokenAddr, 'address')
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { balance, depositIntoTradable } = useContractInteract();
   const [amount, setAmount] = useState<number>(0);
   const { getVaultAddressFromModuleId } = useDeserializer();
+  const { address: userAddr } = useAccount();
 
   const handleAssetSelect = () => {
     try {
@@ -42,16 +44,24 @@ const DepositModal = ({
       if (isLoading || !tokenName) return;
       if (!amount) alert("Amount field can not be empty!");
       setIsLoading(true);
-      const vaultAddr = getVaultAddressFromModuleId(moduleId as BytesLike)
-      await depositIntoTradable(vaultAddr, tokenAddr, amount);
-      
+      const vaultAddr = getVaultAddressFromModuleId(moduleId as BytesLike);
+      await depositIntoTradable(vaultAddr, tokenAddr as AddressLike, amount);
+
       changeModal!({
         modalState: ModalState.TRANS_LOADING,
         optionalData: {
           address: tokenAddr,
           amount,
           transType: "Deposit",
-          eventOptions: { address: "", abi: {}, eventName: "" },
+          eventOptions: {
+            address: vaultAddr,
+            abi: ContractConfig.tradableSideVault.abi,
+            eventName: "SideChainMarginDepositInitiated",
+          },
+          eventQuery: {
+            key: "user",
+            value: userAddr,
+          },
         },
       });
 
@@ -64,7 +74,7 @@ const DepositModal = ({
           isSuccessful: false,
           interactType: "Deposit",
           amount: amount,
-          responseMsg: error?.toString()
+          responseMsg: error?.toString(),
         },
       });
     }
@@ -98,27 +108,30 @@ const DepositModal = ({
           </span>
         </div>
       </div>
-      <div className="form-holder">
-        <div className="asset-icon">
-          {assetImage ? <img src={assetImage} alt="avalanche" /> : ""}
+      <form onSubmit={handleSubmit}>
+        <div className="form-holder">
+          <div className="asset-icon">
+            {assetImage ? <img src={assetImage} alt="avalanche" /> : ""}
+          </div>
+          <div className="input-holder">
+            <input
+              onChange={(e) => setAmount(Number(e.target.value))}
+              className="display-amount"
+              type="number"
+              placeholder="0"
+            />
+            <span className="display-amount display-value">${balance}</span>
+          </div>
         </div>
-        <div className="input-holder">
-          <input
-            onChange={(e) => setAmount(Number(e.target.value))}
-            className="display-amount"
-            type="number"
-            placeholder="0"
-          />
-          <span className="display-amount display-value">${balance}</span>
-        </div>
-      </div>
-      <button
-        onClick={() => handleSubmit()}
-        disabled={!tokenName || isLoading || !amount}
-        className={`${!tokenName || isLoading || !amount ? "disabled" : ""}`}
-      >
-        Deposit
-      </button>
+        <button
+          type="submit"
+          onClick={() => handleSubmit()}
+          disabled={!tokenName || isLoading || !amount}
+          className={`${!tokenName || isLoading || !amount ? "disabled" : ""}`}
+        >
+          Deposit
+        </button>
+      </form>
     </div>
   );
 };

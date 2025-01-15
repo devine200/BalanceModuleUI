@@ -9,6 +9,7 @@ import avalancheLogo from "../../images/avalanche-square.svg";
 import { useAccount, useSwitchChain } from "wagmi";
 import { config } from "../../wagmi.ts";
 import useDeserializer from "../../hooks/useDeserializer.tsx";
+import { BytesLike } from "ethers";
 interface InteractModalProps extends Interaction, AppFeatures {}
 
 const InteractModal = (props: InteractModalProps) => {
@@ -20,28 +21,29 @@ const InteractModal = (props: InteractModalProps) => {
     changeModal,
     closeModal,
     tokenAddr,
-    receiptId,
+    funcId,
+    moduleId
   } = props;
 
-  const { balance, initiateProtocolTransaction: initiateDepositFromTradable } =
+  const { balance, initiateProtocolTransaction } =
     useContractInteract();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const { getVaultAddressFromFuncId, getVaultChainId, destructureReceiptId } = useDeserializer();
+  const { getVaultAddressFromModuleId, getVaultChainId } = useDeserializer();
   // @ts-ignore
   const { switchChain } = useSwitchChain(config);
   const { address } = useAccount();
 
   // getting side vault from func id
-  const { funcId } = destructureReceiptId(receiptId);
-  const vaultAddr = getVaultAddressFromFuncId(funcId);
-
+  const vaultAddr = getVaultAddressFromModuleId(moduleId as BytesLike);
+  
   // getting side vault network id
-  const sideChainId = getVaultChainId(vaultAddr)
+  const sideChainId = getVaultChainId(vaultAddr);
 
   const handleSubmit = async () => {
     try {
       setIsLoading(true);
-      await initiateDepositFromTradable(funcId, tokenAddr, interactAmount);
+      const receiptId = await initiateProtocolTransaction(funcId, tokenAddr, interactAmount);
+
       // @ts-ignore
       switchChain({ chainId: sideChainId });
       changeModal!({
@@ -63,7 +65,7 @@ const InteractModal = (props: InteractModalProps) => {
           },
           nextModal: {
             modalState: ModalState.INTERACT_CONFIRM,
-            optionalData: props,
+            optionalData: {...props, receiptId},
           },
           amount: interactAmount,
         },
@@ -109,7 +111,7 @@ const InteractModal = (props: InteractModalProps) => {
       </div>
       <div className="interact-detail">
         <span>Balance on Tradable</span>
-        <span>{balance.toFixed(2)} USD</span>
+        <span>{balance.toFixed(2)} USD</span> 
       </div>
       <div className="interact-detail interact-total">
         <span>Amount to Spend</span>
@@ -122,7 +124,7 @@ const InteractModal = (props: InteractModalProps) => {
         onClick={handleSubmit}
         disabled={isLoading}
       >
-        {isLoading ? "Loading...." : "Deposit Using Tradable"}
+        {isLoading ? "Loading...." : `${interactType} Using Tradable`}
       </button>
     </div>
   );

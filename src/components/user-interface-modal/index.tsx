@@ -1,7 +1,6 @@
 import { useAccount, useDisconnect } from "wagmi";
 import { AppFeatures, ModalState } from "../../types";
 import useGetUserTransactions from "../../hooks/useGetUserTransaction";
-import { useEffect } from "react";
 
 interface UserInterfaceModalProps extends AppFeatures {}
 
@@ -10,10 +9,6 @@ const UserInterfaceDemo = ({ changeModal, moduleId, userAddr }: UserInterfaceMod
   const { isConnected } = useAccount();
   const { disconnect } = useDisconnect();
   const { pending } = useGetUserTransactions({moduleId:moduleId as string, userAddr:userAddr as string})
-
-  useEffect(()=>{
-    console.log({pending: pending[0]});
-  }, [])
 
   const handleConnectWallet = () => {
     if (isConnected) {
@@ -35,8 +30,8 @@ const UserInterfaceDemo = ({ changeModal, moduleId, userAddr }: UserInterfaceMod
 
   const handleProtocolTransaction = () => {
     changeModal!({
-      modalState: ModalState.INTERACT_CONFIRM,
-      optionalData: {...pending[1], receiptId: pending[1].payload}
+      modalState: ModalState.INTERACT,
+      optionalData: pending[1]
     });
   };
 

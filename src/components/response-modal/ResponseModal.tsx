@@ -2,7 +2,6 @@ import "./response.css";
 import successImg from "../../images/successfulmessage.gif";
 import { AppFeatures, ModalState, ResponseVal } from "../../types.ts";
 import CloseBtn from "../../close-btn.tsx";
-import { useWatchContractEvent } from "wagmi";
 
 interface ResponseModalProps extends ResponseVal, AppFeatures {}
 
@@ -11,8 +10,8 @@ const ResponseModal = ({
   amount,
   interactType,
   responseMsg,
+  changeModal,
   closeModal,
-  changeModal
 }: ResponseModalProps) => {
   const imgUrl = isSuccessful
     ? successImg
@@ -30,13 +29,10 @@ const ResponseModal = ({
         ${ amount && amount < 0 ? "" : `${amount}`} {interactType}{" "}
         {isSuccessful ? "Successful" : "Failed"}
       </h3>
-      <p>{responseMsg}</p>
+      <p>{responseMsg.substring(0, 150)} ...</p>
       <button
-        onClick={() => {
-          changeModal!({
-            modalState: ModalState.USER_INTERFACE,
-            optionalData: {}
-          });
+        onClick={()=>{
+          changeModal!({modalState: ModalState.USER_INTERFACE});
         }}
       >
         Proceed To Trade

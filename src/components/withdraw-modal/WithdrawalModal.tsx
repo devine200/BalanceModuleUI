@@ -1,10 +1,14 @@
 import "../deposit-modal/deposit.css";
+import ContractConfig from "../../utils/test-config.json";
 import { FiArrowLeft } from "react-icons/fi";
-import avalancheSquare from "../../images/avalanche-square.svg";
 import CloseBtn from "../../close-btn.tsx";
 import { AppFeatures, Deposit, ModalState } from "../../types.ts";
 import { useEffect, useState } from "react";
+import tradableLogo from "../../images/tradable-square.svg";
+import avalancheLogo from "../../images/avalanche-square.svg";
 import useContractInteract from "../../hooks/useContractInteract.tsx";
+import useDeserializer from "../../hooks/useDeserializer.tsx";
+import { BytesLike } from "ethers";
 
 interface WithdrawalModalProps extends Deposit, AppFeatures {}
 
@@ -14,32 +18,33 @@ const WithdrawalModal = ({
   assetImage,
   tokenName,
   chainImage,
-  userAddr, 
+  userAddr,
   tokenAddr,
+  moduleId,
 }: WithdrawalModalProps) => {
   // console.log("tradableAddress", userAddr)
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const { getTokenBalance, withdrawFromTradable } = useContractInteract();
+  const { balance, withdrawFromTradable } = useContractInteract();
   const [amount, setAmount] = useState<number>(0);
-  const [balance, setBalance] = useState<number>(0);
+  const { getVaultAddressFromModuleId } = useDeserializer();
 
-
-  useEffect(()=>{
-    if(!tokenAddr) return;
-    (async () => {
-      const tokenBalance = await getTokenBalance(tokenAddr);
-      //@ts-ignore
-      setBalance(tokenBalance);
-    })()
-  },[])
+  // useEffect(()=>{
+  //   if(!tokenAddr) return;
+  //   (async () => {
+  //     const tokenBalance = await getTokenBalance(tokenAddr);
+  //     //@ts-ignore
+  //     setBalance(tokenBalance);
+  //     console.log({tokenBalance})
+  //   })()
+  // },[])
 
   const handleAssetSelect = () => {
     try {
       changeModal!({
         modalState: ModalState.DEPOSIT_ASSET_SELECTION,
         optionalData: {
-          transactType: "withdraw"
-        }
+          transactType: "withdraw",
+        },
       });
     } catch (error) {
       console.log(error);
@@ -51,27 +56,37 @@ const WithdrawalModal = ({
       if (isLoading || !tokenName) return;
       if (!amount) alert("Amount field can not be empty!");
       setIsLoading(true);
-      await withdrawFromTradable(tokenAddr!, amount);
+      const vaultAddr = getVaultAddressFromModuleId(moduleId as BytesLike);
+      await withdrawFromTradable(vaultAddr, tokenAddr!, amount);
       changeModal!({
         modalState: ModalState.TRANS_LOADING,
         optionalData: {
+          source: tradableLogo,
+          destination: avalancheLogo,
           tradableAddress: userAddr,
           amount,
           transType: "Withdrawal",
-          eventOptions: { address: "", abi: {}, eventName: "" },
-        }
+          eventOptions: {
+            address: vaultAddr,
+            abi: ContractConfig.tradableSideVault.abi,
+            eventName: "SideChainWithdrawalProcessed",
+          },
+          eventQuery: {
+            key: "user",
+            value: userAddr,
+          },
+        },
       });
-
       setIsLoading(false);
-    } catch (error) {
-      console.log(error);
+    } catch (e: any) {
+      console.log(e);
       changeModal!({
         modalState: ModalState.RESPONSE,
         optionalData: {
           isSuccessful: false,
           interactType: "Withdrawal",
           amount: amount,
-          responseMsg: error?.toString()
+          responseMsg: `Error: ${e.shortMessage ? e.shortMessage : "Event Error"}`,
         },
       });
     }
@@ -105,27 +120,30 @@ const WithdrawalModal = ({
           </span>
         </div>
       </div>
-      <div className="form-holder">
-        <div className="asset-icon">
-          {assetImage ? <img src={assetImage} alt="avalanche" /> : ""}
+      <form onSubmit={handleSubmi}>
+        <div className="form-holder">
+          <div className="asset-icon">
+            {assetImage ? <img src={assetImage} alt="avalanche" /> : ""}
+          </div>
+          <div className="input-holder">
+            <input
+              onChange={(e) => setAmount(Number(e.target.value))}
+              className="display-amount"
+              type="text"
+              placeholder="0"
+            />
+            <span className="display-amount display-value">${balance}</span>
+          </div>
         </div>
-        <div className="input-holder">
-          <input
-            onChange={e => setAmount(Number(e.target.value))}
-            className="display-amount"
-            type="text"
-            placeholder="0"
-          />
-          <span className="display-amount display-value">${balance}</span>
-        </div>
-      </div>
-      <button
-        onClick={() => handleSubmit()}
-        disabled={!tokenName || isLoading || !amount}
-        className={`${!tokenName || isLoading || !amount ? "disabled" : ""}`}
-      >
-        Withdraw
-      </button>
+        <button
+          type="submit"
+          onClick={() => handleSubmit()}
+          disabled={!tokenName || isLoading || !amount}
+          className={`${!tokenName || isLoading || !amount ? "disabled" : ""}`}
+        >
+          Withdraw
+        </button>
+      </form>
     </div>
   );
 };

@@ -22,6 +22,7 @@ const TransactionLoadingModal = ({
   eventQuery
 }: TransactionLoadingModalProps) => {
   const loadingTimeoutLimit = estimatedTime ? estimatedTime : 300000;
+  //@ts-ignore
   const [interval, setInterval] = useState<Node.Timeout>(setTimeout(() => {
     unwatch();
     changeModal!({
@@ -44,23 +45,23 @@ const TransactionLoadingModal = ({
         // check if event meets query criteria
         if (args && args[eventQuery?.key] !== eventQuery?.value) return;
 
-        if (!nextModal) {
-          changeModal!({
-            modalState: ModalState.RESPONSE,
-            optionalData: {
-              isSuccessful: true,
-              interactType: transType,
-              amount,
-              responseMsg: `${transType.toLocaleUpperCase()} Completed Successfully`
-            }
-          });
-        } else if (nextModal) {
-          changeModal!(nextModal);
-        } else {
-          throw Error("invalid next screen option");
-        }
-        unwatch();
-        clearInterval(interval);
+        // if (!nextModal) {
+        //   changeModal!({
+        //     modalState: ModalState.RESPONSE,
+        //     optionalData: {
+        //       isSuccessful: true,
+        //       interactType: transType,
+        //       amount,
+        //       responseMsg: `${transType} completed successfully`
+        //     }
+        //   });
+        // } else if (nextModal) {
+        //   changeModal!(nextModal);
+        // } else {
+        //   throw Error("invalid next screen option");
+        // }
+        // unwatch();
+        // clearInterval(interval);
       },
       onError(e: any) {
         changeModal!({
@@ -72,7 +73,7 @@ const TransactionLoadingModal = ({
             responseMsg: `Error: ${e.shortMessage ? e.shortMessage : "Event Error"}`
           }
         });
-        console.log({ e });
+        console.log({ e, message: "working" });
         unwatch();
         clearInterval(interval);
       }
@@ -92,6 +93,7 @@ const TransactionLoadingModal = ({
     console.log(e);
     console.log("////////////////////////////");
     unwatch();
+    // callback?();
   } finally {
     setTimeout(() => {
       unwatch();
@@ -99,7 +101,6 @@ const TransactionLoadingModal = ({
   }
 
   useEffect(() => {
-
     return () => {
       clearInterval(interval);
     };

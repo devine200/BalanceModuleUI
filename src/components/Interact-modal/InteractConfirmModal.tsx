@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { AppFeatures, Interaction, ModalState } from "../../types.ts";
 import "./interact-modal.css";
 import CloseBtn from "../../close-btn.tsx";
@@ -11,7 +11,9 @@ import { BytesLike } from "ethers";
 import { config } from "../../wagmi.ts";
 import useDeserializer from "../../hooks/useDeserializer.tsx";
 
-interface InteractModalProps extends Interaction, AppFeatures {}
+interface InteractModalProps extends Interaction, AppFeatures {
+  receiptId: BytesLike;
+}
 
 const InteractConfirmModal = ({
   website,
@@ -20,18 +22,18 @@ const InteractConfirmModal = ({
   tokenDenom,
   changeModal,
   closeModal,
-  receiptId,//TODO: remove funcId from all types and then derive it from the receiptId
+  moduleId,
   payload,
+  receiptId
 }: InteractModalProps) => {
   const { transactionConfirmation, transactionRejection } = useContractInteract();
-  const { getVaultAddressFromFuncId, getVaultChainId, destructureReceiptId } = useDeserializer();
+  const { getVaultAddressFromModuleId, getVaultChainId } = useDeserializer();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   // @ts-ignore
   const { switchChain } = useSwitchChain(config);
 
   // getting side vault from func id
-  const { funcId } = destructureReceiptId(receiptId);
-  const vaultAddr = getVaultAddressFromFuncId(funcId);
+  const vaultAddr = getVaultAddressFromModuleId(moduleId as BytesLike);
   
   // getting side vault network id
   const sideChainId = getVaultChainId(vaultAddr)
@@ -83,16 +85,17 @@ const InteractConfirmModal = ({
   const handleTransactionRejection = async () => {
     try{
       setIsLoading(true);
-      await transactionRejection(vaultAddr, receiptId);
-
       // @ts-ignore
       switchChain({ chainId: sideChainId });
+
+      await transactionRejection(vaultAddr, receiptId);
+
       changeModal!({
         modalState: ModalState.TRANS_LOADING,
         optionalData: {
           transType: "Transaction Rejection",
           source: tradableLogo,
-          destination: avalancheLogo,
+          destination: avalancheLogo,//TODO: Make the logo used to be based off of the trasaction movement
           eventOptions: {
             address: vaultAddr,
             abi: contractConfig.tradableSideVault.abi,

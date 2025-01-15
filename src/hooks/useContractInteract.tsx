@@ -27,7 +27,7 @@ interface ContractInteractionVals {
     token: AddressLike,
     amount: number
   ) => void;
-  withdrawFromTradable: (token: AddressLike, amount: number) => void;
+  withdrawFromTradable: (vaultAddr: AddressLike, token: AddressLike, amount: number) => void;
   initiateProtocolTransaction: (
     funcId: BytesLike,
     token: AddressLike,
@@ -53,7 +53,7 @@ const useContractInteract = (): ContractInteractionVals => {
   const { chains, switchChain } = useSwitchChain();
   const provider = useEthersProvider({ chainId });
   const { writeContractAsync } = useWriteContract({ config });
-  const { getVaultChainId } = useDeserializer();
+  const { getVaultChainId, constructReceiptId } = useDeserializer();
 
   const DEFAULT_TOKEN_DECIMALS = 8;
 
@@ -86,7 +86,7 @@ const useContractInteract = (): ContractInteractionVals => {
     funcId: BytesLike,
     token: AddressLike,
     amount: number
-  ) => {
+  ):Promise<BytesLike> => {
     // check what  chain system is connected to
     if (chainId && baseChainID !== chainId.toString()) {
       const baseChain = chains.filter(
@@ -106,7 +106,7 @@ const useContractInteract = (): ContractInteractionVals => {
       provider
     );
     const tokenDecimals = await tokenContract.decimals();
-
+    const amountToDecimals = parseUnits(amount.toString(), tokenDecimals);
     await writeContractAsync({
       abi: contractConfig.tradableBalanceVault.abi,
       // @ts-ignore
@@ -115,11 +115,13 @@ const useContractInteract = (): ContractInteractionVals => {
       args: [
         funcId,
         token,
-        parseUnits(amount.toString(), tokenDecimals),
+        amountToDecimals,
         nonce,
       ],
       chainId,
     });
+
+    return constructReceiptId(funcId, address as AddressLike, token, amountToDecimals, nonce)
   };
 
   const depositIntoTradable = async (
@@ -128,8 +130,8 @@ const useContractInteract = (): ContractInteractionVals => {
     amount: number
   ) => {
     // switch to module network
+    const depositChain = getVaultChainId(vaultAddr);
     try {
-      const depositChain = getVaultChainId(vaultAddr);
       // @ts-ignore
       switchChain({ chainId: depositChain });
     } catch (e) {
@@ -142,20 +144,20 @@ const useContractInteract = (): ContractInteractionVals => {
       contractConfig.tradableSideVault.stableToken.abi,
       provider
     );
-
     const tokenDecimals = await tokenContract.decimals();
     const amountToDecimals = parseUnits(amount.toString(), tokenDecimals);
-
     // approve token to be allocated
     await writeContractAsync({
       abi: contractConfig.tradableSideVault.stableToken.abi,
       // @ts-ignore
       address: token,
       functionName: "approve",
-      args: [, amountToDecimals],
-      chainId,
+      args: [vaultAddr, amountToDecimals],
+      chainId: depositChain,
     });
 
+    console.log("trying to approve transaction amount");
+    
     // trigger function to deposit into tradable
     await writeContractAsync({
       abi: contractConfig.tradableSideVault.abi,
@@ -163,12 +165,14 @@ const useContractInteract = (): ContractInteractionVals => {
       address: vaultAddr,
       functionName: "marginAccountDeposit",
       args: [token, amountToDecimals],
-      chainId,
+      chainId: depositChain,
     });
+    console.log("trying to desposit to side vault");
   };
 
   const withdrawFromTradable = async (
-    token: AddressLike | any,
+    vaultAddr: AddressLike,
+    token: AddressLike,
     amount: number
   ) => {
     // get token decimals for amount calculation
@@ -228,15 +232,12 @@ const useContractInteract = (): ContractInteractionVals => {
   };
 
   const getTokenBalance = async (tokenAddr: AddressLike): Promise<Number> => {
-      console.log({provider});
     const tokenContract = new Contract(
       tokenAddr as Addressable,
       contractConfig.tradableSideVault.stableToken.abi,
       provider
     );
-    // @ts-ignore
     const decimals = await tokenContract.decimals();
-    // @ts-ignore
     const userBalance = await tokenContract.balanceOf(address);
 
     return parseFloat(

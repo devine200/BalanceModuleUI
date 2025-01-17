@@ -153,7 +153,6 @@ const useContractInteract = (): ContractInteractionVals => {
       address: token,
       functionName: "approve",
       args: [vaultAddr, amountToDecimals],
-      chainId: depositChain,
     });
 
     console.log("trying to approve transaction amount");
@@ -165,7 +164,6 @@ const useContractInteract = (): ContractInteractionVals => {
       address: vaultAddr,
       functionName: "marginAccountDeposit",
       args: [token, amountToDecimals],
-      chainId: depositChain,
     });
     console.log("trying to desposit to side vault");
   };

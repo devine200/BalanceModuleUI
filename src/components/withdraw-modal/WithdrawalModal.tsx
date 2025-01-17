@@ -120,7 +120,7 @@ const WithdrawalModal = ({
           </span>
         </div>
       </div>
-      <form onSubmit={handleSubmi}>
+      <form onSubmit={handleSubmit}>
         <div className="form-holder">
           <div className="asset-icon">
             {assetImage ? <img src={assetImage} alt="avalanche" /> : ""}

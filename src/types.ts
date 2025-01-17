@@ -75,11 +75,17 @@ export interface ModalInfo {
   optionalData?: any;
 }
 
+export enum AssetSelectionTransactionType {
+  DEPOSIT,
+  WITHDRAWAL
+}
+
 export interface Deposit {
-  tokenName: string;
+  selectedChainId?: number;
+  tokenName?: string;
   assetImage?: string;
   chainImage?: string;
-  transactType?: string;
+  transactType?: AssetSelectionTransactionType;
   tokenAddr?: AddressLike;
   tradableAddress?: AddressLike;
 }

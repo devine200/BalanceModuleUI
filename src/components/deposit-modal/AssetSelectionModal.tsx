@@ -1,7 +1,7 @@
 import "./deposit.css";
 import contractConfig from "../../utils/test-config.json";
 import CloseBtn from "../../close-btn.tsx";
-import { AppFeatures, Deposit, ModalState } from "../../types.ts";
+import { AppFeatures, AssetSelectionTransactionType, Deposit, ModalState } from "../../types.ts";
 import { useState } from "react";
 import { useSwitchChain } from "wagmi";
 import { config } from "../../wagmi.ts";
@@ -23,12 +23,14 @@ const AssetSelectionModal = ({
   
   const handleAssetSelection = (token: any) => {
     //@ts-ignore
-    switchChain({chainId: contractConfig.tradableSideVault.vault[selectedChain.name].networkId})
+    // TODO: remember to replace this logic in the withdrawal system
+    // switchChain({chainId: contractConfig.tradableSideVault.vault[selectedChain.name].networkId});
     changeModal!({
       modalState:
-        transactType === "deposit" ? ModalState.DEPOSIT : ModalState.WITHDRAWAL,
+        transactType === AssetSelectionTransactionType.DEPOSIT ? ModalState.DEPOSIT : ModalState.WITHDRAWAL,
       optionalData: {
-        asset: selectedChain,
+        //@ts-ignore
+        selectedChainId: contractConfig.tradableSideVault.vault[selectedChain.name].networkId,
         chainImage: selectedChain?.logo,
         tokenName: token?.name,
         assetImage: token?.logo,

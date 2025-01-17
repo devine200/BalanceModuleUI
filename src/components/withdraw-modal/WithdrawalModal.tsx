@@ -2,7 +2,7 @@ import "../deposit-modal/deposit.css";
 import ContractConfig from "../../utils/test-config.json";
 import { FiArrowLeft } from "react-icons/fi";
 import CloseBtn from "../../close-btn.tsx";
-import { AppFeatures, Deposit, ModalState } from "../../types.ts";
+import { AppFeatures, AssetSelectionTransactionType, Deposit, ModalState } from "../../types.ts";
 import { useEffect, useState } from "react";
 import tradableLogo from "../../images/tradable-square.svg";
 import avalancheLogo from "../../images/avalanche-square.svg";
@@ -43,7 +43,7 @@ const WithdrawalModal = ({
       changeModal!({
         modalState: ModalState.DEPOSIT_ASSET_SELECTION,
         optionalData: {
-          transactType: "withdraw",
+          transactType: AssetSelectionTransactionType.WITHDRAWAL,
         },
       });
     } catch (error) {

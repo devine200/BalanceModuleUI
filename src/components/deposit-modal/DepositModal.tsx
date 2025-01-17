@@ -1,17 +1,25 @@
 import "./deposit.css";
 import { FiArrowLeft } from "react-icons/fi";
 import CloseBtn from "../../close-btn.tsx";
-import { AppFeatures, Deposit, ModalState } from "../../types.ts";
-import { useState } from "react";
+import {
+  AppFeatures,
+  AssetSelectionTransactionType,
+  Deposit,
+  ModalState,
+} from "../../types.ts";
+import { useEffect, useState } from "react";
 import useContractInteract from "../../hooks/useContractInteract.tsx";
 import useDeserializer from "../../hooks/useDeserializer.tsx";
 import { AddressLike, BytesLike } from "ethers";
 import ContractConfig from "../../utils/test-config.json";
-import { useAccount } from "wagmi";
+import { useAccount, useSwitchChain } from "wagmi";
+import { config } from "../../wagmi.ts";
+import useGetTokenBalance from "../../hooks/useGetTokenBalance.tsx";
 
 interface DepositModalProps extends Deposit, AppFeatures {}
 
 const DepositModal = ({
+  selectedChainId ,
   closeModal,
   changeModal,
   assetImage,
@@ -20,18 +28,22 @@ const DepositModal = ({
   tokenAddr,
   moduleId,
 }: DepositModalProps) => {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const { balance, depositIntoTradable } = useContractInteract();
-  const [amount, setAmount] = useState<number>(0);
+  const { depositIntoTradable } = useContractInteract();
   const { getVaultAddressFromModuleId } = useDeserializer();
+  const balance = tokenAddr && selectedChainId ? useGetTokenBalance({tokenAddr, selectedChainId: selectedChainId}) : 0;
+
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [amount, setAmount] = useState<number>(0);
   const { address: userAddr } = useAccount();
+
+
 
   const handleAssetSelect = () => {
     try {
       changeModal!({
         modalState: ModalState.DEPOSIT_ASSET_SELECTION,
         optionalData: {
-          transactType: "deposit",
+          transactType: AssetSelectionTransactionType.DEPOSIT,
         },
       });
     } catch (error) {
@@ -120,7 +132,7 @@ const DepositModal = ({
               type="number"
               placeholder="0"
             />
-            <span className="display-amount display-value">${balance}</span>
+            <span className="display-amount display-value">${balance.toString()}</span>
           </div>
         </div>
         <button

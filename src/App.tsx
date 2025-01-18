@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useAccount, useEnsAddress } from "wagmi";
+import { useAccount } from "wagmi";
 import AssetSelectionModal from "./components/deposit-modal/AssetSelectionModal";
 import DepositModal from "./components/deposit-modal/DepositModal";
 import InteractHistoryModal from "./components/Interact-modal/InteractHistoryModal";
@@ -10,7 +10,6 @@ import ConnectWallet from "./components/connect_wallet-modal/ConnectWalletModal"
 import ModalLayout from "./ModalLayout";
 import { ModalState, ModalInfo, AppFeatures } from "./types";
 
-import useGetUserTransactions from "./hooks/useGetUserTransaction";
 import UserInterfaceDemo from "./components/user-interface-modal";
 import WithdrawalModal from "./components/withdraw-modal/WithdrawalModal";
 import InteractConfirmModal from "./components/Interact-modal/InteractConfirmModal";

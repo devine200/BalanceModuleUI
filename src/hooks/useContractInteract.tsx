@@ -13,7 +13,6 @@ import {
 	useAccount,
 	useWriteContract,
 	useReadContract,
-	useReadContracts,
 } from "wagmi";
 import { useEthersProvider } from "./useEthersSigner";
 import { config } from "../wagmi";

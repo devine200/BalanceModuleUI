@@ -5,6 +5,7 @@ interface ModuleDetailProps {
   userAddr: string;
 }
 
+// @ts-ignore
 const useGetUserTransactions = ({
   moduleId,
   userAddr,

@@ -1,9 +1,10 @@
 import { FiArrowLeft } from "react-icons/fi";
-import { AppFeatures, ModalState } from "./types";
+import { AppFeatures } from "./types";
 
 interface backBtn {
   backType: string;
 }
+//@ts-ignore
 interface BackBtnProps extends backBtn, AppFeatures {}
 
 const BackBtn = () => {

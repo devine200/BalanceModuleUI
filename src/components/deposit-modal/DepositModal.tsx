@@ -15,6 +15,7 @@ import ContractConfig from "../../utils/test-config.json";
 import { useAccount } from "wagmi";
 import useGetTokenBalance from "../../hooks/useGetTokenBalance.tsx";
 
+
 interface DepositModalProps extends Deposit, AppFeatures {}
 
 const DepositModal = ({
@@ -52,10 +53,11 @@ const DepositModal = ({
     try {
       if (isLoading || !tokenName) return;
       if (!amount) alert("Amount field can not be empty!");
+      
       setIsLoading(true);
       const vaultAddr = getVaultAddressFromModuleId(moduleId as BytesLike);
       await depositIntoTradable(vaultAddr, tokenAddr as AddressLike, amount);
-      console.log({vaultAddr})
+    
       changeModal!({
         modalState: ModalState.TRANS_LOADING,
         optionalData: {

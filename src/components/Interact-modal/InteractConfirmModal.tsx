@@ -95,7 +95,7 @@ const InteractConfirmModal = ({
         optionalData: {
           transType: "Transaction Rejection",
           source: tradableLogo,
-          destination: avalancheLogo,//TODO: Make the logo used to be based off of the trasaction movement
+          destination: avalancheLogo,
           eventOptions: {
             address: vaultAddr,
             abi: contractConfig.tradableSideVault.abi,

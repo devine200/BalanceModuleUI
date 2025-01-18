@@ -36,9 +36,6 @@ export interface InteractionHistory {
   completed: Interaction[];
 }
 export interface TransactionLoading {
-  source: string;
-  destination: string;
-  estimatedTime?: number;
   transType: string;
   eventOptions?: any;
   eventQuery?: EventQuery;
@@ -87,7 +84,6 @@ export interface Deposit {
   chainImage?: string;
   transactType?: AssetSelectionTransactionType;
   tokenAddr?: AddressLike;
-  tradableAddress?: AddressLike;
 }
 
 export interface ConnectWallet {

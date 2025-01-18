@@ -8,6 +8,7 @@ import usdtLogo from "../images/USDT_logo.png";
 export interface ChainData {
   name: string;
   logo: string;
+  chainId: number;
   tokens: TokenData[];
 }
 
@@ -17,13 +18,13 @@ export interface TokenData {
     address: AddressLike;
     logo: string;
   }
-
-// TODO: create a function to get the chain logo using chainId
+  
 const useGetAssets = ():ChainData[] => {
   return [
     {
       name: "bsc",
       logo: binanceLogo,
+      chainId: 97,
       tokens: [
         {
           name: "USDC",
@@ -45,6 +46,7 @@ const useGetAssets = ():ChainData[] => {
     {
       name: "avalanche",
       logo: avalancheSquare,
+      chainId: 43113,
       tokens: [
         {
           name: "USDC",

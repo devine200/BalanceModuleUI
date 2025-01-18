@@ -4,6 +4,9 @@ import CloseBtn from "../../close-btn.tsx";
 import { useEffect, useState } from "react";
 import { watchContractEvent } from "@wagmi/core";
 import { config } from "../../wagmi.ts";
+import tradableLogo from "../../images/tradable-square.svg";
+import useGetAssets from "../../hooks/useGetAssets.tsx";
+import { useChainId } from "wagmi";
 
 interface TransactionLoadingModalProps
   extends TransactionLoading,
@@ -11,9 +14,6 @@ interface TransactionLoadingModalProps
 
 const TransactionLoadingModal = ({
   transType,
-  source,
-  destination,
-  estimatedTime,
   closeModal,
   changeModal,
   eventOptions,
@@ -21,7 +21,12 @@ const TransactionLoadingModal = ({
   nextModal,
   eventQuery
 }: TransactionLoadingModalProps) => {
-  const loadingTimeoutLimit = estimatedTime ? estimatedTime : 300000;
+  const chainId = useChainId();
+  const chainDataList = useGetAssets();
+  
+  const currentChainData = chainDataList.filter(({chainId:currentChainId})=> currentChainId === chainId);
+  const destinationLogo = currentChainData.length > 0 ? currentChainData[0].logo : tradableLogo;
+  const loadingTimeoutLimit = 300000;
   //@ts-ignore
   const [interval, setInterval] = useState<Node.Timeout>(setTimeout(() => {
     unwatch();
@@ -111,9 +116,9 @@ const TransactionLoadingModal = ({
       <CloseBtn closeModal={closeModal!} />
       <h3>Confirming {transType}</h3>
       <div className="loading-section">
-        <img src={source} alt="tradable logo" />
+        <img src={tradableLogo} alt="tradable logo" />
         <div className="glint-box"></div>
-        <img src={destination} alt="tradable logo" />
+        <img src={destinationLogo} alt="tradable logo" />
       </div>
       <p>Estimated Completion Time is {loadingTimeoutLimit / 60_000}mins</p>
     </div>

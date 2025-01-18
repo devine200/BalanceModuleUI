@@ -51,9 +51,6 @@ const WithdrawalModal = ({
       changeModal!({
         modalState: ModalState.TRANS_LOADING,
         optionalData: {
-          source: tradableLogo,
-          destination: avalancheLogo,
-          tradableAddress: userAddr,
           amount,
           transType: "Withdrawal",
           eventOptions: {

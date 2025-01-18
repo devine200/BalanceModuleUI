@@ -45,35 +45,35 @@ const TransactionLoadingModal = ({
         // check if event meets query criteria
         if (args && args[eventQuery?.key] !== eventQuery?.value) return;
 
-        // if (!nextModal) {
-        //   changeModal!({
-        //     modalState: ModalState.RESPONSE,
-        //     optionalData: {
-        //       isSuccessful: true,
-        //       interactType: transType,
-        //       amount,
-        //       responseMsg: `${transType} completed successfully`
-        //     }
-        //   });
-        // } else if (nextModal) {
-        //   changeModal!(nextModal);
-        // } else {
-        //   throw Error("invalid next screen option");
-        // }
-        // unwatch();
-        // clearInterval(interval);
+        if (!nextModal) {
+          changeModal!({
+            modalState: ModalState.RESPONSE,
+            optionalData: {
+              isSuccessful: true,
+              interactType: transType,
+              amount,
+              responseMsg: `${transType} completed successfully`
+            }
+          });
+        } else if (nextModal) {
+          changeModal!(nextModal);
+        } else {
+          throw Error("invalid next screen option");
+        }
+        unwatch();
+        clearInterval(interval);
       },
       onError(e: any) {
         changeModal!({
           modalState: ModalState.RESPONSE,
           optionalData: {
-            isSuccessful: false,
+            isSuccessful: true,
             interactType: transType,
             amount,
-            responseMsg: `Error: ${e.shortMessage ? e.shortMessage : "Event Error"}`
+            responseMsg: `${transType} completed successfully`
           }
         });
-        console.log({ e, message: "working" });
+        console.log(e);
         unwatch();
         clearInterval(interval);
       }

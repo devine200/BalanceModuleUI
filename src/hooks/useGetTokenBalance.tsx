@@ -56,7 +56,7 @@ const useGetTokenBalance = ({
 	});
     
 	useEffect(() => {
-        if(isPending && !data) return;
+        if(isPending) return;
         //@ts-ignore
         const [balance, decimals] = data;
         setBalance(balance.result);

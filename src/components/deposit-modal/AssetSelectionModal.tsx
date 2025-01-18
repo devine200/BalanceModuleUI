@@ -23,8 +23,7 @@ const AssetSelectionModal = ({
   
   const handleAssetSelection = (token: any) => {
     //@ts-ignore
-    // TODO: remember to replace this logic in the withdrawal system
-    // switchChain({chainId: contractConfig.tradableSideVault.vault[selectedChain.name].networkId});
+    switchChain({chainId: contractConfig.tradableSideVault.vault[selectedChain.name].networkId});
     changeModal!({
       modalState:
         transactType === AssetSelectionTransactionType.DEPOSIT ? ModalState.DEPOSIT : ModalState.WITHDRAWAL,

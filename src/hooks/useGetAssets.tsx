@@ -18,6 +18,7 @@ export interface TokenData {
     logo: string;
   }
 
+// TODO: create a function to get the chain logo using chainId
 const useGetAssets = ():ChainData[] => {
   return [
     {

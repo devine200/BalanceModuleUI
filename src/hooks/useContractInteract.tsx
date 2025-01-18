@@ -13,6 +13,7 @@ import {
 	useAccount,
 	useWriteContract,
 	useReadContract,
+	useReadContracts,
 } from "wagmi";
 import { useEthersProvider } from "./useEthersSigner";
 import { config } from "../wagmi";
@@ -50,36 +51,44 @@ interface ContractInteractionVals {
 
 const useContractInteract = (): ContractInteractionVals => {
 	const chainId = useChainId();
-	const { address } = useAccount();
+	const { address: userAddress } = useAccount();
 	const { chains, switchChain } = useSwitchChain();
 	const { writeContractAsync } = useWriteContract({ config });
 	const provider = useEthersProvider({ chainId });
-	const { getVaultChainId, constructReceiptId } = useDeserializer();
+	const { constructReceiptId } = useDeserializer();
 	const baseChainID = import.meta.env.VITE_BASE_CHAIN_NETWORK_ID!;
-	const { data, isPending, error } = useReadContract({
+
+	const {
+		data: userTradableBalanceData,
+		isPending: isUserTradableBalancePending,
+		error: userBalanceDataError,
+	} = useReadContract({
 		//@ts-ignore
 		address: ContractConfig.tradableBalanceVault.address,
 		abi: ContractConfig.tradableBalanceVault.abi,
 		functionName: "getUserTokenBalance",
-		args: [address],
+		args: [userAddress],
 		//@ts-ignore
 		chainId: parseInt(baseChainID),
 	});
-  const [balance, setBalance] = useState<number>(0);
-  const DEFAULT_TOKEN_DECIMALS = 8;
-  
-	useEffect(() => {
-    if (isPending && !data) return;
-    console.log({data, isPending});
-		//@ts-ignore
-		setBalance(parseFloat(formatUnits(data, DEFAULT_TOKEN_DECIMALS)));
-	}, [isPending]);
+
+	const [balance, setBalance] = useState<number>(0);
+	const DEFAULT_TOKEN_DECIMALS = 8;
 
 	useEffect(() => {
-		if (!error) return;
-		console.log(error);
-	}, [error]);
+		if (isUserTradableBalancePending && !userTradableBalanceData) return;
+		setBalance(
+      parseFloat(
+        //@ts-ignore
+				formatUnits(userTradableBalanceData, DEFAULT_TOKEN_DECIMALS),
+			),
+		);
+	}, [isUserTradableBalancePending]);
 
+	useEffect(() => {
+		if (!userBalanceDataError) return;
+		console.log(userBalanceDataError);
+	}, [userBalanceDataError]);
 
 	const initiateProtocolTransaction = async (
 		funcId: BytesLike,
@@ -117,7 +126,7 @@ const useContractInteract = (): ContractInteractionVals => {
 
 		return constructReceiptId(
 			funcId,
-			address as AddressLike,
+			userAddress as AddressLike,
 			token,
 			amountToDecimals,
 			nonce,
@@ -129,15 +138,6 @@ const useContractInteract = (): ContractInteractionVals => {
 		token: AddressLike | any,
 		amount: number,
 	) => {
-		// switch to module network
-		const depositChain = getVaultChainId(vaultAddr);
-		try {
-			// @ts-ignore
-			switchChain({ chainId: depositChain });
-		} catch (e) {
-			throw Error("Vault Does Not Exist");
-		}
-
 		// get token decimals for amount calculation
 		const tokenContract = new Contract(
 			token,
@@ -146,6 +146,11 @@ const useContractInteract = (): ContractInteractionVals => {
 		);
 		const tokenDecimals = await tokenContract.decimals();
 		const amountToDecimals = parseUnits(amount.toString(), tokenDecimals);
+    let userTokenBalance = await tokenContract.balanceOf(userAddress);
+    userTokenBalance = formatUnits(userTokenBalance, tokenDecimals);
+    if(userTokenBalance < amount) {
+      throw new Error("Insufficient Token Balance");
+    }
 		// approve token to be allocated
 		await writeContractAsync({
 			abi: ContractConfig.tradableSideVault.stableToken.abi,
@@ -155,8 +160,6 @@ const useContractInteract = (): ContractInteractionVals => {
 			args: [vaultAddr, amountToDecimals],
 		});
 
-		console.log("trying to approve transaction amount");
-
 		// trigger function to deposit into tradable
 		await writeContractAsync({
 			abi: ContractConfig.tradableSideVault.abi,
@@ -165,7 +168,6 @@ const useContractInteract = (): ContractInteractionVals => {
 			functionName: "marginAccountDeposit",
 			args: [token, amountToDecimals],
 		});
-		console.log("trying to desposit to side vault");
 	};
 
 	const withdrawFromTradable = async (
@@ -185,7 +187,7 @@ const useContractInteract = (): ContractInteractionVals => {
 
 		// check if user has the balance to withdraw
 		if (balance < amount) {
-			throw Error("insufficient balance");
+			throw Error("Insufficient Tradable Balance");
 		}
 
 		// make withdrawal request

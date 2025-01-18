@@ -13,6 +13,7 @@ import { BytesLike } from "ethers";
 interface WithdrawalModalProps extends Deposit, AppFeatures {}
 
 const WithdrawalModal = ({
+  selectedChainId,
   closeModal,
   changeModal,
   assetImage,
@@ -22,21 +23,10 @@ const WithdrawalModal = ({
   tokenAddr,
   moduleId,
 }: WithdrawalModalProps) => {
-  // console.log("tradableAddress", userAddr)
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { balance, withdrawFromTradable } = useContractInteract();
   const [amount, setAmount] = useState<number>(0);
   const { getVaultAddressFromModuleId } = useDeserializer();
-
-  // useEffect(()=>{
-  //   if(!tokenAddr) return;
-  //   (async () => {
-  //     const tokenBalance = await getTokenBalance(tokenAddr);
-  //     //@ts-ignore
-  //     setBalance(tokenBalance);
-  //     console.log({tokenBalance})
-  //   })()
-  // },[])
 
   const handleAssetSelect = () => {
     try {
@@ -70,6 +60,7 @@ const WithdrawalModal = ({
             address: vaultAddr,
             abi: ContractConfig.tradableSideVault.abi,
             eventName: "SideChainWithdrawalProcessed",
+            chainId: selectedChainId,
           },
           eventQuery: {
             key: "user",

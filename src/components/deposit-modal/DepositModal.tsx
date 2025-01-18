@@ -55,7 +55,7 @@ const DepositModal = ({
       setIsLoading(true);
       const vaultAddr = getVaultAddressFromModuleId(moduleId as BytesLike);
       await depositIntoTradable(vaultAddr, tokenAddr as AddressLike, amount);
-
+      console.log({vaultAddr})
       changeModal!({
         modalState: ModalState.TRANS_LOADING,
         optionalData: {
@@ -66,6 +66,7 @@ const DepositModal = ({
             address: vaultAddr,
             abi: ContractConfig.tradableSideVault.abi,
             eventName: "SideChainMarginDepositInitiated",
+            chainId: selectedChainId,
           },
           eventQuery: {
             key: "user",

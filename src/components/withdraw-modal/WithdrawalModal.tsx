@@ -4,8 +4,6 @@ import { FiArrowLeft } from "react-icons/fi";
 import CloseBtn from "../../close-btn.tsx";
 import { AppFeatures, AssetSelectionTransactionType, Deposit, ModalState } from "../../types.ts";
 import { useState } from "react";
-import tradableLogo from "../../images/tradable-square.svg";
-import avalancheLogo from "../../images/avalanche-square.svg";
 import useContractInteract from "../../hooks/useContractInteract.tsx";
 import useDeserializer from "../../hooks/useDeserializer.tsx";
 import { BytesLike } from "ethers";

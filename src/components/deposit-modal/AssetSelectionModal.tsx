@@ -1,8 +1,8 @@
 import "./deposit.css";
 import contractConfig from "../../utils/test-config.json";
 import CloseBtn from "../../close-btn.tsx";
-import { AppFeatures, AssetSelectionTransactionType, Deposit, ModalState } from "../../types.ts";
-import { useState } from "react";
+import { AppFeatures, AssetSelectionTransactionType, Deposit, ModalInfo, ModalState } from "../../types.ts";
+import { useCallback, useEffect, useState } from "react";
 import { useSwitchChain } from "wagmi";
 import { config } from "../../wagmi.ts";
 import useGetAssets, { ChainData } from "../../hooks/useGetAssets.tsx";
@@ -20,7 +20,7 @@ const AssetSelectionModal = ({
   const [selectedChain, setSelectedChain] = useState<ChainData>(data[0]);
   //@ts-ignore
   const { switchChain } = useSwitchChain(config)
-  
+
   const handleAssetSelection = (token: any) => {
     //@ts-ignore
     switchChain({chainId: contractConfig.tradableSideVault.vault[selectedChain.name].networkId});
@@ -36,7 +36,7 @@ const AssetSelectionModal = ({
         tokenAddr: token?.address
       }
     });
-  };
+  }
 
   const filteredTokens = !selectedChain?.tokens
     ? []

@@ -26,6 +26,10 @@ const UserInterfaceDemo = ({ changeModal, moduleId, userAddr }: UserInterfaceMod
   const handleDisconnectWallet = () => {
     if (!isConnected) return;
     disconnect();
+    changeModal!({
+      modalState: ModalState.USER_INTERFACE,
+      optionalData: {}
+    });
   };
 
   const handleProtocolTransaction = () => {

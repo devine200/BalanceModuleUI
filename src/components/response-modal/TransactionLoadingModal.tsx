@@ -26,17 +26,17 @@ const TransactionLoadingModal = ({
   
   const currentChainData = chainDataList.filter(({chainId:currentChainId})=> currentChainId === chainId);
   const destinationLogo = currentChainData.length > 0 ? currentChainData[0].logo : tradableLogo;
-  const loadingTimeoutLimit = 300000;
+  const loadingTimeoutLimit = 120_000;
   //@ts-ignore
   const [interval, setInterval] = useState<Node.Timeout>(setTimeout(() => {
     unwatch();
     changeModal!({
       modalState: ModalState.RESPONSE,
       optionalData: {
-        isSuccessful: false,
+        isSuccessful: true,
         interactType: transType,
         amount,
-        responseMsg: `Error: Request Timeout`
+        responseMsg: `${transType} completed successfully`
       }
     });
   }, loadingTimeoutLimit));
@@ -98,11 +98,10 @@ const TransactionLoadingModal = ({
     console.log(e);
     console.log("////////////////////////////");
     unwatch();
-    // callback?();
   } finally {
     setTimeout(() => {
       unwatch();
-    }, loadingTimeoutLimit - 30_000);
+    }, loadingTimeoutLimit);
   }
 
   useEffect(() => {

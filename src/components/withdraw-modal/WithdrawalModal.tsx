@@ -82,7 +82,7 @@ const WithdrawalModal = ({
     <div className="app-modal deposit-modal">
       <CloseBtn closeModal={closeModal!} />
       <div className="heading">
-        <span>
+        <span onClick={closeModal}>
           <FiArrowLeft />
         </span>{" "}
         <h3>Withdraw Funds</h3>

@@ -96,7 +96,7 @@ const DepositModal = ({
     <div className="app-modal deposit-modal">
       <CloseBtn closeModal={closeModal!} />
       <div className="heading">
-        <span>
+        <span onClick={closeModal}>
           <FiArrowLeft />
         </span>{" "}
         <h3>Deposit Funds</h3>

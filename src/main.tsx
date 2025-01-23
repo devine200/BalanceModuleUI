@@ -16,6 +16,7 @@ const queryClient = new QueryClient()
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
+    <div>Hello</div>
     <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>
         <App moduleId="0x000000000000000000000000f31467c0ca100abef512002183de7dcbeb9d2fc0000000000000000000000000abd9ca667bc2c737996929c2c9c5fc94af947fd2" />

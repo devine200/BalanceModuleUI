@@ -92,7 +92,7 @@ function App({ moduleId }: AppProp) {
     }
   }, [modalInfo, isModalOpen]);
 
-  return <ModalLayout>{currentModal}</ModalLayout>;
+  return isModalOpen ? <ModalLayout>{currentModal}</ModalLayout> : <></>;
 }
 
 export default App;

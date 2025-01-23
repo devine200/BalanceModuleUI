@@ -12,161 +12,161 @@ import { config } from "../../wagmi.ts";
 import useDeserializer from "../../hooks/useDeserializer.tsx";
 
 interface InteractModalProps extends Interaction, AppFeatures {
-  receiptId: BytesLike;
+	receiptId: BytesLike;
 }
 
 const InteractConfirmModal = ({
-  website,
-  interactType,
-  interactAmount,
-  tokenDenom,
-  changeModal,
-  closeModal,
-  moduleId,
-  payload,
-  receiptId
+	website,
+	interactType,
+	interactAmount,
+	tokenDenom,
+	changeModal,
+	closeModal,
+	moduleId,
+	payload,
+	receiptId,
 }: InteractModalProps) => {
-  const { transactionConfirmation, transactionRejection } = useContractInteract();
-  const { getVaultAddressFromModuleId, getVaultChainId } = useDeserializer();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  // @ts-ignore
-  const { switchChain } = useSwitchChain(config);
+	const { transactionConfirmation, transactionRejection } =
+		useContractInteract();
+	const { getVaultAddressFromModuleId, getVaultChainId } = useDeserializer();
+	const [isLoading, setIsLoading] = useState<boolean>(false);
+	// @ts-ignore
+	const { switchChain } = useSwitchChain(config);
 
-  // getting side vault from func id
-  const vaultAddr = getVaultAddressFromModuleId(moduleId as BytesLike);
-  
-  // getting side vault network id
-  const sideChainId = getVaultChainId(vaultAddr)
+	// getting side vault from func id
+	const vaultAddr = getVaultAddressFromModuleId(moduleId as BytesLike);
 
-  const handleTransactionConfirmation = async () => {
-    try{
-      setIsLoading(true);
-      // @ts-ignore
-      switchChain({ chainId: sideChainId });
-      // console.log({receiptId})
-      await transactionConfirmation(vaultAddr, receiptId, payload);
+	// getting side vault network id
+	const sideChainId = getVaultChainId(vaultAddr);
 
-      changeModal!({
-        modalState: ModalState.TRANS_LOADING,
-        optionalData: {
-          transType: "Transaction Confirmation",
-          source: tradableLogo,
-          destination: avalancheLogo,
-          eventOptions: {
-            address: vaultAddr,
-            abi: contractConfig.tradableSideVault.abi,
-            eventName: "ReceiptFunctionExecuted",
-            chainId: sideChainId,
-            onLogs() {},
-          },
-          eventQuery: {
-            key: "receiptId",
-            value: receiptId,
-          },
-          amount: interactAmount,
-        },
-      });
-    }catch(e:any){
-      console.log(e)
-      changeModal!({
-        modalState: ModalState.RESPONSE,
-        optionalData: {
-          isSuccessful: false,
-          amount: interactAmount,
-          interactType,
-          responseMsg: e.shortMessage ? e.shortMessage : e.toString(),
-        },
-      });
-    }finally{
-      setIsLoading(false);
-    }
-  }
+	const handleTransactionConfirmation = async () => {
+		try {
+			setIsLoading(true);
+			// @ts-ignore
+			switchChain({ chainId: sideChainId });
+			// console.log({receiptId})
+			await transactionConfirmation(vaultAddr, receiptId, payload);
 
-  const handleTransactionRejection = async () => {
-    try{
-      setIsLoading(true);
-      // @ts-ignore
-      switchChain({ chainId: sideChainId });
+			changeModal!({
+				modalState: ModalState.TRANS_LOADING,
+				optionalData: {
+					transType: "Transaction Confirmation",
+					source: tradableLogo,
+					destination: avalancheLogo,
+					eventOptions: {
+						address: vaultAddr,
+						abi: contractConfig.tradableSideVault.abi,
+						eventName: "ReceiptFunctionExecuted",
+						chainId: sideChainId,
+						onLogs() {},
+					},
+					eventQuery: {
+						key: "receiptId",
+						value: receiptId,
+					},
+					amount: interactAmount,
+				},
+			});
+		} catch (e: any) {
+			console.log(e);
+			changeModal!({
+				modalState: ModalState.RESPONSE,
+				optionalData: {
+					isSuccessful: false,
+					amount: interactAmount,
+					interactType,
+					responseMsg: e.shortMessage ? e.shortMessage : e.toString(),
+				},
+			});
+		} finally {
+			setIsLoading(false);
+		}
+	};
 
-      await transactionRejection(vaultAddr, receiptId);
+	const handleTransactionRejection = async () => {
+		try {
+			setIsLoading(true);
+			// @ts-ignore
+			switchChain({ chainId: sideChainId });
 
-      changeModal!({
-        modalState: ModalState.TRANS_LOADING,
-        optionalData: {
-          transType: "Transaction Rejection",
-          source: tradableLogo,
-          destination: avalancheLogo,
-          eventOptions: {
-            address: vaultAddr,
-            abi: contractConfig.tradableSideVault.abi,
-            eventName: "BalanceApprovalCancelled",
-            chainId: sideChainId,
-            onLogs() {},
-          },
-          eventQuery: {
-            key: "receiptId",
-            value: receiptId,
-          },
-          amount: interactAmount,
-        },
-      });
-    }catch(e:any){
-      console.log(e)
-      changeModal!({
-        modalState: ModalState.RESPONSE,
-        optionalData: {
-          isSuccessful: false,
-          amount: interactAmount,
-          interactType,
-          responseMsg: e.shortMessage ? e.shortMessage : e.toString(),
-        },
-      });
-    }finally{
-      setIsLoading(false);
-    }
-  }
+			await transactionRejection(vaultAddr, receiptId);
 
-  return (
-    <div className="app-modal interact-modal interact-confirm-modal">
-      <CloseBtn closeModal={closeModal!} />
-      <div className="modal-heading">
-        <span className="modal-topic">Confirm Transaction</span>
-      </div>
-      <div className="interact-detail">
-        <span>Website</span>
-        <span>{website}</span>
-      </div>
-      <div className="interact-detail">
-        <span>Interaction</span>
-        <span>{interactType}</span>
-      </div>
-      <div className="interact-detail interact-total">
-        <span>Amount to Spend</span>
-        <span>
-          {interactAmount} {tokenDenom}
-        </span>
-      </div>
+			changeModal!({
+				modalState: ModalState.TRANS_LOADING,
+				optionalData: {
+					transType: "Transaction Rejection",
+					source: tradableLogo,
+					destination: avalancheLogo,
+					eventOptions: {
+						address: vaultAddr,
+						abi: contractConfig.tradableSideVault.abi,
+						eventName: "BalanceApprovalCancelled",
+						chainId: sideChainId,
+						onLogs() {},
+					},
+					eventQuery: {
+						key: "receiptId",
+						value: receiptId,
+					},
+					amount: interactAmount,
+				},
+			});
+		} catch (e: any) {
+			console.log(e);
+			changeModal!({
+				modalState: ModalState.RESPONSE,
+				optionalData: {
+					isSuccessful: false,
+					amount: interactAmount,
+					interactType,
+					responseMsg: e.shortMessage ? e.shortMessage : e.toString(),
+				},
+			});
+		} finally {
+			setIsLoading(false);
+		}
+	};
 
-      <div className="interact-btn-holder">
-      <button
-        className="interact-btn-full interact-btn-half"
-        onClick={handleTransactionConfirmation}
-        disabled={isLoading}
-      >
-        {isLoading ? "Loading...." : "Confirm"}
-      </button>
+	return (
+		<div className="app-modal animate interact-modal interact-confirm-modal">
+			<CloseBtn closeModal={closeModal!} />
+			<div className="modal-heading">
+				<span className="modal-topic">Confirm Transaction</span>
+			</div>
+			<div className="interact-detail">
+				<span>Website</span>
+				<span>{website}</span>
+			</div>
+			<div className="interact-detail">
+				<span>Interaction</span>
+				<span>{interactType}</span>
+			</div>
+			<div className="interact-detail interact-total">
+				<span>Amount to Spend</span>
+				<span>
+					{interactAmount} {tokenDenom}
+				</span>
+			</div>
 
-      <button
-        className="interact-btn-full interact-btn-half reject-btn"
-        onClick={handleTransactionRejection}
-        disabled={isLoading}
-      >
-        {isLoading ? "Loading...." : "Reject"}
-      </button>
+			<div className="interact-btn-holder">
+				<button
+					className="interact-btn-full interact-btn-half"
+					onClick={handleTransactionConfirmation}
+					disabled={isLoading}
+				>
+					{isLoading ? "Loading...." : "Confirm"}
+				</button>
 
-      </div>
-    </div>
-  );
+				<button
+					className="interact-btn-full interact-btn-half reject-btn"
+					onClick={handleTransactionRejection}
+					disabled={isLoading}
+				>
+					{isLoading ? "Loading...." : "Reject"}
+				</button>
+			</div>
+		</div>
+	);
 };
 
 export default InteractConfirmModal;

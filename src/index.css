@@ -53,6 +53,18 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+@keyframes scaleIn {
+  0% {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
 .sdk-container {
   width: 100vw;
   height: 100vh;
@@ -64,13 +76,13 @@ body {
   left: 0px;
 }
 
-.sdk-container > .cover {
+.sdk-container>.cover {
   content: "";
   display: block;
   width: 100vw;
   height: 100vh;
   position: fixed;
-  background-color: rgba(0,0,0,.6);
+  background-color: rgba(0, 0, 0, .6);
   z-index: -1;
 }
 
@@ -89,8 +101,27 @@ body {
 .app-modal {
   position: relative;
   z-index: 100;
+  opacity: 1;
 }
 
-button:hover, .hoverable:hover {
+.app-modal.active {
+  opacity: 1;
+}
+
+.scale-animate {
+  animation: scaleIn 0.4s ease;
+}
+.app-modal.animate {
+  animation: scaleIn 0.3s ease;
+}
+
+button:hover,
+.hoverable:hover {
   cursor: pointer;
+}
+
+.loading-gif {
+  width: 17px;
+  margin-bottom: -4px;
+  margin-left: 5px;
 }

@@ -41,14 +41,6 @@ const useDeserializer = (): DeserializerVals => {
 		return getVaultConfig(vaultAddr).networkId;
 	};
 
-	// const destructureReceiptId = (receiptId: BytesLike) => {
-	//   const [funcId, userAddr, tokenAddr, amount, nonce] = abiCoder.decode(
-	//     ["bytes", "address", "address", "uint256", "uint256"],
-	//     receiptId
-	//   );
-	//   return { funcId, userAddr, tokenAddr, amount, nonce };
-	// };
-
 	const constructReceiptId = (
 		funcId: BytesLike,
 		userAddr: AddressLike,

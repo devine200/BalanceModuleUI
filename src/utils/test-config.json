@@ -2669,7 +2669,7 @@
     },
     "vault": {
       "avalanche": {
-        "tradableSideVault": "0xABD9cA667bc2C737996929C2C9c5FC94af947Fd2",
+        "tradableSideVault": "0x6D296458A3df350390a57c4A5B536736415707d8",
         "stableTokens": [
           "0x85b97CB8828E237605Bc19Fc0fa622c6d8D6815B",
           "0x4648A8719b53b365cCfa12C22BF5F9DEaE52272b",
@@ -2679,7 +2679,7 @@
         "chainId": 10106,
         "networkId": 43113,
         "tradableModule": {
-          "address": "0xf31467c0CA100aBEF512002183DE7DCbEb9d2fc0",
+          "address": "0x44edBc1b4D7F235Fc62e4A73F6324740327Fff3b",
           "abi": [
             {
               "inputs": [
@@ -2763,6 +2763,89 @@
         "networkId": 97,
         "tradableModule": {
           "address": "0x7E55E82a6Cdc65351549096A17482059504fE88e",
+          "abi": [
+            {
+              "inputs": [
+                {
+                  "internalType": "address",
+                  "name": "_sideVault",
+                  "type": "address"
+                },
+                {
+                  "internalType": "bytes[]",
+                  "name": "_funcSigList",
+                  "type": "bytes[]"
+                }
+              ],
+              "stateMutability": "nonpayable",
+              "type": "constructor"
+            },
+            {
+              "inputs": [
+                { "internalType": "bytes", "name": "funcSig", "type": "bytes" },
+                { "internalType": "bytes", "name": "payload", "type": "bytes" }
+              ],
+              "name": "executePendingFunction",
+              "outputs": [],
+              "stateMutability": "nonpayable",
+              "type": "function"
+            },
+            {
+              "inputs": [],
+              "name": "getFuncSigList",
+              "outputs": [
+                { "internalType": "bytes[]", "name": "", "type": "bytes[]" }
+              ],
+              "stateMutability": "view",
+              "type": "function"
+            },
+            {
+              "inputs": [],
+              "name": "getModuleId",
+              "outputs": [
+                { "internalType": "bytes", "name": "", "type": "bytes" }
+              ],
+              "stateMutability": "view",
+              "type": "function"
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "address",
+                  "name": "user",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "token",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "amount",
+                  "type": "uint256"
+                }
+              ],
+              "name": "userModuleBalanceWithdrawal",
+              "outputs": [],
+              "stateMutability": "nonpayable",
+              "type": "function"
+            }
+          ]
+        }
+      },
+      "sepolia": {
+        "tradableSideVault": "0x935c0a6a8AD13d99f909811175cb44C9395bEe4f",
+        "stableTokens": [
+          "0xD8A683440920A3ABd57fa908d7b6D90e46000C20",
+          "0x8A666CFfDD47f65d5b5F01ab1FE28Af586B32E21",
+          "0x9eAeC340CC729551c462f2cb0ab502086B34ca3d"
+        ],
+        "endpoint": "0xae92d5aD7583AD66E49A0c67BAd18F6ba52dDDc1",
+        "chainId": 10161,
+        "networkId": 11155111,
+        "tradableModule": {
+          "address": "0xedC7121DF421c571E8442190EdD31776CDc43547",
           "abi": [
             {
               "inputs": [

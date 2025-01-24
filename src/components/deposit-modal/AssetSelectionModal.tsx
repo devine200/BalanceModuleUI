@@ -85,6 +85,7 @@ const AssetSelectionModal = ({
 					onChange={(e) => setSearchQuery(e.target.value)}
 					value={searchQuery}
 					type="text"
+					autoFocus
 					placeholder={`${!selectedChain?.tokens ? "Select a chain from the above" : "Search for desired asset"}`}
 				/>
 			</div>

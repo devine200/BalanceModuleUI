@@ -1,4 +1,3 @@
-
 .deposit-modal {
     width: 370px;
     background-color: #12172d;
@@ -139,8 +138,9 @@
 }
 
 .asset-item.selected {
-    border: 1px solid #32975a;
-    transform: scale(1.05);
+    border: 2px solid #ffff;
+    transform: scale(1.1);
+    border-radius: 10px;
 }
 
 .asset-selection .search-bar {

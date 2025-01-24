@@ -151,6 +151,7 @@ const DepositModal = ({
 							className="display-amount"
 							type="number"
 							placeholder="0"
+              autoFocus
 						/>
 						<span className="display-amount display-value">
 							${balance.toString()}

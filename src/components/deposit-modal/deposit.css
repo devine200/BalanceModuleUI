@@ -1,11 +1,13 @@
 .deposit-modal {
-  width: 370px;
-  background-color: #12172d;
-  border-radius: 6px;
-  padding: 40px;
-  color: #cfd3e5;
-  font-family: Planc, sans-serif;
+    width: 370px;
+    background-color: #12172d;
+    border-radius: 6px;
+    padding: 40px;
+    color: #cfd3e5;
+    font-family: Planc, sans-serif;
 }
+
+
 
 .deposit-modal .heading {
     display: flex;
@@ -129,14 +131,16 @@
     margin-bottom: 10px;
 }
 
-.chain-holder .asset-item > img {
+.chain-holder .asset-item>img {
     width: inherit;
     height: inherit;
     border-radius: 6px;
 }
 
 .asset-item.selected {
-    border: 1px solid #32975a;
+    border: 2px solid #ffff;
+    transform: scale(1.1);
+    border-radius: 10px;
 }
 
 .asset-selection .search-bar {

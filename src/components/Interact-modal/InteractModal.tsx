@@ -58,7 +58,7 @@ const InteractModal = (props: InteractModalProps) => {
 					eventOptions: {
 						address: vaultAddr,
 						abi: contractConfig.tradableSideVault.abi,
-						eventName: "PendingFunctionReceiptAdded",
+						eventName: "PendingFunctonReceiptAdded",
 						chainId: sideChainId,
 						onLogs() {},
 					},

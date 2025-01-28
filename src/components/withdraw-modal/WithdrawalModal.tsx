@@ -134,7 +134,7 @@ const WithdrawalModal = ({
 							className="display-amount"
 							type="text"
 							placeholder="0"
-              autoFocus
+							autoFocus
 						/>
 						<span className="display-amount display-value">
 							${balance}

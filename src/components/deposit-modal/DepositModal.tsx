@@ -16,7 +16,7 @@ import { useAccount } from "wagmi";
 import useGetTokenBalance from "../../hooks/useGetTokenBalance.tsx";
 import loadingGif from "../../images/loading_gif.gif";
 
-interface DepositModalProps extends Deposit, AppFeatures {}
+export interface DepositModalProps extends Deposit, AppFeatures {}
 
 const DepositModal = ({
 	selectedChainId,
@@ -151,7 +151,7 @@ const DepositModal = ({
 							className="display-amount"
 							type="number"
 							placeholder="0"
-              autoFocus
+							autoFocus
 						/>
 						<span className="display-amount display-value">
 							${balance.toString()}

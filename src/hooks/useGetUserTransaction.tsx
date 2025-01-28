@@ -16,6 +16,7 @@ const useGetUserTransactions = ({
 }: ModuleDetailProps): InteractionHistory => {
   const { getVaultAddressFromModuleId } = useDeserializer();
 	const vaultAddr = getVaultAddressFromModuleId(moduleId);
+	console.log({vaultAddr})
 	const { data, isPending, error } = useReadContracts({
 		contracts: [
 			{

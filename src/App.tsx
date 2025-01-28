@@ -16,12 +16,13 @@ import InteractConfirmModal from "./components/Interact-modal/InteractConfirmMod
 
 interface AppProp {
   moduleId: string;
+  currentModal?: ModalInfo;
 }
 
-function App({ moduleId }: AppProp) {
+function App({ moduleId, currentModal: defaultModal }: AppProp) {
   const { isConnected } = useAccount();
   const { address } = useAccount();
-  const [modalInfo, setModalInfo] = useState<ModalInfo>({
+  const [modalInfo, setModalInfo] = useState<ModalInfo>(defaultModal || {
     modalState: ModalState.USER_INTERFACE,
     optionalData: {},
   });

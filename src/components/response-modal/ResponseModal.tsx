@@ -1,7 +1,7 @@
 import "./response.css";
 import successImg from "../../images/successfulmessage.gif";
 import { AppFeatures, ModalState, ResponseVal } from "../../types.ts";
-import CloseBtn from "../../close-btn.tsx";
+import CloseBtn from "../close-btn.tsx";
 
 interface ResponseModalProps extends ResponseVal, AppFeatures {}
 

@@ -1,6 +1,6 @@
 import "./response.css";
 import { TransactionLoading, AppFeatures, ModalState } from "../../types.ts";
-import CloseBtn from "../../close-btn.tsx";
+import CloseBtn from "../close-btn.tsx";
 import { useEffect, useState } from "react";
 import { watchContractEvent } from "@wagmi/core";
 import { config } from "../../wagmi.ts";
@@ -29,14 +29,14 @@ const TransactionLoadingModal = ({
 	);
 	const destinationLogo =
 		currentChainData.length > 0 ? currentChainData[0].logo : tradableLogo;
-	const loadingTimeoutLimit = 120_000;
+	const loadingTimeoutLimit = 180_000;
 	//@ts-ignore
 	const [interval, setInterval] = useState<Node.Timeout>(
 		setTimeout(() => {
 			unwatch();
 			changeModal!({
 				modalState: ModalState.RESPONSE,
-				optionalData: nextModal ? {
+				optionalData: nextModal !== undefined ? {
 					isSuccessful: false,
 					interactType: transType,
 					amount,
@@ -91,7 +91,7 @@ const TransactionLoadingModal = ({
 				console.log(e);
 				unwatch();
 				clearInterval(interval);
-			},
+			}
 		});
 	} catch (e: any) {
 		changeModal!({

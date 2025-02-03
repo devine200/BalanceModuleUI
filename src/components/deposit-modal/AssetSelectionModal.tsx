@@ -1,6 +1,6 @@
 import "./deposit.css";
 import contractConfig from "../../utils/test-config.json";
-import CloseBtn from "../../close-btn.tsx";
+import CloseBtn from "../close-btn.tsx";
 import { AppFeatures, AssetSelectionTransactionType, Deposit, ModalState } from "../../types.ts";
 import { useState } from "react";
 import { useSwitchChain } from "wagmi";

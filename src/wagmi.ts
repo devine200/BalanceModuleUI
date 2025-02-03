@@ -9,7 +9,7 @@ export const config = createConfig({
     walletConnect({ projectId: import.meta.env.VITE_WC_PROJECT_ID }) as CreateConnectorFn,
   ],
   transports: {
-    [avalancheFuji.id]: http(),
+    [avalancheFuji.id]: http("https://avax-fuji.g.alchemy.com/v2/jgPR1HWDLqhbmqei7Z6PZkgSjFFygLUo"),
     [bscTestnet.id]: http(),
   },
   ssr: true

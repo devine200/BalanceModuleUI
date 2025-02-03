@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { AppFeatures, Interaction, ModalState } from "../../types.ts";
 import "./interact-modal.css";
-import CloseBtn from "../../close-btn.tsx";
+import CloseBtn from "../close-btn.tsx";
 import contractConfig from "../../utils/test-config.json";
 import useContractInteract from "../../hooks/useContractInteract.tsx";
 import tradableLogo from "../../images/tradable-square.svg";
@@ -58,7 +58,7 @@ const InteractModal = (props: InteractModalProps) => {
 					eventOptions: {
 						address: vaultAddr,
 						abi: contractConfig.tradableSideVault.abi,
-						eventName: "PendingFunctionReceiptAdded",
+						eventName: "PendingFunctonReceiptAdded",
 						chainId: sideChainId,
 						onLogs() {},
 					},

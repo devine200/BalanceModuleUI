@@ -1,5 +1,3 @@
-import React from "react";
-
 interface ModalLayoutProps {
   children: React.ReactNode;
 }
@@ -10,7 +8,7 @@ const ModalLayout = ({ children }: ModalLayoutProps) => {
       <div className="cover"></div>
       {children}
     </div>
-  );
+  )
 };
 
 export default ModalLayout;

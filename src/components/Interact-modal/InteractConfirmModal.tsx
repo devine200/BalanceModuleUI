@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { AppFeatures, Interaction, ModalState } from "../../types.ts";
 import "./interact-modal.css";
-import CloseBtn from "../../close-btn.tsx";
+import CloseBtn from "../close-btn.tsx";
 import contractConfig from "../../utils/test-config.json";
 import useContractInteract from "../../hooks/useContractInteract.tsx";
 import tradableLogo from "../../images/tradable-square.svg";
@@ -15,11 +15,15 @@ interface InteractModalProps extends Interaction, AppFeatures {
 	receiptId: BytesLike;
 }
 
+// TODO: Make it such that website name is gotten from a fixed data set
+// TODO: Make it such that the interactType is gotten from the tradable sdk config and it should be mapped to the funcId
+// TODO: Create a function that takes a token address returns its config details from the get assets
+// TODO: Destructure receiptId to get the tokenAddr and interactAmount
 const InteractConfirmModal = ({
-	website,
-	interactType,
-	interactAmount,
-	tokenDenom,
+	website, // TODO: deprecate variable
+	interactType, // TODO: deprecate variable
+	interactAmount, // TODO: deprecate variable
+	tokenDenom, // TODO: deprecate variable
 	changeModal,
 	closeModal,
 	moduleId,

@@ -111,6 +111,7 @@ body {
 .scale-animate {
   animation: scaleIn 0.4s ease;
 }
+
 .app-modal.animate {
   animation: scaleIn 0.3s ease;
 }

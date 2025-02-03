@@ -1,7 +1,7 @@
 import "../deposit-modal/deposit.css";
 import ContractConfig from "../../utils/test-config.json";
 import { FiArrowLeft } from "react-icons/fi";
-import CloseBtn from "../../close-btn.tsx";
+import CloseBtn from "../close-btn.tsx";
 import loadingGif from "../../images/loading_gif.gif";
 
 import {
@@ -134,7 +134,7 @@ const WithdrawalModal = ({
 							className="display-amount"
 							type="text"
 							placeholder="0"
-              autoFocus
+							autoFocus
 						/>
 						<span className="display-amount display-value">
 							${balance}

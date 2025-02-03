@@ -3,6 +3,7 @@ import { InteractionHistory } from "../types";
 import ContractConfig from "../utils/test-config.json";
 import { useReadContracts } from "wagmi";
 import useDeserializer from "./useDeserializer";
+import { toBigInt } from "ethers";
 
 interface ModuleDetailProps {
 	moduleId: string;
@@ -14,58 +15,69 @@ const useGetUserTransactions = ({
 	moduleId,
 	userAddr,
 }: ModuleDetailProps): InteractionHistory => {
-  const { getVaultAddressFromModuleId } = useDeserializer();
+	const { getVaultAddressFromModuleId, deconstructReceiptId, constructReceiptId } = useDeserializer();
+	const receiptId = constructReceiptId(
+		"0x000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000a00000000000000000000000000000000000000000000000000000000000000040000000000000000000000000f31467c0ca100abef512002183de7dcbeb9d2fc0000000000000000000000000abd9ca667bc2c737996929c2c9c5fc94af947fd200000000000000000000000000000000000000000000000000000000000000600000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000566756e6331000000000000000000000000000000000000000000000000000000",
+		"0xb1459DCF16905F7c84F4C22398c9CcAAD7345669",
+		"0x17E48D49475574AE927E47dCFC2D1747B75FFfDc",
+		toBigInt("150000000000000000000"),
+		toBigInt("1738138084109"),
+
+	)
+	const result = deconstructReceiptId(receiptId);
+	console.log({receiptId, result});
 	const vaultAddr = getVaultAddressFromModuleId(moduleId);
-	const { data, isPending, error } = useReadContracts({
-		contracts: [
-			{
-				//@ts-ignore
-				address: vaultAddr,
-				abi: ContractConfig.tradableSideVault.abi,
-				functionName: "_pendingFunctionReceiptsMap",
-				args: [userAddr],
-        // @ts-ignore
-        chainId: import.meta.env.VITE_BASE_CHAIN_NETWORK_ID
-			},
-			{
-        //@ts-ignore
-				address: vaultAddr,
-				abi: ContractConfig.tradableSideVault.abi,
-				functionName: "_claimedFunctionReceiptsMap",
-				args: [userAddr],
-        // @ts-ignore
-        chainId: import.meta.env.VITE_BASE_CHAIN_NETWORK_ID
-			},
-		],
-	});
+	// const { data, isPending, error } = useReadContracts({
+	// 	contracts: [
+	// 		{
+	// 			//@ts-ignore
+	// 			address: vaultAddr,
+	// 			abi: ContractConfig.tradableSideVault.abi,
+	// 			functionName: "_pendingFunctionReceiptsMap",
+	// 			args: [userAddr],
+	// 			// @ts-ignore
+	// 			chainId: import.meta.env.VITE_BASE_CHAIN_NETWORK_ID
+	// 		},
+	// 		{
+    //     		//@ts-ignore
+	// 			address: vaultAddr,
+	// 			abi: ContractConfig.tradableSideVault.abi,
+	// 			functionName: "_claimedFunctionReceiptsMap",
+	// 			args: [userAddr],
+	// 			// @ts-ignore
+	// 			chainId: import.meta.env.VITE_BASE_CHAIN_NETWORK_ID
+	// 		},
+	// 	],
+	// });
 
-	useEffect(() => {
-		if (isPending) return;
-		//@ts-ignore
-		const [pendingReceipt, claimedReceipt] = data;
-		console.log({pendingReceipt, claimedReceipt});
-	}, [isPending]);
+	// useEffect(() => {
+	// 	if (isPending) return;
+	// 	//@ts-ignore
+	// 	const [pendingReceipt, claimedReceipt] = data;
+	// 	console.log({pendingReceipt, claimedReceipt});
+	// }, [isPending]);
 
-	useEffect(() => {
-		if (!error) return;
-		console.log(error);
-	}, [error]);
+	// useEffect(() => {
+	// 	if (!error) return;
+	// 	console.log(error);
+	// }, [error]);
 
 	//TODO: remove user balance from the interract interface
 	return {
 		pending: [
 			{
-				website: "dydx.com",
-				interactType: "Side Vault Deposit",
-				interactDescription: "deposit into tradable side vault",
-				balance: 300,
+				website: "dydx.com",//TODO: add this to tradable sdk config
+				interactType: "Side Vault Deposit",//TODO: add this to FuncId Config requirments
+				interactDescription: "deposit into tradable side vault",//TODO: add this to FuncId Config requirments
+				balance: 300,//TODO: deprecate this
 				interactAmount: 10,
-				tokenDenom: "USDC",
-				createdAt: "2/2/2020",
+				tokenDenom: "USDC", //TODO: deprecate this
+				createdAt: "2/2/2020",//TODO: deprecate this
 				payload:
-					"0x0000000000000000000000000000000000000000000000000000000000000000",
+					"0x0000000000000000000000000000000000000000000000000000000000000000",//TODO: get this value from modal call
+				//TODO: get this value from modal call
 				funcId: "0x000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000a00000000000000000000000000000000000000000000000000000000000000040000000000000000000000000f31467c0ca100abef512002183de7dcbeb9d2fc0000000000000000000000000abd9ca667bc2c737996929c2c9c5fc94af947fd200000000000000000000000000000000000000000000000000000000000000600000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000566756e6331000000000000000000000000000000000000000000000000000000",
-				tokenAddr: "0x85b97CB8828E237605Bc19Fc0fa622c6d8D6815B",
+				tokenAddr: "0x85b97CB8828E237605Bc19Fc0fa622c6d8D6815B",//TODO: get this value from modal call
 			},
 			{
 				website: "compound.finance",

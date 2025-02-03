@@ -6,7 +6,7 @@ interface DeserializerVals {
 	getVaultAddressFromFuncId: (funcId: BytesLike) => AddressLike;
 	getVaultChainId: (vaultAddr: AddressLike) => Number;
 	getVaultConfig: (vaultAddr: AddressLike) => any;
-	// destructureReceiptId: (receiptId: BytesLike) => any;
+	deconstructReceiptId: (receiptId: BytesLike) => any;
 	constructReceiptId: (
 		funcId: BytesLike,
 		userAddr: AddressLike,
@@ -14,6 +14,14 @@ interface DeserializerVals {
 		amount: BigInt,
 		nonce: BigInt,
 	) => BytesLike;
+}
+
+interface DestructuredReceiptId {
+	funcId: BytesLike;
+	userAddr: AddressLike;
+	tokenAddr: AddressLike;
+	amount: BigInt;
+	nonce: BigInt;
 }
 
 const useDeserializer = (): DeserializerVals => {
@@ -54,12 +62,28 @@ const useDeserializer = (): DeserializerVals => {
 		);
 	};
 
+	const deconstructReceiptId = (receiptId:BytesLike):DestructuredReceiptId => {
+		const [funcId, userAddr, tokenAddr, amount, nonce] = abiCoder.decode(
+			["bytes", "address", "address", "uint256", "uint256"],
+			receiptId,
+		);
+
+		return {
+			funcId,
+			userAddr,
+			tokenAddr,
+			amount,
+			nonce,
+		};
+	}
+
+
 	return {
 		getVaultAddressFromModuleId,
 		getVaultAddressFromFuncId,
 		getVaultChainId,
 		getVaultConfig,
-		// destructureReceiptId,
+		deconstructReceiptId,
 		constructReceiptId,
 	};
 };

@@ -1,6 +1,13 @@
 import { createContext } from "react";
-import { AppConfig } from "./types";
+import { AppConfig, ModalState, UserInterfaceConfig } from "./types";
 
-export const UserInterfaceContext = createContext<any>(undefined);
+const userInterfaceInitialConfig = {}
+export const UserInterfaceContext = createContext<UserInterfaceConfig>(userInterfaceInitialConfig);
 
-export const AppConfigContext = createContext<any>(undefined);
+const appInitialConfig: AppConfig = {
+	appState: {moduleId: "",
+	modalInfo: {modalState: ModalState.CONNECT_WALLET},
+	website: "",
+	isModalOpen: false,}
+}
+export const AppConfigContext = createContext<AppConfig>(appInitialConfig);

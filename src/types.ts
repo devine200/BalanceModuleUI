@@ -16,10 +16,20 @@ export enum ModalState {
 }
 
 export interface AppConfig {
-	moduleId: string;
-	initialModal: ModalInfo;
-	website: string;
+	appState: {
+		moduleId: string;
+		modalInfo: ModalInfo;
+		website: string;
+		isModalOpen: boolean;
+		getFuncConfig?: (funcId: string) => FunctionConfig;
+	}
+	dispatchAppState?: React.Dispatch<any>; // Consider typing the action
 }
+
+export interface UserInterfaceConfig {
+
+}
+
 
 export interface FunctionConfig {
 	interactType: string;
@@ -35,7 +45,6 @@ export interface TradableConfig {
 
 export interface Interaction {
 	interactAmount: number;
-	// tokenDenom: string;
 	funcId: BytesLike;
 	payload: BytesLike;
 	tokenAddr: AddressLike;

@@ -23,9 +23,9 @@ const InteractModal = (props: InteractModalProps) => {
 		tokenAddr,
 		funcId,
 	} = props;
-
-	const { website, moduleId, getFuncConfig } = useContext(AppConfigContext);
-	const {interactType} = getFuncConfig(funcId.toString());
+	const { appState } = useContext(AppConfigContext)
+	const { website, moduleId, getFuncConfig } = appState;
+	const {interactType} = getFuncConfig!(funcId.toString());
 	
 	const { balance, initiateProtocolTransaction } = useContractInteract();
 	const [isLoading, setIsLoading] = useState<boolean>(false);

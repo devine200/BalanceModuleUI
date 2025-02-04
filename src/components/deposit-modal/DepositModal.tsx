@@ -28,7 +28,8 @@ const DepositModal = ({
 	tokenAddr,
 	userAddr,
 }: DepositModalProps) => {
-	const { moduleId } = useContext(AppConfigContext);
+	const { appState } = useContext(AppConfigContext);
+	const {moduleId} = appState;
 	const { depositIntoTradable } = useContractInteract();
 	const { getVaultAddressFromModuleId } = useDeserializer();
 	const balance =

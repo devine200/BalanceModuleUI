@@ -27,11 +27,11 @@ function App() {
 	const [currentModal, setCurrentModal] = useState<React.ReactElement>();
 
 	const closeModal = () => {
-		dispatchAppState({ isModalOpen: false });
+		dispatchAppState!({ isModalOpen: false });
 	};
 
 	const changeModal = (modalInfo: ModalInfo) => {
-		dispatchAppState({ isModalOpen: true, modalInfo });
+		dispatchAppState!({ isModalOpen: true, modalInfo });
 	};
 
 	const appFeatures: AppFeatures = {
@@ -43,7 +43,7 @@ function App() {
 	useEffect(() => {
 		if (isConnected || !isModalOpen) return;
 
-		dispatchAppState({
+		dispatchAppState!({
 			modalInfo: {
 				modalState: ModalState.CONNECT_WALLET,
 				optionalData: {

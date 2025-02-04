@@ -14,7 +14,8 @@ const InteractHistoryModal = ({
 	userAddr,
 	closeModal,
 }: InteractionHistoryModalProps) => {
-	const { website, moduleId, getFuncConfig } = useContext(AppConfigContext);
+	const { appState } = useContext(AppConfigContext);
+	const { website, moduleId, getFuncConfig } = appState;
 
 	const handleOpenPendingTx = (interaction: Interaction) => {
 		if (changeModal) {
@@ -60,7 +61,7 @@ const InteractHistoryModal = ({
 				<div className="detail-holder scrollable-div">
 					{pending.map((interaction: Interaction) => {
 						const { funcId } = interaction;
-						const { interactType } = getFuncConfig(funcId);
+						const { interactType } = getFuncConfig!(funcId as string);
 
 						return (
 							<div

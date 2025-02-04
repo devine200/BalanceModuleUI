@@ -2,7 +2,7 @@ import { WagmiProvider } from "wagmi";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import App from "./App.tsx";
 import { config } from "./wagmi.ts";
-import { FunctionConfig, ModalState, TradableConfig } from "./types.ts";
+import { AppConfig, FunctionConfig, ModalState, TradableConfig } from "./types.ts";
 import Click from "./components/Click.tsx";
 import { AppConfigContext, UserInterfaceContext } from "./contexts.tsx";
 import { useReducer } from "react";
@@ -23,15 +23,25 @@ const TradableSDKProvider = ({
 	});
 
 
-	const reducer = (state: any, action: any) => {
+	const reducer = (state:AppConfig, action: any) => {
 		return { ...state, ...action };
 	};
 
-	// TODO: create a type for the app state
+	const getFuncConfig = (funcId:string):FunctionConfig => {
+		const config:(string | undefined) = Object.getOwnPropertyNames(moduleFuncConfig).find(configId => configId === funcId);
+		if(!config){
+			throw new Error("Function not configured");
+		}
+		return moduleFuncConfig[config];
+	}
+
 	// TODO: Create a type for the user state
 	const [appState, dispatchAppState] = useReducer(reducer, {
 		isModalOpen: false,
 		modalInfo: initialModal,
+		moduleId,
+		website: app_name,
+		getFuncConfig,
 	});
 
 	const handleConnectWallet = () => {
@@ -76,24 +86,11 @@ const TradableSDKProvider = ({
 		});
 	};
 
-	const moduleConfig: any = {
-		moduleId,
-		website: app_name,
-	};
-
-	const getFuncConfig = (funcId:string):FunctionConfig => {
-		const config:(string | undefined) = Object.getOwnPropertyNames(moduleFuncConfig).find(configId => configId === funcId);
-		if(!config){
-			throw new Error("Function not configured");
-		}
-		return moduleFuncConfig[config];
-	}
-
 	return (
 		<WagmiProvider config={config}>
 			<QueryClientProvider client={queryClient}>
 				<AppConfigContext.Provider
-					value={{ ...moduleConfig, appState, dispatchAppState, getFuncConfig }}
+					value={{ appState, dispatchAppState }}
 				>
 					<App />
 				</AppConfigContext.Provider>

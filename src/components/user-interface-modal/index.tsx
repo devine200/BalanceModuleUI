@@ -12,7 +12,8 @@ const UserInterfaceDemo = ({
 }: UserInterfaceModalProps) => {
 	const { isConnected } = useAccount();
 	const { disconnect } = useDisconnect();
-	const { moduleId } = useContext(AppConfigContext);
+	const { appState } = useContext(AppConfigContext);
+	const { moduleId } = appState;
 	const { pending } = useGetUserTransactions({
 		moduleId: moduleId as string,
 		userAddr: userAddr as string,

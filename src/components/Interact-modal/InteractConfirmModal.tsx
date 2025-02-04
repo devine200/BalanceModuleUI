@@ -17,7 +17,6 @@ interface InteractModalProps extends Interaction, AppFeatures {
 	receiptId: BytesLike;
 }
 
-// TODO: Create a function that takes a token address returns its config details from the get assets
 const InteractConfirmModal = ({
 	changeModal,
 	closeModal,
@@ -26,15 +25,15 @@ const InteractConfirmModal = ({
 }: InteractModalProps) => {
 	const { transactionConfirmation, transactionRejection } =
 		useContractInteract();
-
-	const { website, moduleId, getFuncConfig } = useContext(AppConfigContext);
+	const { appState } = useContext(AppConfigContext);
+	const { website, moduleId, getFuncConfig } = appState;
 	const { deconstructReceiptId } = useDeserializer();
 	const {
 		funcId,
 		tokenAddr,
 		amount: interactAmount,
 	} = deconstructReceiptId(receiptId);
-	const { interactType } = getFuncConfig(funcId.toString());
+	const { interactType } = getFuncConfig!(funcId.toString());
 
 	const { getVaultAddressFromModuleId, getVaultChainId } = useDeserializer();
 	const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -59,7 +58,7 @@ const InteractConfirmModal = ({
 				isSuccessful: false,
 				amount: interactAmount,
 				interactType,
-				responseMsg: e?.shortMessage ? e.shortMessage : e.toString()
+				responseMsg: e?.shortMessage ? e.shortMessage : e.toString(),
 			},
 		});
 	}

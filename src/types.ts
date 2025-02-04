@@ -22,14 +22,21 @@ export interface AppConfig {
 		website: string;
 		isModalOpen: boolean;
 		getFuncConfig?: (funcId: string) => FunctionConfig;
-	}
+	};
 	dispatchAppState?: React.Dispatch<any>; // Consider typing the action
 }
 
 export interface UserInterfaceConfig {
-
+	handleConnectWallet: () => void;
+	handleProtocolTransaction: (
+		funcId: BytesLike,
+		tokenAddr: AddressLike,
+		amount: number,
+		funcPayload: BytesLike,
+	) => void;
+	handleDeposit: () => void;
+	handleWithdrawal: () => void;
 }
-
 
 export interface FunctionConfig {
 	interactType: string;

@@ -1,7 +1,18 @@
 import { createContext } from "react";
 import { AppConfig, ModalState, UserInterfaceConfig } from "./types";
+import { AddressLike, BytesLike } from "ethers";
 
-const userInterfaceInitialConfig = {}
+const userInterfaceInitialConfig = {
+	handleConnectWallet: () => {},
+	handleProtocolTransaction: (
+		funcId: BytesLike,
+		tokenAddr: AddressLike,
+		amount: number,
+		funcPayload: BytesLike,
+	) => {},
+	handleDeposit: () => {},
+	handleWithdrawal: () => {}
+}
 export const UserInterfaceContext = createContext<UserInterfaceConfig>(userInterfaceInitialConfig);
 
 const appInitialConfig: AppConfig = {

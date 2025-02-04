@@ -11,12 +11,13 @@ import { config } from "../../wagmi.ts";
 import useDeserializer from "../../hooks/useDeserializer.tsx";
 import { BytesLike } from "ethers";
 import { AppConfigContext } from "../../contexts.tsx";
+import useGetAssets, { getTokenConfig } from "../../hooks/useGetAssets.tsx";
+
 interface InteractModalProps extends Interaction, AppFeatures {}
 
 const InteractModal = (props: InteractModalProps) => {
 	const {
 		interactAmount,
-		tokenDenom,
 		changeModal,
 		closeModal,
 		tokenAddr,
@@ -38,6 +39,23 @@ const InteractModal = (props: InteractModalProps) => {
 
 	// getting side vault network id
 	const sideChainId = getVaultChainId(vaultAddr);
+
+	// Getting token denom
+	const assets = useGetAssets();
+	let tokenData;
+	try {
+		tokenData = getTokenConfig(assets, tokenAddr);
+	} catch (e: any) {
+		changeModal!({
+			modalState: ModalState.RESPONSE,
+			optionalData: {
+				isSuccessful: false,
+				amount: interactAmount,
+				interactType,
+				responseMsg: e?.shortMessage ? e.shortMessage : e.toString()
+			},
+		});
+	}
 
 	const handleSubmit = async () => {
 		try {
@@ -121,7 +139,7 @@ const InteractModal = (props: InteractModalProps) => {
 			<div className="interact-detail interact-total">
 				<span>Amount to Spend</span>
 				<span>
-					{interactAmount} {tokenDenom}
+					{interactAmount} {tokenData?.name}
 				</span>
 			</div>
 			<button

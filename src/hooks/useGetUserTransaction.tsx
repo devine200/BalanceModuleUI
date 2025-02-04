@@ -32,9 +32,6 @@ const useGetUserTransactions = ({
 	return {
 		pending: [
 			{
-				// website: "dydx.com",//TODO: add this to tradable sdk config
-				interactType: "Side Vault Deposit",//TODO: add this to FuncId Config requirments
-				interactDescription: "deposit into tradable side vault",//TODO: add this to FuncId Config requirments
 				balance: 300,//TODO: deprecate this
 				interactAmount: 10,
 				tokenDenom: "USDC", //TODO: deprecate this
@@ -46,9 +43,6 @@ const useGetUserTransactions = ({
 				tokenAddr: "0x85b97CB8828E237605Bc19Fc0fa622c6d8D6815B",//TODO: get this value from modal call
 			},
 			{
-				// website: "compound.finance",
-				interactType: "Side Vault Withdraw",
-				interactDescription: "withdraw from tradable side vault",
 				balance: 500,
 				interactAmount: 150,
 				tokenDenom: "DAI",
@@ -59,9 +53,6 @@ const useGetUserTransactions = ({
 				tokenAddr: "0x17E48D49475574AE927E47dCFC2D1747B75FFfDc",
 			},
 			{
-				// website: "aave.com",
-				interactType: "Main Vault Deposit",
-				interactDescription: "deposit into main tradable vault",
 				balance: 800,
 				interactAmount: 400,
 				tokenDenom: "USDT",
@@ -72,9 +63,6 @@ const useGetUserTransactions = ({
 				tokenAddr: "0x4648A8719b53b365cCfa12C22BF5F9DEaE52272b",
 			},
 			{
-				// website: "makerdao.com",
-				interactType: "Side Vault Deposit",
-				interactDescription: "deposit into tradable side vault",
 				balance: 1200,
 				interactAmount: 500,
 				tokenDenom: "USDT",
@@ -85,9 +73,6 @@ const useGetUserTransactions = ({
 				tokenAddr: "0x4648A8719b53b365cCfa12C22BF5F9DEaE52272b",
 			},
 			{
-				// website: "uniswap.org",
-				interactType: "Main Vault Withdraw",
-				interactDescription: "withdraw from main tradable vault",
 				balance: 450,
 				interactAmount: 300,
 				tokenDenom: "USDC",
@@ -100,9 +85,6 @@ const useGetUserTransactions = ({
 		],
 		completed: [
 			{
-				// website: "aave.com",
-				interactType: "Main Vault Deposit",
-				interactDescription: "deposit into main tradable vault",
 				balance: 800,
 				interactAmount: 400,
 				tokenDenom: "USDT",
@@ -113,9 +95,6 @@ const useGetUserTransactions = ({
 				tokenAddr: "",
 			},
 			{
-				// website: "makerdao.com",
-				interactType: "Side Vault Deposit",
-				interactDescription: "deposit into tradable side vault",
 				balance: 1200,
 				interactAmount: 500,
 				tokenDenom: "USDT",
@@ -126,9 +105,6 @@ const useGetUserTransactions = ({
 				tokenAddr: "",
 			},
 			{
-				// website: "uniswap.org",
-				interactType: "Main Vault Withdraw",
-				interactDescription: "withdraw from main tradable vault",
 				balance: 450,
 				interactAmount: 300,
 				tokenDenom: "USDC",

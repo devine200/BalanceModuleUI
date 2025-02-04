@@ -19,6 +19,14 @@ export interface TokenData {
     logo: string;
   }
   
+export const getTokenConfig = (chainData:ChainData[], denom:string):TokenData => {
+  // loop through chain data
+  
+  // if it exists return the token data object
+
+  // else throw error that token is unsupported
+}
+
 const useGetAssets = ():ChainData[] => {
   return [
     {

@@ -1,8 +1,12 @@
+import { useContext } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { Interaction, AppFeatures, ModalState } from "../../types.ts";
 import "./interact-modal.css";
 import CloseBtn from "../close-btn.tsx";
 import useGetUserTransactions from "../../hooks/useGetUserTransaction.tsx";
+import { AppConfigContext } from "../../contexts.tsx";
+
+
 
 export interface InteractionHistoryModalProps extends AppFeatures {
 	moduleId: string;
@@ -15,6 +19,8 @@ const InteractHistoryModal = ({
 	userAddr,
 	closeModal,
 }: InteractionHistoryModalProps) => {
+	const { website } = useContext(AppConfigContext)
+
 	const handleOpenPendingTx = (interaction: Interaction) => {
 		if (changeModal) {
 			changeModal({
@@ -55,7 +61,7 @@ const InteractHistoryModal = ({
 									{interaction.interactAmount}{" "}
 									{interaction.tokenDenom}
 								</span>
-								<span>{interaction.website}</span>
+								<span>{website}</span>
 							</div>
 						</div>
 					))}
@@ -73,7 +79,7 @@ const InteractHistoryModal = ({
 							createdAt,
 							interactAmount,
 							tokenDenom,
-							website,
+							// website,
 						}: Interaction) => (
 							<div className="interact-detail" key={uuidv4()}>
 								<span>{createdAt}</span>

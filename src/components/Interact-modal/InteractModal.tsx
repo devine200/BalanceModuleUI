@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { AppFeatures, Interaction, ModalState } from "../../types.ts";
 import "./interact-modal.css";
 import CloseBtn from "../close-btn.tsx";
@@ -10,21 +10,22 @@ import { useAccount, useSwitchChain } from "wagmi";
 import { config } from "../../wagmi.ts";
 import useDeserializer from "../../hooks/useDeserializer.tsx";
 import { BytesLike } from "ethers";
+import { AppConfigContext } from "../../contexts.tsx";
 interface InteractModalProps extends Interaction, AppFeatures {}
 
 const InteractModal = (props: InteractModalProps) => {
 	const {
-		website,
-		interactType,
 		interactAmount,
 		tokenDenom,
 		changeModal,
 		closeModal,
 		tokenAddr,
 		funcId,
-		moduleId,
 	} = props;
 
+	const { website, moduleId, getFuncConfig } = useContext(AppConfigContext);
+	const {interactType} = getFuncConfig(funcId.toString());
+	
 	const { balance, initiateProtocolTransaction } = useContractInteract();
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const { getVaultAddressFromModuleId, getVaultChainId } = useDeserializer();

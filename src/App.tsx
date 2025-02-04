@@ -13,24 +13,18 @@ import { ModalState, ModalInfo, AppFeatures } from "./types";
 import UserInterfaceDemo from "./components/user-interface-modal";
 import WithdrawalModal from "./components/withdraw-modal/WithdrawalModal";
 import InteractConfirmModal from "./components/Interact-modal/InteractConfirmModal";
-import { AppConfigContext, UserInterfaceContext } from "./contexts";
+import { AppConfigContext } from "./contexts";
 
 function App() {
 	const { isConnected } = useAccount();
 	const { address } = useAccount();
 
-	// const [modalInfo, setModalInfo] = useState<ModalInfo>({
-	//   modalState: ModalState.USER_INTERFACE,
-	//   optionalData: {},
-	// });
-
 	const { website, moduleId, appState, dispatchAppState } =
 		useContext(AppConfigContext);
+		
 	const { isModalOpen, modalInfo } = appState;
-	// const {isModalOpen, dispatchModalOpen, modalInfo, dispatchModalInfo} = useContext(UserInterfaceContext);
 
 	const [currentModal, setCurrentModal] = useState<React.ReactElement>();
-	// const [isModalOpen, setIsModalOpen] = useState<boolean>(true);
 
 	const closeModal = () => {
 		dispatchAppState({ isModalOpen: false });

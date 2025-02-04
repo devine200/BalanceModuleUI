@@ -1,9 +1,10 @@
 import { useEffect } from "react";
-import { InteractionHistory } from "../types";
+import { InteractionHistory, AppFeatures } from "../types";
 import ContractConfig from "../utils/test-config.json";
 import { useReadContracts } from "wagmi";
 import useDeserializer from "./useDeserializer";
 import { toBigInt } from "ethers";
+
 
 interface ModuleDetailProps {
 	moduleId: string;
@@ -26,47 +27,12 @@ const useGetUserTransactions = ({
 	)
 	const result = deconstructReceiptId(receiptId);
 	console.log({receiptId, result});
-	const vaultAddr = getVaultAddressFromModuleId(moduleId);
-	// const { data, isPending, error } = useReadContracts({
-	// 	contracts: [
-	// 		{
-	// 			//@ts-ignore
-	// 			address: vaultAddr,
-	// 			abi: ContractConfig.tradableSideVault.abi,
-	// 			functionName: "_pendingFunctionReceiptsMap",
-	// 			args: [userAddr],
-	// 			// @ts-ignore
-	// 			chainId: import.meta.env.VITE_BASE_CHAIN_NETWORK_ID
-	// 		},
-	// 		{
-    //     		//@ts-ignore
-	// 			address: vaultAddr,
-	// 			abi: ContractConfig.tradableSideVault.abi,
-	// 			functionName: "_claimedFunctionReceiptsMap",
-	// 			args: [userAddr],
-	// 			// @ts-ignore
-	// 			chainId: import.meta.env.VITE_BASE_CHAIN_NETWORK_ID
-	// 		},
-	// 	],
-	// });
-
-	// useEffect(() => {
-	// 	if (isPending) return;
-	// 	//@ts-ignore
-	// 	const [pendingReceipt, claimedReceipt] = data;
-	// 	console.log({pendingReceipt, claimedReceipt});
-	// }, [isPending]);
-
-	// useEffect(() => {
-	// 	if (!error) return;
-	// 	console.log(error);
-	// }, [error]);
 
 	//TODO: remove user balance from the interract interface
 	return {
 		pending: [
 			{
-				website: "dydx.com",//TODO: add this to tradable sdk config
+				// website: "dydx.com",//TODO: add this to tradable sdk config
 				interactType: "Side Vault Deposit",//TODO: add this to FuncId Config requirments
 				interactDescription: "deposit into tradable side vault",//TODO: add this to FuncId Config requirments
 				balance: 300,//TODO: deprecate this
@@ -80,7 +46,7 @@ const useGetUserTransactions = ({
 				tokenAddr: "0x85b97CB8828E237605Bc19Fc0fa622c6d8D6815B",//TODO: get this value from modal call
 			},
 			{
-				website: "compound.finance",
+				// website: "compound.finance",
 				interactType: "Side Vault Withdraw",
 				interactDescription: "withdraw from tradable side vault",
 				balance: 500,
@@ -93,7 +59,7 @@ const useGetUserTransactions = ({
 				tokenAddr: "0x17E48D49475574AE927E47dCFC2D1747B75FFfDc",
 			},
 			{
-				website: "aave.com",
+				// website: "aave.com",
 				interactType: "Main Vault Deposit",
 				interactDescription: "deposit into main tradable vault",
 				balance: 800,
@@ -106,7 +72,7 @@ const useGetUserTransactions = ({
 				tokenAddr: "0x4648A8719b53b365cCfa12C22BF5F9DEaE52272b",
 			},
 			{
-				website: "makerdao.com",
+				// website: "makerdao.com",
 				interactType: "Side Vault Deposit",
 				interactDescription: "deposit into tradable side vault",
 				balance: 1200,
@@ -119,7 +85,7 @@ const useGetUserTransactions = ({
 				tokenAddr: "0x4648A8719b53b365cCfa12C22BF5F9DEaE52272b",
 			},
 			{
-				website: "uniswap.org",
+				// website: "uniswap.org",
 				interactType: "Main Vault Withdraw",
 				interactDescription: "withdraw from main tradable vault",
 				balance: 450,
@@ -134,7 +100,7 @@ const useGetUserTransactions = ({
 		],
 		completed: [
 			{
-				website: "aave.com",
+				// website: "aave.com",
 				interactType: "Main Vault Deposit",
 				interactDescription: "deposit into main tradable vault",
 				balance: 800,
@@ -147,7 +113,7 @@ const useGetUserTransactions = ({
 				tokenAddr: "",
 			},
 			{
-				website: "makerdao.com",
+				// website: "makerdao.com",
 				interactType: "Side Vault Deposit",
 				interactDescription: "deposit into tradable side vault",
 				balance: 1200,
@@ -160,7 +126,7 @@ const useGetUserTransactions = ({
 				tokenAddr: "",
 			},
 			{
-				website: "uniswap.org",
+				// website: "uniswap.org",
 				interactType: "Main Vault Withdraw",
 				interactDescription: "withdraw from main tradable vault",
 				balance: 450,

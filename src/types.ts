@@ -21,7 +21,7 @@ export interface AppConfig {
 	website: string;
 }
 
-interface FunctionConfig {
+export interface FunctionConfig {
 	interactType: string;
 	interactDescription: string;
 }
@@ -34,9 +34,6 @@ export interface TradableConfig {
 }
 
 export interface Interaction {
-	website: string;
-	interactType: string;
-	interactDescription?: string;
 	balance?: number;
 	interactAmount: number;
 	tokenDenom: string;

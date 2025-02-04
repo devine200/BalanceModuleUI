@@ -32,7 +32,6 @@ const useGetUserTransactions = ({
 	return {
 		pending: [
 			{
-				balance: 300,//TODO: deprecate this
 				interactAmount: 10,
 				tokenDenom: "USDC", //TODO: deprecate this
 				createdAt: "2/2/2020",//TODO: deprecate this
@@ -43,7 +42,6 @@ const useGetUserTransactions = ({
 				tokenAddr: "0x85b97CB8828E237605Bc19Fc0fa622c6d8D6815B",//TODO: get this value from modal call
 			},
 			{
-				balance: 500,
 				interactAmount: 150,
 				tokenDenom: "DAI",
 				createdAt: "3/15/2021",
@@ -53,7 +51,6 @@ const useGetUserTransactions = ({
 				tokenAddr: "0x17E48D49475574AE927E47dCFC2D1747B75FFfDc",
 			},
 			{
-				balance: 800,
 				interactAmount: 400,
 				tokenDenom: "USDT",
 				createdAt: "6/12/2022",
@@ -63,7 +60,6 @@ const useGetUserTransactions = ({
 				tokenAddr: "0x4648A8719b53b365cCfa12C22BF5F9DEaE52272b",
 			},
 			{
-				balance: 1200,
 				interactAmount: 500,
 				tokenDenom: "USDT",
 				createdAt: "8/30/2019",
@@ -73,7 +69,6 @@ const useGetUserTransactions = ({
 				tokenAddr: "0x4648A8719b53b365cCfa12C22BF5F9DEaE52272b",
 			},
 			{
-				balance: 450,
 				interactAmount: 300,
 				tokenDenom: "USDC",
 				createdAt: "11/23/2020",
@@ -85,7 +80,6 @@ const useGetUserTransactions = ({
 		],
 		completed: [
 			{
-				balance: 800,
 				interactAmount: 400,
 				tokenDenom: "USDT",
 				createdAt: "6/12/2022",
@@ -95,7 +89,6 @@ const useGetUserTransactions = ({
 				tokenAddr: "",
 			},
 			{
-				balance: 1200,
 				interactAmount: 500,
 				tokenDenom: "USDT",
 				createdAt: "8/30/2019",
@@ -105,7 +98,6 @@ const useGetUserTransactions = ({
 				tokenAddr: "",
 			},
 			{
-				balance: 450,
 				interactAmount: 300,
 				tokenDenom: "USDC",
 				createdAt: "11/23/2020",

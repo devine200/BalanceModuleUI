@@ -34,7 +34,6 @@ export interface TradableConfig {
 }
 
 export interface Interaction {
-	balance?: number;
 	interactAmount: number;
 	tokenDenom: string;
 	funcId: BytesLike;

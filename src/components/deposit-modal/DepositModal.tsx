@@ -7,14 +7,14 @@ import {
 	Deposit,
 	ModalState,
 } from "../../types.ts";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import useContractInteract from "../../hooks/useContractInteract.tsx";
 import useDeserializer from "../../hooks/useDeserializer.tsx";
 import { AddressLike, BytesLike } from "ethers";
 import ContractConfig from "../../utils/test-config.json";
-import { useAccount } from "wagmi";
 import useGetTokenBalance from "../../hooks/useGetTokenBalance.tsx";
 import loadingGif from "../../images/loading_gif.gif";
+import { AppConfigContext } from "../../contexts.tsx";
 
 export interface DepositModalProps extends Deposit, AppFeatures {}
 
@@ -26,8 +26,9 @@ const DepositModal = ({
 	tokenName,
 	chainImage,
 	tokenAddr,
-	moduleId,
+	userAddr,
 }: DepositModalProps) => {
+	const { moduleId } = useContext(AppConfigContext);
 	const { depositIntoTradable } = useContractInteract();
 	const { getVaultAddressFromModuleId } = useDeserializer();
 	const balance =
@@ -40,7 +41,6 @@ const DepositModal = ({
 
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const [amount, setAmount] = useState<number>(0);
-	const { address: userAddr } = useAccount();
 
 	const handleAssetSelect = () => {
 		try {

@@ -16,34 +16,21 @@ const useGetUserTransactions = ({
 	moduleId,
 	userAddr,
 }: ModuleDetailProps): InteractionHistory => {
-	const { getVaultAddressFromModuleId, deconstructReceiptId, constructReceiptId } = useDeserializer();
-	const receiptId = constructReceiptId(
-		"0x000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000a00000000000000000000000000000000000000000000000000000000000000040000000000000000000000000f31467c0ca100abef512002183de7dcbeb9d2fc0000000000000000000000000abd9ca667bc2c737996929c2c9c5fc94af947fd200000000000000000000000000000000000000000000000000000000000000600000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000566756e6331000000000000000000000000000000000000000000000000000000",
-		"0xb1459DCF16905F7c84F4C22398c9CcAAD7345669",
-		"0x17E48D49475574AE927E47dCFC2D1747B75FFfDc",
-		toBigInt("150000000000000000000"),
-		toBigInt("1738138084109"),
-
-	)
-	const result = deconstructReceiptId(receiptId);
-	console.log({receiptId, result});
-
-	//TODO: remove user balance from the interract interface
+	console.log({ moduleId, userAddr });
 	return {
 		pending: [
 			{
 				interactAmount: 10,
-				tokenDenom: "USDC", //TODO: deprecate this
-				createdAt: "2/2/2020",//TODO: deprecate this
+				// tokenDenom: "USDC", //TODO: deprecate this
+				createdAt: "2/2/2020", //TODO: deprecate this
 				payload:
-					"0x0000000000000000000000000000000000000000000000000000000000000000",//TODO: get this value from modal call
-				//TODO: get this value from modal call
+					"0x0000000000000000000000000000000000000000000000000000000000000000",
 				funcId: "0x000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000a00000000000000000000000000000000000000000000000000000000000000040000000000000000000000000f31467c0ca100abef512002183de7dcbeb9d2fc0000000000000000000000000abd9ca667bc2c737996929c2c9c5fc94af947fd200000000000000000000000000000000000000000000000000000000000000600000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000566756e6331000000000000000000000000000000000000000000000000000000",
-				tokenAddr: "0x85b97CB8828E237605Bc19Fc0fa622c6d8D6815B",//TODO: get this value from modal call
+				tokenAddr: "0x85b97CB8828E237605Bc19Fc0fa622c6d8D6815B",
 			},
 			{
 				interactAmount: 150,
-				tokenDenom: "DAI",
+				// tokenDenom: "DAI",
 				createdAt: "3/15/2021",
 				payload:
 					"0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -52,7 +39,7 @@ const useGetUserTransactions = ({
 			},
 			{
 				interactAmount: 400,
-				tokenDenom: "USDT",
+				// tokenDenom: "USDT",
 				createdAt: "6/12/2022",
 				payload:
 					"0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -61,7 +48,7 @@ const useGetUserTransactions = ({
 			},
 			{
 				interactAmount: 500,
-				tokenDenom: "USDT",
+				// tokenDenom: "USDT",
 				createdAt: "8/30/2019",
 				payload:
 					"0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -70,7 +57,7 @@ const useGetUserTransactions = ({
 			},
 			{
 				interactAmount: 300,
-				tokenDenom: "USDC",
+				// tokenDenom: "USDC",
 				createdAt: "11/23/2020",
 				payload:
 					"0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -81,7 +68,7 @@ const useGetUserTransactions = ({
 		completed: [
 			{
 				interactAmount: 400,
-				tokenDenom: "USDT",
+				// tokenDenom: "USDT",
 				createdAt: "6/12/2022",
 				funcId: "",
 				payload:
@@ -90,7 +77,7 @@ const useGetUserTransactions = ({
 			},
 			{
 				interactAmount: 500,
-				tokenDenom: "USDT",
+				// tokenDenom: "USDT",
 				createdAt: "8/30/2019",
 				funcId: "",
 				payload:
@@ -99,7 +86,7 @@ const useGetUserTransactions = ({
 			},
 			{
 				interactAmount: 300,
-				tokenDenom: "USDC",
+				// tokenDenom: "USDC",
 				createdAt: "11/23/2020",
 				funcId: "",
 				payload:

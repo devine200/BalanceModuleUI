@@ -4,6 +4,8 @@ import "./interact-modal.css";
 import CloseBtn from "../close-btn.tsx";
 import contractConfig from "../../utils/test-config.json";
 import useContractInteract from "../../hooks/useContractInteract.tsx";
+import { getTokenConfig } from "../../hooks/useGetAssets.tsx";
+import useGetAssets from "../../hooks/useGetAssets.tsx";
 import tradableLogo from "../../images/tradable-square.svg";
 import avalancheLogo from "../../images/avalanche-square.svg";
 import { useSwitchChain } from "wagmi";
@@ -44,6 +46,10 @@ const InteractConfirmModal = ({
 
 	// getting side vault network id
 	const sideChainId = getVaultChainId(vaultAddr);
+
+	// Getting token denom
+	const assets = useGetAssets();
+	const tokenData = getTokenConfig(assets, tokenAddr);
 
 	const handleTransactionConfirmation = async () => {
 		try {

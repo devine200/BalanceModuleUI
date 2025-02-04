@@ -1,16 +1,18 @@
 import { useAccount, useDisconnect } from "wagmi";
 import { AppFeatures, ModalState } from "../../types";
 import useGetUserTransactions from "../../hooks/useGetUserTransaction";
+import { useContext } from "react";
+import { AppConfigContext } from "../../contexts";
 
 interface UserInterfaceModalProps extends AppFeatures {}
 
 const UserInterfaceDemo = ({
 	changeModal,
-	moduleId,
 	userAddr,
 }: UserInterfaceModalProps) => {
 	const { isConnected } = useAccount();
 	const { disconnect } = useDisconnect();
+	const { moduleId } = useContext(AppConfigContext);
 	const { pending } = useGetUserTransactions({
 		moduleId: moduleId as string,
 		userAddr: userAddr as string,

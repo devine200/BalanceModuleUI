@@ -9,7 +9,6 @@ import { ModalState, TradableConfig } from './types'
 
 // @ts-ignore
 globalThis.Buffer = Buffer
-// TODO: add funcID map to interType name and descriptions
 const tradableConfig:TradableConfig = {
   app_name: "Tradable Demo",
   moduleId: "0x00000000000000000000000044edbc1b4d7f235fc62e4a73f6324740327fff3b0000000000000000000000006d296458a3df350390a57c4a5b536736415707d8",

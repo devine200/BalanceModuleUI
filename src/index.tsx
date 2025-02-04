@@ -7,6 +7,7 @@ import Click from "./components/Click.tsx";
 import { AppConfigContext, UserInterfaceContext } from "./contexts.tsx";
 import { useReducer } from "react";
 import useGetUserTransactions from "./hooks/useGetUserTransaction.tsx";
+import { AddressLike, BytesLike } from "ethers";
 
 const queryClient = new QueryClient();
 
@@ -30,7 +31,7 @@ const TradableSDKProvider = ({
 	// TODO: Create a type for the user state
 	const [appState, dispatchAppState] = useReducer(reducer, {
 		isModalOpen: false,
-		modalInfo: initialModal, //TODO:should be deprecated after testing phase
+		modalInfo: initialModal,
 	});
 
 	const handleConnectWallet = () => {
@@ -45,12 +46,12 @@ const TradableSDKProvider = ({
 		});
 	};
 
-	const handleProtocolTransaction = () => {
+	const handleProtocolTransaction = (funcId:BytesLike, tokenAddr:AddressLike, amount:number, funcPayload:BytesLike) => {
 		dispatchAppState({
 			isModalOpen: true,
 			modalInfo: {
 				modalState: ModalState.INTERACT,
-				optionalData: pending[1],
+				optionalData: {...pending[1], funcId, tokenAddr, interactAmount: amount, payload:funcPayload},
 			},
 		});
 	};

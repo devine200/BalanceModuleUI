@@ -19,7 +19,7 @@ function App() {
 	const { isConnected } = useAccount();
 	const { address } = useAccount();
 
-	const { website, moduleId, appState, dispatchAppState } =
+	const { appState, dispatchAppState } =
 		useContext(AppConfigContext);
 		
 	const { isModalOpen, modalInfo } = appState;
@@ -37,9 +37,7 @@ function App() {
 	const appFeatures: AppFeatures = {
 		closeModal,
 		changeModal,
-		moduleId,
-		userAddr: address,
-		website,
+		userAddr: address as string,
 	};
 
 	useEffect(() => {

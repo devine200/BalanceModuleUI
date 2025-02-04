@@ -6,20 +6,14 @@ import CloseBtn from "../close-btn.tsx";
 import useGetUserTransactions from "../../hooks/useGetUserTransaction.tsx";
 import { AppConfigContext } from "../../contexts.tsx";
 
-
-
-export interface InteractionHistoryModalProps extends AppFeatures {
-	moduleId: string;
-	userAddr: string;
-}
+export interface InteractionHistoryModalProps extends AppFeatures {}
 
 const InteractHistoryModal = ({
 	changeModal,
-	moduleId,
 	userAddr,
 	closeModal,
 }: InteractionHistoryModalProps) => {
-	const { website } = useContext(AppConfigContext)
+	const { website, moduleId, getFuncConfig } = useContext(AppConfigContext);
 
 	const handleOpenPendingTx = (interaction: Interaction) => {
 		if (changeModal) {
@@ -31,7 +25,7 @@ const InteractHistoryModal = ({
 	};
 
 	const { pending, completed } = useGetUserTransactions({
-		moduleId,
+		moduleId: moduleId as string,
 		userAddr,
 	});
 	return (
@@ -47,7 +41,11 @@ const InteractHistoryModal = ({
 					<span></span>
 				</div>
 				<div className="detail-holder scrollable-div">
-					{pending.map((interaction: Interaction) => (
+					{pending.map((interaction: Interaction) => {
+						const { funcId } = interaction;
+						const { interactType } = getFuncConfig(funcId);
+
+						return (
 						<div
 							className="interact-detail hoverable"
 							key={uuidv4()}
@@ -55,7 +53,7 @@ const InteractHistoryModal = ({
 								handleOpenPendingTx(interaction);
 							}}
 						>
-							<span>{interaction.interactType.substring(0, 15)}</span>
+								<span>{interactType.substring(0, 15)}</span>
 							<div>
 								<span>
 									{interaction.interactAmount}{" "}
@@ -64,7 +62,8 @@ const InteractHistoryModal = ({
 								<span>{website}</span>
 							</div>
 						</div>
-					))}
+						);
+					})}
 				</div>
 			</div>
 

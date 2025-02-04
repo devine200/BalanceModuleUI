@@ -35,7 +35,7 @@ export interface TradableConfig {
 
 export interface Interaction {
 	interactAmount: number;
-	tokenDenom: string;
+	// tokenDenom: string;
 	funcId: BytesLike;
 	payload: BytesLike;
 	tokenAddr: AddressLike;
@@ -84,9 +84,7 @@ export interface ModuleDataSet {
 export interface AppFeatures {
 	changeModal?: (modalState: ModalInfo) => void;
 	closeModal?: () => void;
-	moduleId?: BytesLike;
-	userAddr?: string; //TODO:depricate this value
-	website: string;
+	userAddr: string;
 }
 
 export interface ModalInfo {

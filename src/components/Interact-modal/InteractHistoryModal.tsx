@@ -28,6 +28,7 @@ const InteractHistoryModal = ({
 		moduleId: moduleId as string,
 		userAddr,
 	});
+
 	return (
 		<div className="app-modal animate interact-modal">
 			<CloseBtn closeModal={closeModal!} />
@@ -46,22 +47,22 @@ const InteractHistoryModal = ({
 						const { interactType } = getFuncConfig(funcId);
 
 						return (
-						<div
-							className="interact-detail hoverable"
-							key={uuidv4()}
-							onClick={() => {
-								handleOpenPendingTx(interaction);
-							}}
-						>
+							<div
+								className="interact-detail hoverable"
+								key={uuidv4()}
+								onClick={() => {
+									handleOpenPendingTx(interaction);
+								}}
+							>
 								<span>{interactType.substring(0, 15)}</span>
-							<div>
-								<span>
-									{interaction.interactAmount}{" "}
-									{interaction.tokenDenom}
-								</span>
-								<span>{website}</span>
+								<div>
+									<span>
+										{interaction.interactAmount}{" "}
+										{interaction.tokenDenom}
+									</span>
+									<span>{website}</span>
+								</div>
 							</div>
-						</div>
 						);
 					})}
 				</div>

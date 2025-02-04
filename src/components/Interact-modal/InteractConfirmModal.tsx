@@ -14,26 +14,24 @@ import { config } from "../../wagmi.ts";
 import useDeserializer from "../../hooks/useDeserializer.tsx";
 import { AppConfigContext } from "../../contexts.tsx";
 
-interface InteractModalProps extends Interaction, AppFeatures {
+interface InteractModalProps extends Interaction,  AppFeatures {
 	receiptId: BytesLike;
 }
 
 // TODO: Create a function that takes a token address returns its config details from the get assets
-// TODO: Destructure receiptId to get the tokenAddr and interactAmount
 const InteractConfirmModal = ({
-	interactAmount, // TODO: deprecate variable
-	tokenDenom, // TODO: deprecate variable
+	// tokenDenom, // TODO: deprecate variable
 	changeModal,
 	closeModal,
 	payload,
-	receiptId,
+	receiptId
 }: InteractModalProps) => {
 	const { transactionConfirmation, transactionRejection } =
 		useContractInteract();
 
 	const { website, moduleId, getFuncConfig } = useContext(AppConfigContext);
 	const { deconstructReceiptId } = useDeserializer();
-	const { funcId } = deconstructReceiptId(receiptId);
+	const { funcId, tokenAddr, amount:interactAmount } = deconstructReceiptId(receiptId);
 	const {interactType } = getFuncConfig(funcId.toString());
 
 	const { getVaultAddressFromModuleId, getVaultChainId } = useDeserializer();

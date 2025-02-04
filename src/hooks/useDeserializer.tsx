@@ -3,7 +3,6 @@ import contractConfig from "../utils/test-config.json";
 
 interface DeserializerVals {
 	getVaultAddressFromModuleId: (moduleId: BytesLike) => AddressLike;
-	getVaultAddressFromFuncId: (funcId: BytesLike) => AddressLike;
 	getVaultChainId: (vaultAddr: AddressLike) => Number;
 	getVaultConfig: (vaultAddr: AddressLike) => any;
 	deconstructReceiptId: (receiptId: BytesLike) => any;
@@ -28,13 +27,6 @@ const useDeserializer = (): DeserializerVals => {
 	const abiCoder: AbiCoder = AbiCoder.defaultAbiCoder();
 
 	const getVaultAddressFromModuleId = (moduleId: BytesLike): AddressLike => {
-		const [, vaultAddr] = abiCoder.decode(["address", "address"], moduleId);
-		return vaultAddr;
-	};
-
-	//TODO:depricate this function
-	const getVaultAddressFromFuncId = (funcId: BytesLike): AddressLike => {
-		const [moduleId] = abiCoder.decode(["bytes", "bytes"], funcId);
 		const [, vaultAddr] = abiCoder.decode(["address", "address"], moduleId);
 		return vaultAddr;
 	};
@@ -80,7 +72,6 @@ const useDeserializer = (): DeserializerVals => {
 
 	return {
 		getVaultAddressFromModuleId,
-		getVaultAddressFromFuncId,
 		getVaultChainId,
 		getVaultConfig,
 		deconstructReceiptId,

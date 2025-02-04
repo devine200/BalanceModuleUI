@@ -5,7 +5,6 @@ import { useReadContracts } from "wagmi";
 import useDeserializer from "./useDeserializer";
 import { toBigInt } from "ethers";
 
-
 interface ModuleDetailProps {
 	moduleId: string;
 	userAddr: string;

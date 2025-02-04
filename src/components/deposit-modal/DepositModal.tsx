@@ -7,7 +7,7 @@ import {
 	Deposit,
 	ModalState,
 } from "../../types.ts";
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import useContractInteract from "../../hooks/useContractInteract.tsx";
 import useDeserializer from "../../hooks/useDeserializer.tsx";
 import { AddressLike, BytesLike } from "ethers";
@@ -15,6 +15,8 @@ import ContractConfig from "../../utils/test-config.json";
 import useGetTokenBalance from "../../hooks/useGetTokenBalance.tsx";
 import loadingGif from "../../images/loading_gif.gif";
 import { AppConfigContext } from "../../contexts.tsx";
+import { useAccount } from "wagmi";
+
 
 export interface DepositModalProps extends Deposit, AppFeatures {}
 
@@ -28,6 +30,7 @@ const DepositModal = ({
 	tokenAddr,
 	userAddr,
 }: DepositModalProps) => {
+	const {isConnected} = useAccount()
 	const { appState } = useContext(AppConfigContext);
 	const {moduleId} = appState;
 	const { depositIntoTradable } = useContractInteract();
@@ -42,6 +45,20 @@ const DepositModal = ({
 
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const [amount, setAmount] = useState<number>(0);
+
+	useEffect(() => {
+		if (!isConnected) {
+			changeModal!({
+				modalState: ModalState.CONNECT_WALLET,
+				optionalData: {
+					nextModal: {
+						modalState: ModalState.DEPOSIT,
+						optionalData: {}
+					}
+				}
+			})
+		}
+	}, [isConnected])
 
 	const handleAssetSelect = () => {
 		try {

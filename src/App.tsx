@@ -47,7 +47,7 @@ function App() {
 			modalInfo: {
 				modalState: ModalState.CONNECT_WALLET,
 				optionalData: {
-					nextModal: ModalState.USER_INTERFACE,
+					nextModal: {modalState: ModalState.USER_INTERFACE},
 				},
 			},
 		});

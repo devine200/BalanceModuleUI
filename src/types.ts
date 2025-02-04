@@ -123,5 +123,5 @@ export interface Deposit {
 }
 
 export interface ConnectWallet {
-	nextModal?: ModalState | null;
+	nextModal?: ModalInfo | null;
 }

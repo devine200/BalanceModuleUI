@@ -8,7 +8,6 @@ import walletConnectLogo from "../../images/Walletconnect-logo.png";
 import { useAccount, useConnect } from "wagmi";
 
 interface ConnectWalletModalProps extends ConnectWallet, AppFeatures {
-	nextModal: ModalState;
 }
 
 const ConnectWalletModal = ({
@@ -39,16 +38,8 @@ const ConnectWalletModal = ({
 	];
 
 	useEffect(() => {
-		console.log(connectors[0].name);
-		console.log(connectors[1].name);
-	}, []);
-
-	useEffect(() => {
 		if (!isConnected) return;
-		changeModal!({
-			modalState: nextModal,
-			optionalData: {},
-		});
+		changeModal!(nextModal!);
 	}, [isConnected]);
 
 	return (

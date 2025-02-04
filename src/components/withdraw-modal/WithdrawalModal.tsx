@@ -10,10 +10,13 @@ import {
 	Deposit,
 	ModalState,
 } from "../../types.ts";
-import { useState } from "react";
+import { useState, useEffect, useContext } from "react";
 import useContractInteract from "../../hooks/useContractInteract.tsx";
 import useDeserializer from "../../hooks/useDeserializer.tsx";
 import { BytesLike } from "ethers";
+import { useAccount } from "wagmi";
+import { AppConfigContext } from "../../contexts.tsx";
+
 
 interface WithdrawalModalProps extends Deposit, AppFeatures {}
 
@@ -26,12 +29,28 @@ const WithdrawalModal = ({
 	chainImage,
 	userAddr,
 	tokenAddr,
-	moduleId,
 }: WithdrawalModalProps) => {
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const { balance, withdrawFromTradable } = useContractInteract();
 	const [amount, setAmount] = useState<number>(0);
 	const { getVaultAddressFromModuleId } = useDeserializer();
+	const {isConnected} = useAccount()
+	const { appState } = useContext(AppConfigContext);
+	const {moduleId} = appState;
+
+	useEffect(() => {
+		if (!isConnected) {
+			changeModal!({
+				modalState: ModalState.CONNECT_WALLET,
+				optionalData: {
+					nextModal: {
+						modalState: ModalState.WITHDRAWAL,
+						optionalData: {}
+					}
+				}
+			})
+		}
+	}, [isConnected])
 
 	const handleAssetSelect = () => {
 		try {

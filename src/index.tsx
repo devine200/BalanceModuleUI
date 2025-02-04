@@ -3,7 +3,6 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import App from "./App.tsx";
 import { config } from "./wagmi.ts";
 import { AppConfig, FunctionConfig, ModalState, TradableConfig } from "./types.ts";
-import Click from "./components/Click.tsx";
 import { AppConfigContext, UserInterfaceContext } from "./contexts.tsx";
 import { useReducer } from "react";
 import useGetUserTransactions from "./hooks/useGetUserTransaction.tsx";
@@ -11,12 +10,17 @@ import { AddressLike, BytesLike } from "ethers";
 
 const queryClient = new QueryClient();
 
+interface TradableSDKProviderProps extends TradableConfig {
+	children: React.ReactNode
+}
+
 const TradableSDKProvider = ({
 	moduleId,
 	initialModal,
 	app_name,
-	moduleFuncConfig
-}: TradableConfig) => {
+	moduleFuncConfig,
+	children
+}: TradableSDKProviderProps) => {
 	const { pending } = useGetUserTransactions({
 		moduleId: moduleId as string,
 		userAddr: "userAddr as string",
@@ -35,7 +39,6 @@ const TradableSDKProvider = ({
 		return moduleFuncConfig[config];
 	}
 
-	// TODO: Create a type for the user state
 	const [appState, dispatchAppState] = useReducer(reducer, {
 		isModalOpen: false,
 		modalInfo: initialModal,
@@ -50,7 +53,7 @@ const TradableSDKProvider = ({
 			modalInfo: {
 				modalState: ModalState.CONNECT_WALLET,
 				optionalData: {
-					nextModal: ModalState.USER_INTERFACE,
+					nextModal: {modalState: ModalState.USER_INTERFACE},
 				},
 			},
 		});
@@ -61,7 +64,7 @@ const TradableSDKProvider = ({
 			isModalOpen: true,
 			modalInfo: {
 				modalState: ModalState.INTERACT,
-				optionalData: {...pending[1], funcId, tokenAddr, interactAmount: amount, payload:funcPayload},
+				optionalData: {createdAt: "10/2/2025", funcId, tokenAddr, interactAmount: amount, payload:funcPayload},
 			},
 		});
 	};
@@ -70,8 +73,7 @@ const TradableSDKProvider = ({
 		dispatchAppState({
 			isModalOpen: true,
 			modalInfo: {
-				modalState: ModalState.WITHDRAWAL,
-				optionalData: {},
+				modalState: ModalState.WITHDRAWAL
 			},
 		});
 	};
@@ -80,12 +82,12 @@ const TradableSDKProvider = ({
 		dispatchAppState({
 			isModalOpen: true,
 			modalInfo: {
-				modalState: ModalState.DEPOSIT,
-				optionalData: {},
+				modalState: ModalState.DEPOSIT
 			},
 		});
 	};
 
+	
 	return (
 		<WagmiProvider config={config}>
 			<QueryClientProvider client={queryClient}>
@@ -102,7 +104,7 @@ const TradableSDKProvider = ({
 						handleWithdrawal,
 					}}
 				>
-					<Click />
+					{children}
 				</UserInterfaceContext.Provider>
 			</QueryClientProvider>
 		</WagmiProvider>

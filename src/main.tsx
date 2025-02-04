@@ -6,6 +6,7 @@ import ReactDOM from 'react-dom/client'
 import './index.css'
 import TradableSDKProvider from '.'
 import { ModalState, TradableConfig } from './types'
+import Click from './components/Click'
 
 // @ts-ignore
 globalThis.Buffer = Buffer
@@ -26,6 +27,8 @@ const tradableConfig:TradableConfig = {
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <TradableSDKProvider  {...tradableConfig} />
+    <TradableSDKProvider  {...tradableConfig}>
+      <Click />
+    </TradableSDKProvider>
   </React.StrictMode>,
 )

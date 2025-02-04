@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { AppFeatures, Interaction, ModalState } from "../../types.ts";
 import "./interact-modal.css";
 import CloseBtn from "../close-btn.tsx";
@@ -22,6 +22,7 @@ const InteractModal = (props: InteractModalProps) => {
 		closeModal,
 		tokenAddr,
 		funcId,
+		payload,
 	} = props;
 	const { appState } = useContext(AppConfigContext)
 	const { website, moduleId, getFuncConfig } = appState;
@@ -32,13 +33,23 @@ const InteractModal = (props: InteractModalProps) => {
 	const { getVaultAddressFromModuleId, getVaultChainId } = useDeserializer();
 	// @ts-ignore
 	const { switchChain } = useSwitchChain(config);
-	const { address } = useAccount();
+	const { address, isConnected } = useAccount();
 
 	// getting side vault from func id
 	const vaultAddr = getVaultAddressFromModuleId(moduleId as BytesLike);
 
 	// getting side vault network id
 	const sideChainId = getVaultChainId(vaultAddr);
+
+	useEffect(() => {
+		if (!isConnected) {
+			changeModal!({
+				modalState: ModalState.INTERACT,
+				optionalData: {nextModal: 
+					ModalState.WITHDRAWAL, createdAt: "10/2/2025", funcId, tokenAddr, interactAmount, payload}
+			})
+		}
+	}, [isConnected])
 
 	// Getting token denom
 	const assets = useGetAssets();

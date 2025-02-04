@@ -5,6 +5,7 @@ import "./interact-modal.css";
 import CloseBtn from "../close-btn.tsx";
 import useGetUserTransactions from "../../hooks/useGetUserTransaction.tsx";
 import { AppConfigContext } from "../../contexts.tsx";
+import useGetAssets, { getTokenConfig, TokenData } from "../../hooks/useGetAssets.tsx";
 
 export interface InteractionHistoryModalProps extends AppFeatures {}
 
@@ -28,6 +29,21 @@ const InteractHistoryModal = ({
 		moduleId: moduleId as string,
 		userAddr,
 	});
+
+	// Getting token denom
+	const assets = useGetAssets();
+	let tokenData: TokenData;
+	try {
+		tokenData = getTokenConfig(assets, userAddr);
+	} catch (e: any) {
+		changeModal!({
+			modalState: ModalState.RESPONSE,
+			optionalData: {
+				isSuccessful: false,
+				responseMsg: e?.shortMessage ? e.shortMessage : e.toString(),
+			},
+		});
+	}
 
 	return (
 		<div className="app-modal animate interact-modal">
@@ -58,7 +74,7 @@ const InteractHistoryModal = ({
 								<div>
 									<span>
 										{interaction.interactAmount}{" "}
-										{interaction.tokenDenom}
+										{tokenData?.name}
 									</span>
 									<span>{website}</span>
 								</div>
@@ -78,14 +94,12 @@ const InteractHistoryModal = ({
 						({
 							createdAt,
 							interactAmount,
-							tokenDenom,
-							// website,
 						}: Interaction) => (
 							<div className="interact-detail" key={uuidv4()}>
 								<span>{createdAt}</span>
 								<div>
 									<span>
-										{interactAmount} {tokenDenom}
+										{interactAmount} {tokenData?.name}
 									</span>
 									<span>{website}</span>
 								</div>

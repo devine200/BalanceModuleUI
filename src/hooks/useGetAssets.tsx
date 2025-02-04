@@ -31,8 +31,7 @@ export const getTokenConfig = (chainData:ChainData[], address:AddressLike):Token
       }
     }
   }
-  throw new Error('A')
-  
+  throw new Error('Token not supported');
 }
 
 const useGetAssets = ():ChainData[] => {

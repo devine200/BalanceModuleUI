@@ -20,7 +20,6 @@ const useGetUserTransactions = ({
 		pending: [
 			{
 				interactAmount: 10,
-				// tokenDenom: "USDC", //TODO: deprecate this
 				createdAt: "2/2/2020", //TODO: deprecate this
 				payload:
 					"0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -29,7 +28,6 @@ const useGetUserTransactions = ({
 			},
 			{
 				interactAmount: 150,
-				// tokenDenom: "DAI",
 				createdAt: "3/15/2021",
 				payload:
 					"0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -38,7 +36,6 @@ const useGetUserTransactions = ({
 			},
 			{
 				interactAmount: 400,
-				// tokenDenom: "USDT",
 				createdAt: "6/12/2022",
 				payload:
 					"0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -47,7 +44,6 @@ const useGetUserTransactions = ({
 			},
 			{
 				interactAmount: 500,
-				// tokenDenom: "USDT",
 				createdAt: "8/30/2019",
 				payload:
 					"0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -56,7 +52,6 @@ const useGetUserTransactions = ({
 			},
 			{
 				interactAmount: 300,
-				// tokenDenom: "USDC",
 				createdAt: "11/23/2020",
 				payload:
 					"0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -67,7 +62,6 @@ const useGetUserTransactions = ({
 		completed: [
 			{
 				interactAmount: 400,
-				// tokenDenom: "USDT",
 				createdAt: "6/12/2022",
 				funcId: "",
 				payload:
@@ -76,7 +70,6 @@ const useGetUserTransactions = ({
 			},
 			{
 				interactAmount: 500,
-				// tokenDenom: "USDT",
 				createdAt: "8/30/2019",
 				funcId: "",
 				payload:
@@ -85,7 +78,6 @@ const useGetUserTransactions = ({
 			},
 			{
 				interactAmount: 300,
-				// tokenDenom: "USDC",
 				createdAt: "11/23/2020",
 				funcId: "",
 				payload:

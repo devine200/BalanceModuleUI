@@ -4,8 +4,7 @@ import "./interact-modal.css";
 import CloseBtn from "../close-btn.tsx";
 import contractConfig from "../../utils/test-config.json";
 import useContractInteract from "../../hooks/useContractInteract.tsx";
-import { getTokenConfig } from "../../hooks/useGetAssets.tsx";
-import useGetAssets from "../../hooks/useGetAssets.tsx";
+import useGetAssets, { getTokenConfig } from "../../hooks/useGetAssets.tsx";
 import tradableLogo from "../../images/tradable-square.svg";
 import avalancheLogo from "../../images/avalanche-square.svg";
 import { useSwitchChain } from "wagmi";
@@ -14,25 +13,28 @@ import { config } from "../../wagmi.ts";
 import useDeserializer from "../../hooks/useDeserializer.tsx";
 import { AppConfigContext } from "../../contexts.tsx";
 
-interface InteractModalProps extends Interaction,  AppFeatures {
+interface InteractModalProps extends Interaction, AppFeatures {
 	receiptId: BytesLike;
 }
 
 // TODO: Create a function that takes a token address returns its config details from the get assets
 const InteractConfirmModal = ({
-	// tokenDenom, // TODO: deprecate variable
 	changeModal,
 	closeModal,
 	payload,
-	receiptId
+	receiptId,
 }: InteractModalProps) => {
 	const { transactionConfirmation, transactionRejection } =
 		useContractInteract();
 
 	const { website, moduleId, getFuncConfig } = useContext(AppConfigContext);
 	const { deconstructReceiptId } = useDeserializer();
-	const { funcId, tokenAddr, amount:interactAmount } = deconstructReceiptId(receiptId);
-	const {interactType } = getFuncConfig(funcId.toString());
+	const {
+		funcId,
+		tokenAddr,
+		amount: interactAmount,
+	} = deconstructReceiptId(receiptId);
+	const { interactType } = getFuncConfig(funcId.toString());
 
 	const { getVaultAddressFromModuleId, getVaultChainId } = useDeserializer();
 	const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -47,7 +49,20 @@ const InteractConfirmModal = ({
 
 	// Getting token denom
 	const assets = useGetAssets();
-	const tokenData = getTokenConfig(assets, tokenAddr);
+	let tokenData;
+	try {
+		tokenData = getTokenConfig(assets, tokenAddr);
+	} catch (e: any) {
+		changeModal!({
+			modalState: ModalState.RESPONSE,
+			optionalData: {
+				isSuccessful: false,
+				amount: interactAmount,
+				interactType,
+				responseMsg: e?.shortMessage ? e.shortMessage : e.toString()
+			},
+		});
+	}
 
 	const handleTransactionConfirmation = async () => {
 		try {
@@ -122,7 +137,6 @@ const InteractConfirmModal = ({
 				},
 			});
 		} catch (e: any) {
-			console.log(e);
 			changeModal!({
 				modalState: ModalState.RESPONSE,
 				optionalData: {
@@ -154,7 +168,7 @@ const InteractConfirmModal = ({
 			<div className="interact-detail interact-total">
 				<span>Amount to Spend</span>
 				<span>
-					{interactAmount} {tokenDenom}
+					{interactAmount} {tokenData?.name}
 				</span>
 			</div>
 

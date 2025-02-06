@@ -9,7 +9,12 @@ const userInterfaceInitialConfig = {
 		tokenAddr: AddressLike,
 		amount: number,
 		funcPayload: BytesLike,
-	) => {},
+	) => {
+		console.log({funcId,
+			tokenAddr,
+			amount,
+			funcPayload,})
+	},
 	handleDeposit: () => {},
 	handleWithdrawal: () => {}
 }

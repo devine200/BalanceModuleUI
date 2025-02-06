@@ -1,6 +1,6 @@
 import "./connect-wallet.css";
 import CloseBtn from "../close-btn.tsx";
-import { AppFeatures, ConnectWallet, ModalState } from "../../types.ts";
+import { AppFeatures, ConnectWallet } from "../../types.ts";
 import { useEffect } from "react";
 import metaMaskLogo from "../../images/meta_mask.png";
 import walletConnectLogo from "../../images/Walletconnect-logo.png";

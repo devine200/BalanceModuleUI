@@ -26,6 +26,7 @@ const TradableSDKProvider = ({
 		userAddr: "userAddr as string",
 	});
 
+	console.log(pending)
 
 	const reducer = (state:AppConfig, action: any) => {
 		return { ...state, ...action };

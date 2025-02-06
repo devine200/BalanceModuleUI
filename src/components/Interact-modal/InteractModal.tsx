@@ -47,7 +47,7 @@ const InteractModal = (props: InteractModalProps) => {
 				modalState: ModalState.CONNECT_WALLET,
 				optionalData: {
 					nextModal: {
-						ModalState: ModalState.INTERACT,
+						modalState: ModalState.INTERACT,
 						optionalData: {
 							createdAt: "10/2/2025",
 							funcId,

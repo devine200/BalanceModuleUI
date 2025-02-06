@@ -24,10 +24,10 @@ const InteractModal = (props: InteractModalProps) => {
 		funcId,
 		payload,
 	} = props;
-	const { appState } = useContext(AppConfigContext)
+	const { appState } = useContext(AppConfigContext);
 	const { website, moduleId, getFuncConfig } = appState;
-	const {interactType} = getFuncConfig!(funcId.toString());
-	
+	const { interactType } = getFuncConfig!(funcId.toString());
+
 	const { balance, initiateProtocolTransaction } = useContractInteract();
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const { getVaultAddressFromModuleId, getVaultChainId } = useDeserializer();
@@ -44,12 +44,22 @@ const InteractModal = (props: InteractModalProps) => {
 	useEffect(() => {
 		if (!isConnected) {
 			changeModal!({
-				modalState: ModalState.INTERACT,
-				optionalData: {nextModal: 
-					ModalState.WITHDRAWAL, createdAt: "10/2/2025", funcId, tokenAddr, interactAmount, payload}
-			})
+				modalState: ModalState.CONNECT_WALLET,
+				optionalData: {
+					nextModal: {
+						ModalState: ModalState.INTERACT,
+						optionalData: {
+							createdAt: "10/2/2025",
+							funcId,
+							tokenAddr,
+							interactAmount,
+							payload,
+						},
+					},
+				},
+			});
 		}
-	}, [isConnected])
+	}, [isConnected]);
 
 	// Getting token denom
 	const assets = useGetAssets();
@@ -63,7 +73,7 @@ const InteractModal = (props: InteractModalProps) => {
 				isSuccessful: false,
 				amount: interactAmount,
 				interactType,
-				responseMsg: e?.shortMessage ? e.shortMessage : e.toString()
+				responseMsg: e?.shortMessage ? e.shortMessage : e.toString(),
 			},
 		});
 	}

@@ -55,7 +55,7 @@ export interface Interaction {
 	funcId: BytesLike;
 	payload: BytesLike;
 	tokenAddr: AddressLike;
-	createdAt?: string;
+	// createdAt?: string;
 }
 
 export interface AppSetupParams {

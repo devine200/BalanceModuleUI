@@ -1,6 +1,6 @@
 {
   "tradableSettings": {
-    "address": "0x38dFEeC768aEB751B0291754c9A22Cb12c5E2fc4",
+    "address": "0x84757bf51d4870b1c6A7cbFc904238D88223eE53",
     "abi": [
       {
         "inputs": [
@@ -557,7 +557,7 @@
     ]
   },
   "tradableBalanceVault": {
-    "address": "0x4386A33DC688350568e8c367A492046542b18fFA",
+    "address": "0xEB97b179beb22a1824a3890AcAbB98926daC320C",
     "abi": [
       {
         "inputs": [
@@ -854,7 +854,7 @@
     ]
   },
   "tradableModuleRouter": {
-    "address": "0x4B661fcB5c784d0ba020f3F8C2C59cCb73016606",
+    "address": "0x657aE02b6d10C991A63f43f166f1f725e327eE89",
     "abi": [
       {
         "inputs": [
@@ -1141,7 +1141,7 @@
     ]
   },
   "tradableMessageAdapter": {
-    "address": "0x218cACf157882B68629eadd894597eA36E740902",
+    "address": "0x3e82ce1FC7FA5404f485d71a4861Bb4D024480A3",
     "endpoint": "0x93f54D755A063cE7bB9e6Ac47Eccc8e33411d706",
     "chainId": 10106,
     "abi": [
@@ -1984,6 +1984,26 @@
         "type": "event"
       },
       {
+        "inputs": [
+          { "internalType": "address", "name": "", "type": "address" },
+          { "internalType": "uint256", "name": "", "type": "uint256" }
+        ],
+        "name": "_claimedFunctionReceiptsMap",
+        "outputs": [{ "internalType": "bytes", "name": "", "type": "bytes" }],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          { "internalType": "address", "name": "", "type": "address" },
+          { "internalType": "uint256", "name": "", "type": "uint256" }
+        ],
+        "name": "_pendingFunctionReceiptsMap",
+        "outputs": [{ "internalType": "bytes", "name": "", "type": "bytes" }],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
         "inputs": [],
         "name": "acceptOwnership",
         "outputs": [],
@@ -2113,6 +2133,17 @@
       },
       {
         "inputs": [
+          { "internalType": "address", "name": "user", "type": "address" }
+        ],
+        "name": "getClaimedFuncReceipt",
+        "outputs": [
+          { "internalType": "bytes[]", "name": "", "type": "bytes[]" }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
           { "internalType": "uint16", "name": "_version", "type": "uint16" },
           { "internalType": "uint16", "name": "_chainId", "type": "uint16" },
           { "internalType": "address", "name": "", "type": "address" },
@@ -2124,6 +2155,17 @@
         ],
         "name": "getConfig",
         "outputs": [{ "internalType": "bytes", "name": "", "type": "bytes" }],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          { "internalType": "address", "name": "user", "type": "address" }
+        ],
+        "name": "getPendingFuncReceipt",
+        "outputs": [
+          { "internalType": "bytes[]", "name": "", "type": "bytes[]" }
+        ],
         "stateMutability": "view",
         "type": "function"
       },
@@ -2207,7 +2249,7 @@
         ],
         "name": "marginAccountDeposit",
         "outputs": [],
-        "stateMutability": "payable",
+        "stateMutability": "nonpayable",
         "type": "function"
       },
       {
@@ -2370,7 +2412,7 @@
         ],
         "name": "transferGas",
         "outputs": [],
-        "stateMutability": "payable",
+        "stateMutability": "nonpayable",
         "type": "function"
       },
       {
@@ -2668,101 +2710,18 @@
       ]
     },
     "vault": {
-      "avalanche": {
-        "tradableSideVault": "0x6D296458A3df350390a57c4A5B536736415707d8",
-        "stableTokens": [
-          "0x85b97CB8828E237605Bc19Fc0fa622c6d8D6815B",
-          "0x4648A8719b53b365cCfa12C22BF5F9DEaE52272b",
-          "0x17E48D49475574AE927E47dCFC2D1747B75FFfDc"
-        ],
-        "endpoint": "0x93f54D755A063cE7bB9e6Ac47Eccc8e33411d706",
-        "chainId": 10106,
-        "networkId": 43113,
-        "tradableModule": {
-          "address": "0x44edBc1b4D7F235Fc62e4A73F6324740327Fff3b",
-          "abi": [
-            {
-              "inputs": [
-                {
-                  "internalType": "address",
-                  "name": "_sideVault",
-                  "type": "address"
-                },
-                {
-                  "internalType": "bytes[]",
-                  "name": "_funcSigList",
-                  "type": "bytes[]"
-                }
-              ],
-              "stateMutability": "nonpayable",
-              "type": "constructor"
-            },
-            {
-              "inputs": [
-                { "internalType": "bytes", "name": "funcSig", "type": "bytes" },
-                { "internalType": "bytes", "name": "payload", "type": "bytes" }
-              ],
-              "name": "executePendingFunction",
-              "outputs": [],
-              "stateMutability": "nonpayable",
-              "type": "function"
-            },
-            {
-              "inputs": [],
-              "name": "getFuncSigList",
-              "outputs": [
-                { "internalType": "bytes[]", "name": "", "type": "bytes[]" }
-              ],
-              "stateMutability": "view",
-              "type": "function"
-            },
-            {
-              "inputs": [],
-              "name": "getModuleId",
-              "outputs": [
-                { "internalType": "bytes", "name": "", "type": "bytes" }
-              ],
-              "stateMutability": "view",
-              "type": "function"
-            },
-            {
-              "inputs": [
-                {
-                  "internalType": "address",
-                  "name": "user",
-                  "type": "address"
-                },
-                {
-                  "internalType": "address",
-                  "name": "token",
-                  "type": "address"
-                },
-                {
-                  "internalType": "uint256",
-                  "name": "amount",
-                  "type": "uint256"
-                }
-              ],
-              "name": "userModuleBalanceWithdrawal",
-              "outputs": [],
-              "stateMutability": "nonpayable",
-              "type": "function"
-            }
-          ]
-        }
-      },
       "bsc": {
-        "tradableSideVault": "0x11A1CeB02f8e07Ab5109e156620C278AEFc55fbc",
+        "tradableSideVault": "0x89300617319667d812c0541eaa5e35Fb0F5f1E6A",
         "stableTokens": [
-          "0x596310929f05D3cF15a2220decFE8Acf47f59b8A",
-          "0xeD9AEba46507fc92b89527B4E68d4D90ce337B82",
-          "0xa758FDF01D8Ebd20bE6D07dAd2F1aaf02cD5d82c"
+          "0xcBa8Ef489334A965c5c424F896A4aCAd39d262EC",
+          "0xd64F9e0b3111590B5d5c93FC0C0caa050223b489",
+          "0x52a2C23d7f85A7d3777e49f8C9d85A7D187574c4"
         ],
         "endpoint": "0x6Fcb97553D41516Cb228ac03FdC8B9a0a9df04A1",
         "chainId": 10102,
         "networkId": 97,
         "tradableModule": {
-          "address": "0x7E55E82a6Cdc65351549096A17482059504fE88e",
+          "address": "0x13241304a5B10f902036E55a2c1F95aA0f1C269b",
           "abi": [
             {
               "inputs": [
@@ -2834,18 +2793,18 @@
           ]
         }
       },
-      "sepolia": {
-        "tradableSideVault": "0x935c0a6a8AD13d99f909811175cb44C9395bEe4f",
+      "avalanche": {
+        "tradableSideVault": "0x3b6b709e8720bD847B564A446205c7Aa2e0D5451",
         "stableTokens": [
-          "0xD8A683440920A3ABd57fa908d7b6D90e46000C20",
-          "0x8A666CFfDD47f65d5b5F01ab1FE28Af586B32E21",
-          "0x9eAeC340CC729551c462f2cb0ab502086B34ca3d"
+          "0x75246a2DC8234D54E439CA309905a95cbf93193E",
+          "0x7E1c8E07085faB0311Fc8df9448Bc054E67fFbC6",
+          "0xB28eE801f8105a0e0D064D16897080Aa0cBF3ad2"
         ],
-        "endpoint": "0xae92d5aD7583AD66E49A0c67BAd18F6ba52dDDc1",
-        "chainId": 10161,
-        "networkId": 11155111,
+        "endpoint": "0x93f54D755A063cE7bB9e6Ac47Eccc8e33411d706",
+        "chainId": 10106,
+        "networkId": 43113,
         "tradableModule": {
-          "address": "0xedC7121DF421c571E8442190EdD31776CDc43547",
+          "address": "0x0c83b376d8ba8eF5BaEd8A5A890F37Ebd591b969",
           "abi": [
             {
               "inputs": [

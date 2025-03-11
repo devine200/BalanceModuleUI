@@ -15,12 +15,13 @@ interface DeserializerVals {
 	) => BytesLike;
 }
 
-interface DestructuredReceiptId {
+export interface DestructuredReceiptId {
 	funcId: BytesLike;
 	userAddr: AddressLike;
 	tokenAddr: AddressLike;
 	amount: BigInt;
 	nonce: BigInt;
+	payload: BytesLike;
 }
 
 const useDeserializer = (): DeserializerVals => {
@@ -66,6 +67,7 @@ const useDeserializer = (): DeserializerVals => {
 			tokenAddr,
 			amount,
 			nonce,
+			payload: "0x0000000000000000000000000000000000000000000000000000000000000000"
 		};
 	}
 

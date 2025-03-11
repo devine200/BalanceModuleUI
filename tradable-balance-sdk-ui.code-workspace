@@ -5,6 +5,9 @@
 		},
 		{
 			"path": "../tradable-balance-module"
+		},
+		{
+			"path": "../tradable-sdk-2"
 		}
 	]
 }

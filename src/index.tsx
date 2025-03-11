@@ -6,7 +6,7 @@ import { AppConfig, FunctionConfig, ModalState, TradableConfig } from "./types.t
 import { AppConfigContext, UserInterfaceContext } from "./contexts.tsx";
 import { useReducer } from "react";
 import useGetUserTransactions from "./hooks/useGetUserTransaction.tsx";
-import { AddressLike, BytesLike } from "ethers";
+import { AbiCoder, AddressLike, BytesLike } from "ethers";
 
 const queryClient = new QueryClient();
 
@@ -33,7 +33,8 @@ const TradableSDKProvider = ({
 	};
 
 	const getFuncConfig = (funcId:string):FunctionConfig => {
-		const config:(string | undefined) = Object.getOwnPropertyNames(moduleFuncConfig).find(configId => configId === funcId);
+		const abi = AbiCoder.defaultAbiCoder();
+		const config:(string | undefined) = Object.getOwnPropertyNames(moduleFuncConfig).find(configId => abi.encode(["bytes", "bytes"], [moduleId, configId]) == funcId);
 		if(!config){
 			throw new Error("Function not configured");
 		}

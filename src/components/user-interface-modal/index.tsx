@@ -1,7 +1,7 @@
 import { useAccount, useDisconnect } from "wagmi";
 import { AppFeatures, ModalState } from "../../types";
 import useGetUserTransactions from "../../hooks/useGetUserTransaction";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { AppConfigContext } from "../../contexts";
 
 interface UserInterfaceModalProps extends AppFeatures {}
@@ -18,6 +18,17 @@ const UserInterfaceDemo = ({
 		moduleId: moduleId as string,
 		userAddr: userAddr as string,
 	});
+
+	// useEffect(()=>{
+	// 	if(!isConnected) {
+	// 		changeModal!({
+	// 			modalState: ModalState.CONNECT_WALLET,
+	// 			optionalData: {
+	// 				nextModal: {modalState: ModalState.USER_INTERFACE},
+	// 			},
+	// 		});
+	// 	}
+	// })
 
 	const handleConnectWallet = () => {
 		if (isConnected) {

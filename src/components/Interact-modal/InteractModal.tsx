@@ -11,7 +11,7 @@ import { config } from "../../wagmi.ts";
 import useDeserializer from "../../hooks/useDeserializer.tsx";
 import { BytesLike } from "ethers";
 import { AppConfigContext } from "../../contexts.tsx";
-import useGetAssets, { getTokenConfig } from "../../hooks/useGetAssets.tsx";
+import useGetAssets, { getTokenConfig, TokenData } from "../../hooks/useGetAssets.tsx";
 
 interface InteractModalProps extends Interaction, AppFeatures {}
 
@@ -26,6 +26,7 @@ const InteractModal = (props: InteractModalProps) => {
 	} = props;
 	const { appState } = useContext(AppConfigContext);
 	const { website, moduleId, getFuncConfig } = appState;
+	console.log({funcId})
 	const { interactType } = getFuncConfig!(funcId.toString());
 
 	const { balance, initiateProtocolTransaction } = useContractInteract();
@@ -41,6 +42,44 @@ const InteractModal = (props: InteractModalProps) => {
 	// getting side vault network id
 	const sideChainId = getVaultChainId(vaultAddr);
 
+	// Getting token denom
+	const assets = useGetAssets();
+	const [tokenData, setTokenData] = useState<TokenData>();
+
+	useEffect(() => {
+		if (!isConnected) {
+			changeModal!({
+				modalState: ModalState.CONNECT_WALLET,
+				optionalData: {
+					nextModal: {
+						modalState: ModalState.INTERACT,
+						optionalData: {
+							createdAt: "10/2/2025",
+							funcId,
+							tokenAddr,
+							interactAmount,
+							payload,
+						},
+					},
+				},
+			});
+		}
+		
+		try {
+			setTokenData(getTokenConfig(assets, tokenAddr));
+		} catch (e: any) {
+			changeModal!({
+				modalState: ModalState.RESPONSE,
+				optionalData: {
+					isSuccessful: false,
+					amount: interactAmount,
+					interactType,
+					responseMsg: e?.shortMessage ? e.shortMessage : e.toString(),
+				},
+			});
+		}
+	}, []);
+	
 	useEffect(() => {
 		if (!isConnected) {
 			changeModal!({
@@ -61,22 +100,6 @@ const InteractModal = (props: InteractModalProps) => {
 		}
 	}, [isConnected]);
 
-	// Getting token denom
-	const assets = useGetAssets();
-	let tokenData;
-	try {
-		tokenData = getTokenConfig(assets, tokenAddr);
-	} catch (e: any) {
-		changeModal!({
-			modalState: ModalState.RESPONSE,
-			optionalData: {
-				isSuccessful: false,
-				amount: interactAmount,
-				interactType,
-				responseMsg: e?.shortMessage ? e.shortMessage : e.toString(),
-			},
-		});
-	}
 
 	const handleSubmit = async () => {
 		try {
@@ -160,7 +183,7 @@ const InteractModal = (props: InteractModalProps) => {
 			<div className="interact-detail interact-total">
 				<span>Amount to Spend</span>
 				<span>
-					{interactAmount} {tokenData?.name}
+					{interactAmount} { tokenData ? tokenData?.name : ""}
 				</span>
 			</div>
 			<button

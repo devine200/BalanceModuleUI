@@ -1,12 +1,14 @@
 import "./response.css";
 import { TransactionLoading, AppFeatures, ModalState } from "../../types.ts";
 import CloseBtn from "../close-btn.tsx";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { watchContractEvent } from "@wagmi/core";
 import { config } from "../../wagmi.ts";
 import tradableLogo from "../../images/tradable-square.svg";
 import useGetAssets from "../../hooks/useGetAssets.tsx";
 import { useChainId } from "wagmi";
+import { Contract } from "ethers";
+import { useEthersProvider } from "../../hooks/useEthersSigner.tsx";
 
 interface TransactionLoadingModalProps
 	extends TransactionLoading,
@@ -22,103 +24,87 @@ const TransactionLoadingModal = ({
 	eventQuery,
 }: TransactionLoadingModalProps) => {
 	const chainId = useChainId();
+	const provider = useEthersProvider({ chainId: eventOptions.chainId });
+	
 	const chainDataList = useGetAssets();
-
 	const currentChainData = chainDataList.filter(
 		({ chainId: currentChainId }) => currentChainId === chainId,
 	);
-	const destinationLogo =
-		currentChainData.length > 0 ? currentChainData[0].logo : tradableLogo;
-	const loadingTimeoutLimit = 180_000;
-	//@ts-ignore
-	const [interval, setInterval] = useState<Node.Timeout>(
-		setTimeout(() => {
-			unwatch();
+	const destinationLogo = currentChainData.length > 0 ? currentChainData[0].logo : tradableLogo;
+	
+	const loadingTimeoutLimit = 240_000;
+	const [hasTimedOut, setHasTimedOut] = useState<boolean>(false);
+	const interval = setTimeout(() => {
+		console.log("interval met!!!!!!!!!!!!!!")
+		setHasTimedOut(true);
+	}, loadingTimeoutLimit);
+
+	// @ts-ignore
+	const handlePendingEvent = useCallback((...data) => {
+		if (data[0] !== eventQuery!.value) return;
+
+		if (!nextModal) {
 			changeModal!({
 				modalState: ModalState.RESPONSE,
-				optionalData: nextModal !== undefined ? {
-					isSuccessful: false,
-					interactType: transType,
-					amount,
-					responseMsg: "Error: Event Watcher Timeout",
-				} : {
+				optionalData: {
 					isSuccessful: true,
 					interactType: transType,
 					amount,
 					responseMsg: `${transType} completed successfully`,
 				},
 			});
-		}, loadingTimeoutLimit),
-	);
-	let unwatch: any;
+		} else {
+			changeModal!(nextModal);
+		}
+	}, [])
 
-	try {
-		unwatch = watchContractEvent(config, {
-			...eventOptions,
-			// @ts-ignore
-			onLogs([{ args }]) {
-				// check if event meets query criteria
-				if (args && args[eventQuery?.key] !== eventQuery?.value) return;
+	useEffect(() => {
+		const sideVaultContract = new Contract(
+			eventOptions.address,
+			eventOptions.abi,
+			provider,
+		);
 
-				if (!nextModal) {
-					changeModal!({
-						modalState: ModalState.RESPONSE,
-						optionalData: {
-							isSuccessful: true,
-							interactType: transType,
-							amount,
-							responseMsg: `${transType} completed successfully`,
-						},
-					});
-				} else if (nextModal) {
-					changeModal!(nextModal);
-				} else {
-					throw Error("invalid next screen option");
-				}
-				unwatch();
-				clearInterval(interval);
-			},
-			onError(e: any) {
-				changeModal!({
-					modalState: ModalState.RESPONSE,
-					optionalData: {
-						isSuccessful: false,
-						interactType: transType,
-						amount,
-						responseMsg: e.shortMessage ? `${e.shortMessage.substring(0, 50)}...` : e.toString().substring(0, 50),
-					},
-				});
-				console.log(e);
-				unwatch();
+		try {
+			sideVaultContract.on(eventOptions.eventName, handlePendingEvent);
+		} catch (e: any) {
+			changeModal!({
+				modalState: ModalState.RESPONSE,
+				optionalData: {
+					isSuccessful: false,
+					interactType: transType,
+					amount,
+					responseMsg: `Error: System Error`,
+				},
+			});
+
+			console.log("////// event watcher ///////");
+			console.log(e);
+			console.log("////////////////////////////");
+		}
+		return () => {
+			if(sideVaultContract){
+				sideVaultContract.removeListener(eventOptions.eventName, handlePendingEvent);
+			}
+
+			if(interval) {
 				clearInterval(interval);
 			}
-		});
-	} catch (e: any) {
+		};
+	}, []);
+
+	useEffect(() => {
+		if (!hasTimedOut) return;
 		changeModal!({
 			modalState: ModalState.RESPONSE,
 			optionalData: {
 				isSuccessful: false,
 				interactType: transType,
 				amount,
-				responseMsg: `Error: System Error`,
+				responseMsg: "Error: Event Watcher Timeout",
 			},
 		});
-
-		console.log("////// event watcher ///////");
-		console.log(e);
-		console.log("////////////////////////////");
-		unwatch();
-	} finally {
-		setTimeout(() => {
-			unwatch();
-		}, loadingTimeoutLimit);
-	}
-
-	useEffect(() => {
-		return () => {
-			clearInterval(interval);
-		};
-	}, []);
+	}, [hasTimedOut]);
 
 	return (
 		<div className="app-modal animate response-modal confirmation-modal">

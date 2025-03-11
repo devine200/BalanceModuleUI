@@ -8,7 +8,7 @@ import useGetAssets, { getTokenConfig } from "../../hooks/useGetAssets.tsx";
 import tradableLogo from "../../images/tradable-square.svg";
 import avalancheLogo from "../../images/avalanche-square.svg";
 import { useSwitchChain } from "wagmi";
-import { BytesLike } from "ethers";
+import { BytesLike, formatUnits } from "ethers";
 import { config } from "../../wagmi.ts";
 import useDeserializer from "../../hooks/useDeserializer.tsx";
 import { AppConfigContext } from "../../contexts.tsx";
@@ -27,15 +27,15 @@ const InteractConfirmModal = ({
 		useContractInteract();
 	const { appState } = useContext(AppConfigContext);
 	const { website, moduleId, getFuncConfig } = appState;
-	const { deconstructReceiptId } = useDeserializer();
+	const { deconstructReceiptId, getVaultAddressFromModuleId, getVaultChainId } = useDeserializer();
 	const {
 		funcId,
 		tokenAddr,
-		amount: interactAmount,
+		amount: interactAmount
 	} = deconstructReceiptId(receiptId);
+	
 	const { interactType } = getFuncConfig!(funcId.toString());
-
-	const { getVaultAddressFromModuleId, getVaultChainId } = useDeserializer();
+	const TOKEN_DEFAULT_DECIMAL = 18;
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 	// @ts-ignore
 	const { switchChain } = useSwitchChain(config);
@@ -167,7 +167,7 @@ const InteractConfirmModal = ({
 			<div className="interact-detail interact-total">
 				<span>Amount to Spend</span>
 				<span>
-					{interactAmount} {tokenData?.name}
+					{formatUnits(interactAmount, TOKEN_DEFAULT_DECIMAL)} {tokenData?.name}
 				</span>
 			</div>
 

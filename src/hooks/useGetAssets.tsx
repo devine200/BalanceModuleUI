@@ -23,7 +23,7 @@ export const getTokenConfig = (chainData:ChainData[], address:AddressLike):Token
   // loop through chain data
   // if it exists return the token data object
   // else throw error that token is unsupported
-
+  
   for (const chain of chainData) {
     for (const token of chain.tokens) {
       if (token.address === address) {
@@ -43,17 +43,17 @@ const useGetAssets = ():ChainData[] => {
       tokens: [
         {
           name: "USDC",
-          address: "0x596310929f05D3cF15a2220decFE8Acf47f59b8A",
+          address: "0xcBa8Ef489334A965c5c424F896A4aCAd39d262EC",
           logo: usdcLogo,
         },
         {
           name: "USDT",
-          address: "0xeD9AEba46507fc92b89527B4E68d4D90ce337B82",
+          address: "0xd64F9e0b3111590B5d5c93FC0C0caa050223b489",
           logo: usdtLogo,
         },
         {
           name: "DAI",
-          address: "0xa758FDF01D8Ebd20bE6D07dAd2F1aaf02cD5d82c",
+          address: "0x52a2C23d7f85A7d3777e49f8C9d85A7D187574c4",
           logo: daiLogo,
         },
       ],
@@ -65,17 +65,17 @@ const useGetAssets = ():ChainData[] => {
       tokens: [
         {
           name: "USDC",
-          address: "0x85b97CB8828E237605Bc19Fc0fa622c6d8D6815B",
+          address: "0x75246a2DC8234D54E439CA309905a95cbf93193E",
           logo: usdcLogo,
         },
         {
           name: "USDT",
-          address: "0x4648A8719b53b365cCfa12C22BF5F9DEaE52272b",
+          address: "0x7E1c8E07085faB0311Fc8df9448Bc054E67fFbC6",
           logo: usdtLogo,
         },
         {
           name: "DAI",
-          address: "0x17E48D49475574AE927E47dCFC2D1747B75FFfDc",
+          address: "0xB28eE801f8105a0e0D064D16897080Aa0cBF3ad2",
           logo: daiLogo,
         },
       ],

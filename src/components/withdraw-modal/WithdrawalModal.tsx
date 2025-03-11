@@ -73,6 +73,15 @@ const WithdrawalModal = ({
 			const vaultAddr = getVaultAddressFromModuleId(
 				moduleId as BytesLike,
 			);
+			console.log({
+				eventOptions: {
+					address: vaultAddr,
+					abi: ContractConfig.tradableSideVault.abi,
+					eventName: "SideChainWithdrawalProcessed",
+					chainId: selectedChainId,
+				}
+			})
+
 			await withdrawFromTradable(vaultAddr, tokenAddr!, amount);
 			changeModal!({
 				modalState: ModalState.TRANS_LOADING,

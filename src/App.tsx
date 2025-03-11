@@ -39,7 +39,7 @@ function App() {
 		changeModal,
 		userAddr: address as string,
 	};
-
+	
 	useEffect(() => {
 		if (isConnected || !isModalOpen) return;
 
@@ -91,7 +91,7 @@ function App() {
 		}
 	}, [modalInfo, isModalOpen]);
 
-	return isModalOpen ? <ModalLayout>{currentModal}</ModalLayout> : <></>;
+	return isModalOpen ? <ModalLayout closeModal={closeModal}>{currentModal}</ModalLayout> : <></>;
 }
 
 export default App;

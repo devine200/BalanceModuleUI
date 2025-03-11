@@ -88,7 +88,7 @@ const InteractConfirmModal = ({
 						key: "receiptId",
 						value: receiptId,
 					},
-					amount: interactAmount,
+					amount: parseFloat(formatUnits(interactAmount, 18)),
 				},
 			});
 		} catch (e: any) {

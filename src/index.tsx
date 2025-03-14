@@ -5,7 +5,6 @@ import { config } from "./wagmi.ts";
 import { AppConfig, FunctionConfig, ModalState, TradableConfig } from "./types.ts";
 import { AppConfigContext, UserInterfaceContext } from "./contexts.tsx";
 import { useReducer } from "react";
-import useGetUserTransactions from "./hooks/useGetUserTransaction.tsx";
 import { AbiCoder, AddressLike, BytesLike } from "ethers";
 
 const queryClient = new QueryClient();
@@ -21,13 +20,6 @@ const TradableSDKProvider = ({
 	moduleFuncConfig,
 	children
 }: TradableSDKProviderProps) => {
-	const { pending } = useGetUserTransactions({
-		moduleId: moduleId as string,
-		userAddr: "userAddr as string",
-	});
-
-	console.log(pending)
-
 	const reducer = (state:AppConfig, action: any) => {
 		return { ...state, ...action };
 	};

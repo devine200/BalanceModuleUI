@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState, useEffect, useCallback } from "react";
 import { AppFeatures, Interaction, ModalState } from "../../types.ts";
 import "./interact-modal.css";
 import CloseBtn from "../close-btn.tsx";
@@ -26,8 +26,27 @@ const InteractModal = (props: InteractModalProps) => {
 	} = props;
 	const { appState } = useContext(AppConfigContext);
 	const { website, moduleId, getFuncConfig } = appState;
-	console.log({funcId})
-	const { interactType } = getFuncConfig!(funcId.toString());
+	const [interactType, setInteractType] = useState<string>();
+	const showConfigError = useCallback((msg:string)=>{
+		changeModal!({
+			modalState: ModalState.RESPONSE,
+			optionalData: {
+				isSuccessful: false,
+				interactType: "Function Execution",
+				responseMsg: msg,
+			},
+		});
+	}, [])
+
+	useEffect(() => {
+		try{
+			const { interactType:transType } = getFuncConfig!(funcId.toString());
+			setInteractType(transType);
+		}catch(e:any) {
+			console.log("error")
+			showConfigError(e.toString());
+		}
+	}, [])
 
 	const { balance, initiateProtocolTransaction } = useContractInteract();
 	const [isLoading, setIsLoading] = useState<boolean>(false);

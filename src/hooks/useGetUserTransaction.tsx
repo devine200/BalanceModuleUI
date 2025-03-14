@@ -1,6 +1,6 @@
 import { Contract } from "ethers";
 import { InteractionHistory } from "../types";
-import ContractConfig from "../utils/test-config.json";
+import ContractConfig from "../utils/test-config.json" with { type: "json" };
 import { useEthersProvider } from "./useEthersSigner";
 import { useEffect, useState } from "react";
 

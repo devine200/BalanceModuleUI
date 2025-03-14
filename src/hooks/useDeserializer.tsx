@@ -1,5 +1,5 @@
 import { AbiCoder, AddressLike, BytesLike } from "ethers";
-import contractConfig from "../utils/test-config.json";
+import contractConfig from "../utils/test-config.json" with { type: "json" };
 
 interface DeserializerVals {
 	getVaultAddressFromModuleId: (moduleId: BytesLike) => AddressLike;

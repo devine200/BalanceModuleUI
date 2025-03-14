@@ -1,4 +1,4 @@
-import ContractConfig from "../utils/test-config.json";
+import ContractConfig from "../utils/test-config.json" with { type: "json" };
 import {
 	Contract,
 	formatUnits,

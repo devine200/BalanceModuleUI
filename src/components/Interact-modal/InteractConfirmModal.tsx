@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { AppFeatures, Interaction, ModalState } from "../../types.ts";
 import "./interact-modal.css";
 import CloseBtn from "../close-btn.tsx";
@@ -33,8 +33,28 @@ const InteractConfirmModal = ({
 		tokenAddr,
 		amount: interactAmount
 	} = deconstructReceiptId(receiptId);
+	const [interactType, setInteractType] = useState<string>();
+	const showConfigError = useCallback((msg:string)=>{
+		changeModal!({
+			modalState: ModalState.RESPONSE,
+			optionalData: {
+				isSuccessful: false,
+				interactType: "Function Execution",
+				responseMsg: msg,
+			},
+		});
+	}, [])
+
+	useEffect(() => {
+		try{
+			const { interactType:transType } = getFuncConfig!(funcId.toString());
+			setInteractType(transType);
+		}catch(e:any) {
+			console.log("error")
+			showConfigError(e.toString());
+		}
+	}, [])
 	
-	const { interactType } = getFuncConfig!(funcId.toString());
 	const TOKEN_DEFAULT_DECIMAL = 18;
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 	// @ts-ignore

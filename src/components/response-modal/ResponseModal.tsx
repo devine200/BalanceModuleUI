@@ -26,7 +26,7 @@ const ResponseModal = ({
 				style={isSuccessful ? { width: "100px" } : { width: "200px" }}
 			/>
 			<h3>
-				${amount && amount < 0 ? "" : `${amount}`} {interactType}{" "}
+				{!amount ? "" : `$${amount}`} {interactType}{" "}
 				{isSuccessful ? "Successful" : "Failed"}
 			</h3>
 			<p>{responseMsg.substring(0, 150)} ...</p>

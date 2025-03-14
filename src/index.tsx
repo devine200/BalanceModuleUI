@@ -36,7 +36,7 @@ const TradableSDKProvider = ({
 		const abi = AbiCoder.defaultAbiCoder();
 		const config:(string | undefined) = Object.getOwnPropertyNames(moduleFuncConfig).find(configId => abi.encode(["bytes", "bytes"], [moduleId, configId]) == funcId);
 		if(!config){
-			throw new Error("Function not configured");
+			throw new Error("Protocol Function not configured");
 		}
 		return moduleFuncConfig[config];
 	}

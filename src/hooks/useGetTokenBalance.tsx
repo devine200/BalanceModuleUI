@@ -5,7 +5,7 @@ import {
 	useReadContracts,
 	useSwitchChain,
 } from "wagmi";
-import ContractConfig from "../utils/test-config.json";
+import ContractConfig from "../utils/test-config.json" with { type: "json" };
 import { AddressLike, BigNumberish, formatUnits } from "ethers";
 import { config } from "../wagmi";
 

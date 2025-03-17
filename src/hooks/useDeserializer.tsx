@@ -33,6 +33,14 @@ const useDeserializer = (): DeserializerVals => {
 	};
 
 	const getVaultConfig = (vaultAddr: AddressLike): any => {
+		const vaultConfigFilter = Object.values(contractConfig.tradableSideVault.vault).filter(
+			(vault) => vault.tradableSideVault === vaultAddr,
+		);
+		
+		if(vaultConfigFilter.length == 0) {
+			throw new Error("Invalid Vault Address (check sdk configuration)")
+		}
+
 		return Object.values(contractConfig.tradableSideVault.vault).filter(
 			(vault) => vault.tradableSideVault === vaultAddr,
 		)[0];

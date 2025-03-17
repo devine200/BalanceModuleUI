@@ -53,7 +53,7 @@ export interface TradableConfig {
 export interface Interaction {
 	interactAmount: number;
 	funcId: BytesLike;
-	payload: BytesLike;
+	payload?: BytesLike;
 	tokenAddr: AddressLike;
 	// createdAt?: string;
 }

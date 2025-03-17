@@ -91,7 +91,7 @@ function App() {
 		}
 	}, [modalInfo, isModalOpen]);
 
-	return isModalOpen ? <ModalLayout closeModal={closeModal}>{currentModal}</ModalLayout> : <></>;
+	return isModalOpen ? <ModalLayout>{currentModal}</ModalLayout> : <></>;
 }
 
 export default App;

@@ -1,6 +1,6 @@
 {
   "tradableSettings": {
-    "address": "0x84757bf51d4870b1c6A7cbFc904238D88223eE53",
+    "address": "0xDD5D05804ea8fEae15F26958717047F09598df49",
     "abi": [
       {
         "inputs": [
@@ -557,7 +557,7 @@
     ]
   },
   "tradableBalanceVault": {
-    "address": "0xEB97b179beb22a1824a3890AcAbB98926daC320C",
+    "address": "0xcCD43Dc1d5D326A36Da008292faEFa807980062C",
     "abi": [
       {
         "inputs": [
@@ -854,7 +854,7 @@
     ]
   },
   "tradableModuleRouter": {
-    "address": "0x657aE02b6d10C991A63f43f166f1f725e327eE89",
+    "address": "0xE6D50A71475CF05AE01685BC76a6AC0A1A3180c9",
     "abi": [
       {
         "inputs": [
@@ -1141,7 +1141,7 @@
     ]
   },
   "tradableMessageAdapter": {
-    "address": "0x3e82ce1FC7FA5404f485d71a4861Bb4D024480A3",
+    "address": "0x78d4d1e4Dcbd89458bAd1fCc6071B072bD01824A",
     "endpoint": "0x93f54D755A063cE7bB9e6Ac47Eccc8e33411d706",
     "chainId": 10106,
     "abi": [
@@ -2710,18 +2710,18 @@
       ]
     },
     "vault": {
-      "bsc": {
-        "tradableSideVault": "0x89300617319667d812c0541eaa5e35Fb0F5f1E6A",
+      "avalanche": {
+        "tradableSideVault": "0x7BDFccC3Fd83517Fe63D2e4434Ce69cc45e44eb2",
         "stableTokens": [
-          "0xcBa8Ef489334A965c5c424F896A4aCAd39d262EC",
-          "0xd64F9e0b3111590B5d5c93FC0C0caa050223b489",
-          "0x52a2C23d7f85A7d3777e49f8C9d85A7D187574c4"
+          "0xAE60a000f4094204e0f9B56d1f71E1d7381cA50F",
+          "0x027Ba418AF13412fE660F6c2EC42382a0ffaC5B7",
+          "0x410104df99c7c66C691e83EEDA581768C20debBd"
         ],
-        "endpoint": "0x6Fcb97553D41516Cb228ac03FdC8B9a0a9df04A1",
-        "chainId": 10102,
-        "networkId": 97,
+        "endpoint": "0x93f54D755A063cE7bB9e6Ac47Eccc8e33411d706",
+        "chainId": 10106,
+        "networkId": 43113,
         "tradableModule": {
-          "address": "0x13241304a5B10f902036E55a2c1F95aA0f1C269b",
+          "address": "0x6C93fD6925C8caCc652BFB04867f5228cc980590",
           "abi": [
             {
               "inputs": [
@@ -2793,18 +2793,18 @@
           ]
         }
       },
-      "avalanche": {
-        "tradableSideVault": "0x3b6b709e8720bD847B564A446205c7Aa2e0D5451",
+      "bsc": {
+        "tradableSideVault": "0xeC4a5C24A492DA52B2DC31802A5cA7d29752D2a9",
         "stableTokens": [
-          "0x75246a2DC8234D54E439CA309905a95cbf93193E",
-          "0x7E1c8E07085faB0311Fc8df9448Bc054E67fFbC6",
-          "0xB28eE801f8105a0e0D064D16897080Aa0cBF3ad2"
+          "0x85C9bF6837446c79514863656ca19C253Acd5b34",
+          "0x9d685223615727f29b38aE9728365a2585228597",
+          "0x587090034d73D3701F164BbE83ddc8fA2633a50F"
         ],
-        "endpoint": "0x93f54D755A063cE7bB9e6Ac47Eccc8e33411d706",
-        "chainId": 10106,
-        "networkId": 43113,
+        "endpoint": "0x6Fcb97553D41516Cb228ac03FdC8B9a0a9df04A1",
+        "chainId": 10102,
+        "networkId": 97,
         "tradableModule": {
-          "address": "0x0c83b376d8ba8eF5BaEd8A5A890F37Ebd591b969",
+          "address": "0x5405fbEaA06Cc8BEC28D348C2d406079e825A47c",
           "abi": [
             {
               "inputs": [

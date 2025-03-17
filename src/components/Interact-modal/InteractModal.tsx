@@ -59,7 +59,20 @@ const InteractModal = (props: InteractModalProps) => {
 	const vaultAddr = getVaultAddressFromModuleId(moduleId as BytesLike);
 
 	// getting side vault network id
-	const sideChainId = getVaultChainId(vaultAddr);
+	let sideChainId:Number;
+	try{
+		sideChainId = getVaultChainId(vaultAddr);
+
+	}catch (e:any) {
+		changeModal!({
+			modalState: ModalState.RESPONSE,
+			optionalData: {
+				isSuccessful: false,
+				interactType: "Config Error",
+				responseMsg: e.toString(),
+			},
+		});
+	}
 
 	// Getting token denom
 	const assets = useGetAssets();
@@ -73,7 +86,7 @@ const InteractModal = (props: InteractModalProps) => {
 					nextModal: {
 						modalState: ModalState.INTERACT,
 						optionalData: {
-							createdAt: "10/2/2025",
+							// createdAt: "10/2/2025",
 							funcId,
 							tokenAddr,
 							interactAmount,

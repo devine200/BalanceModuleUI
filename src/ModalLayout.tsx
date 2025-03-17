@@ -1,14 +1,11 @@
 interface ModalLayoutProps {
   children: React.ReactNode;
-  closeModal: () => void;
 }
 
-const ModalLayout = ({ children, closeModal }: ModalLayoutProps) => {
+const ModalLayout = ({ children }: ModalLayoutProps) => {
   return (
     <div className="sdk-container">
-      <div className="cover" onClick={()=>{
-        closeModal()
-      }}></div>
+      <div className="cover"></div>
       {children}
     </div>
   )

@@ -34,6 +34,7 @@ const InteractConfirmModal = ({
 		amount: interactAmount
 	} = deconstructReceiptId(receiptId);
 	const [interactType, setInteractType] = useState<string>();
+	const [transPayload, setTransPayload] = useState<string>(payload ? payload as string : "");
 	const showConfigError = useCallback((msg:string)=>{
 		changeModal!({
 			modalState: ModalState.RESPONSE,
@@ -56,20 +57,24 @@ const InteractConfirmModal = ({
 	}, [])
 	
 	const TOKEN_DEFAULT_DECIMAL = 18;
-	const [isLoading, setIsLoading] = useState<boolean>(false);
+	const [isConfirmLoading, setIsConfirmLoading] = useState<boolean>(false);
+	const [isRejectLoading, setIsRejectLoading] = useState<boolean>(false);
+
 	// @ts-ignore
 	const { switchChain } = useSwitchChain(config);
 
 	// getting side vault from func id
 	const vaultAddr = getVaultAddressFromModuleId(moduleId as BytesLike);
 
-	// getting side vault network id
-	const sideChainId = getVaultChainId(vaultAddr);
-
+	
 	// Getting token denom
 	const assets = useGetAssets();
 	let tokenData;
+	let sideChainId:Number;
 	try {
+		// getting side vault network id
+		sideChainId = getVaultChainId(vaultAddr);
+
 		tokenData = getTokenConfig(assets, tokenAddr);
 	} catch (e: any) {
 		changeModal!({
@@ -85,11 +90,11 @@ const InteractConfirmModal = ({
 
 	const handleTransactionConfirmation = async () => {
 		try {
-			setIsLoading(true);
+			setIsConfirmLoading(true);
 			// @ts-ignore
 			switchChain({ chainId: sideChainId });
 			// console.log({receiptId})
-			await transactionConfirmation(vaultAddr, receiptId, payload);
+			await transactionConfirmation(vaultAddr, receiptId, transPayload);
 
 			changeModal!({
 				modalState: ModalState.TRANS_LOADING,
@@ -123,13 +128,13 @@ const InteractConfirmModal = ({
 				},
 			});
 		} finally {
-			setIsLoading(false);
+			setIsConfirmLoading(false);
 		}
 	};
 
 	const handleTransactionRejection = async () => {
 		try {
-			setIsLoading(true);
+			setIsRejectLoading(true);
 			// @ts-ignore
 			switchChain({ chainId: sideChainId });
 
@@ -166,9 +171,13 @@ const InteractConfirmModal = ({
 				},
 			});
 		} finally {
-			setIsLoading(false);
+			setIsRejectLoading(false);
 		}
 	};
+
+	const updatePayload = (e:React.ChangeEvent<HTMLInputElement>) => {
+		setTransPayload(e.target.value);
+	}
 
 	return (
 		<div className="app-modal animate interact-modal interact-confirm-modal">
@@ -190,22 +199,29 @@ const InteractConfirmModal = ({
 					{formatUnits(interactAmount, TOKEN_DEFAULT_DECIMAL)} {tokenData?.name}
 				</span>
 			</div>
+			
+			<div className="interact-detail">
+				<span>Payload</span>
+				<span>
+					<input type="text" className="interact-payload" onChange={updatePayload} placeholder="Enter Function Payload" defaultValue={transPayload}/>
+				</span>
+			</div>
 
 			<div className="interact-btn-holder">
 				<button
 					className="interact-btn-full interact-btn-half"
 					onClick={handleTransactionConfirmation}
-					disabled={isLoading}
+					disabled={isConfirmLoading || isRejectLoading}
 				>
-					{isLoading ? "Loading...." : "Confirm"}
+					{isConfirmLoading ? "Loading...." : "Confirm"}
 				</button>
 
 				<button
 					className="interact-btn-full interact-btn-half reject-btn"
 					onClick={handleTransactionRejection}
-					disabled={isLoading}
+					disabled={isConfirmLoading || isRejectLoading}
 				>
-					{isLoading ? "Loading...." : "Reject"}
+					{isRejectLoading ? "Loading...." : "Reject"}
 				</button>
 			</div>
 		</div>

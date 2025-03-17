@@ -34,6 +34,7 @@ export const getTokenConfig = (chainData:ChainData[], address:AddressLike):Token
   throw new Error('Token not supported');
 }
 
+
 const useGetAssets = ():ChainData[] => {
   return [
     {
@@ -43,17 +44,17 @@ const useGetAssets = ():ChainData[] => {
       tokens: [
         {
           name: "USDC",
-          address: "0xcBa8Ef489334A965c5c424F896A4aCAd39d262EC",
+          address: "0x85C9bF6837446c79514863656ca19C253Acd5b34",
           logo: usdcLogo,
         },
         {
           name: "USDT",
-          address: "0xd64F9e0b3111590B5d5c93FC0C0caa050223b489",
+          address: "0x9d685223615727f29b38aE9728365a2585228597",
           logo: usdtLogo,
         },
         {
           name: "DAI",
-          address: "0x52a2C23d7f85A7d3777e49f8C9d85A7D187574c4",
+          address: "0x587090034d73D3701F164BbE83ddc8fA2633a50F",
           logo: daiLogo,
         },
       ],
@@ -65,17 +66,17 @@ const useGetAssets = ():ChainData[] => {
       tokens: [
         {
           name: "USDC",
-          address: "0x75246a2DC8234D54E439CA309905a95cbf93193E",
+          address: "0xAE60a000f4094204e0f9B56d1f71E1d7381cA50F",
           logo: usdcLogo,
         },
         {
           name: "USDT",
-          address: "0x7E1c8E07085faB0311Fc8df9448Bc054E67fFbC6",
+          address: "0x027Ba418AF13412fE660F6c2EC42382a0ffaC5B7",
           logo: usdtLogo,
         },
         {
           name: "DAI",
-          address: "0xB28eE801f8105a0e0D064D16897080Aa0cBF3ad2",
+          address: "0x410104df99c7c66C691e83EEDA581768C20debBd",
           logo: daiLogo,
         },
       ],

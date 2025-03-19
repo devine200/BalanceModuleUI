@@ -2,8 +2,6 @@ import "./response.css";
 import { TransactionLoading, AppFeatures, ModalState } from "../../types.ts";
 import CloseBtn from "../close-btn.tsx";
 import { useCallback, useEffect, useState } from "react";
-import { watchContractEvent } from "@wagmi/core";
-import { config } from "../../wagmi.ts";
 import tradableLogo from "../../images/tradable-square.svg";
 import useGetAssets from "../../hooks/useGetAssets.tsx";
 import { useChainId } from "wagmi";

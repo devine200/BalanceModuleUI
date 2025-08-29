@@ -6,6 +6,15 @@ This is a multichain decentralized payment solution that allows web3 projects to
 npm install
 ```
 
+## Setup Your Environment Variables using ```.env-example``` && ```.env-example-local```
+```bash
+mv .env-example .env
+```
+
+```bash
+mv .env-example-local .env.local
+```
+
 ## Start Project
 ```bash
 npm run dev

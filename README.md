@@ -12,16 +12,24 @@ npm run dev
 ```
 
 ## Here are some interractions using this system
+
+#### Wallet Connection Options
 ![image](demo-images/connect.png)
 
+#### Wallet Connect
 ![image](demo-images/wallet-connect.png)
 
+#### SDK Interaction List 
 ![image](demo-images/demo-interface-list.png)
 
+#### SDK Protocol Custom Interaction
 ![image](demo-images/protocol-transaction.png)
 
+#### SDK Protocol Custom Interaction Confirmation
 ![image](demo-images/protocol-interraction.png)
 
+#### SDK Protocol Deposit
 ![image](demo-images/protocol-deposit.png)
 
+#### SDK Success Message
 ![image](demo-images/completion.png)
